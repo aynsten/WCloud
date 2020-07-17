@@ -1,0 +1,20 @@
+﻿[
+  {
+    "Key": "wcloud",
+    "Name": "平台",
+    "Description": "平台管理",
+    "Logo": "http://13037868.s21i.faiusr.com/2/ABUIABACGAAgwMzhxwUonffA1AUw6Qk4nQc!600x600.jpg"
+  },
+  {
+    "Key": "water",
+    "Name": "抄表",
+    "Description": "抄表系统",
+    "Logo": "http://13037868.s21i.faiusr.com/2/ABUIABACGAAgwMzhxwUonffA1AUw6Qk4nQc!600x600.jpg"
+  },
+  {
+    "Key": "hot-line",
+    "Name": "热线",
+    "Description": "热线系统",
+    "Logo": "http://13037868.s21i.faiusr.com/2/ABUIABACGAAgwMzhxwUonffA1AUw6Qk4nQc!600x600.jpg"
+  }
+]

@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  admin-api:
+    image: admin-api:fri
+    container_name: admin-api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    networks:
+      - xx
+networks:
+  xx:
+    external:
+      name: xx

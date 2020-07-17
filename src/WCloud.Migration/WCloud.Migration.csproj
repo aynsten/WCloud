@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Autofac" Version="3.0.2" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\WCloud.CommonService.Application\WCloud.CommonService.Application.csproj" />
+    <ProjectReference Include="..\WCloud.Member.Application\WCloud.Member.Application.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.MessageBus\WCloud.Framework.MessageBus.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Redis\WCloud.Framework.Redis.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Socket\WCloud.Framework.Socket.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Storage\WCloud.Framework.Storage.csproj" />
+    <ProjectReference Include="..\WCloud.Identity.Providers\WCloud.Identity.Providers.csproj" />
+    <ProjectReference Include="..\WCloud.MetroAd\WCloud.MetroAd.csproj" />
+    <ProjectReference Include="..\Lib\Lib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

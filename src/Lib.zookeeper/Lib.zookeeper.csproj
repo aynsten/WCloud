@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>2.0.2</Version>
+    <PackageId>lib.com.zk.nuget</PackageId>
+    <PackageIconUrl>https://raw.githubusercontent.com/hiwjcn/hiwjcn/master/res/tools.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/hiwjcn</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ZooKeeperNetEx" Version="3.4.12.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.1" />
+    <PackageReference Include="ZooKeeperNetEx.Recipes" Version="3.4.12.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lib\Lib.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,26 @@
+version: "3.4"
+
+services:
+  #ad
+  metro-ad-api:
+    image: metro-ad-api:fri
+    container_name: metro-ad-api
+    build:
+      context: ../
+      dockerfile: ./docker-metroad/Dockerfile
+    restart: unless-stopped
+    environment:
+      swagger: "true"
+      static_save_path: "/nginx-static"
+      static_file_server: "http://bd.hiwj.cn:7777"
+      #nlog存储位置
+      log_base_dir: "/api-logs/metro-ad-api"
+    volumes:
+      # 把文件上传目录挂载到宿主机器
+      - /nginx-static:/nginx-static
+    networks:
+      - xx
+networks:
+  xx:
+    external:
+      name: xx

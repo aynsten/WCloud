@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Elastic.Apm.NetCoreAll" Version="1.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Aop\WCloud.Framework.Aop.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  admin-consumer:
+    image: admin-consumer:fri
+    container_name: admin-consumer
+    restart: unless-stopped
+    networks:
+      - xx
+networks:
+  xx:
+    external:
+      name: xx

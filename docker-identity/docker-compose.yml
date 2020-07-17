@@ -1,0 +1,18 @@
+version: "3.4"
+
+services:
+  identity-web:
+    build:
+      context: ../
+      dockerfile: ./docker-identity/Dockerfile
+    container_name: identity-web
+    image: identity-web:fri
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    networks:
+      - xx
+networks:
+  xx:
+    external:
+      name: xx

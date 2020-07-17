@@ -1,0 +1,341 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WCloud.Member.Api</name>
+    </assembly>
+    <members>
+        <member name="M:WCloud.Member.Api.Controller.AdminAccountController.OauthPwdLogin(System.String,System.String)">
+            <summary>
+            管理员账号密码登陆，获取token
+            </summary>
+            <param name="user_name"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminAccountController.RefreshToken(System.String)">
+            <summary>
+            刷新token
+            </summary>
+            <param name="refresh_token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminAccountController.ChangePwd(System.String,System.String)">
+            <summary>
+            自己改自己的密码
+            </summary>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminAccountController.ResetPwd(System.String,System.String)">
+            <summary>
+            管理员重设用户密码
+            </summary>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminAccountController.LogOutAction">
+            <summary>
+            退出登陆
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminAccountController.Logout">
+            <summary>
+            退出登陆
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminAccountController.LoginAdminInfo">
+            <summary>
+            获取用户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminInfoController.GetUserByName(System.String)">
+            <summary>
+            用户名查询用户
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminInfoController.SelectUser(System.String,System.String,System.String)">
+            <summary>
+            下拉框搜索用户
+            </summary>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminInfoController.Query(System.String,System.String,System.String,System.Nullable{System.Boolean},System.Nullable{System.Int32})">
+            <summary>
+            用户列表
+            </summary>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminInfoController.AddAdmin(WCloud.Core.Validator.IEntityValidationHelper{WCloud.Member.Domain.Admin.AdminEntity},System.String)">
+            <summary>
+            添加管理员
+            </summary>
+            <param name="validator"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminInfoController.DeleteAdmin(System.String)">
+            <summary>
+            禁用管理员
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminInfoController.ActiveAdmin(System.String)">
+            <summary>
+            恢复管理员
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminInfoController.Profile">
+            <summary>
+            个人资料
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminInfoController.UpdateProfile(System.String)">
+            <summary>
+            更新个人资料
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminDeptController.Query">
+            <summary>
+            admin 部门查询
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminDeptController.Save(System.String)">
+            <summary>
+            添加或者修改部门
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminDeptController.Delete(System.String)">
+            <summary>
+            删除部门
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WCloud.Member.Api.Controller.AdminOrgController">
+            <summary>
+            组织
+            以github为例，epc就是github，途虎在github中就等同于epc的客户。
+            途虎就是组织，组织下面是成员（这里的成员就是点检人员/保安）
+            </summary>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminOrgController.Query(System.String,System.Nullable{System.Int32},System.Nullable{System.Boolean})">
+            <summary>
+            查询组织
+            </summary>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminOrgController.Save(System.String)">
+            <summary>
+            添加或者更新组织
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminOrgController.Delete(System.String)">
+            <summary>
+            删除组织
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminOrgController.QueryMemberRoles">
+            <summary>
+            获取所有角色和响应的值
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminOrgController.AddAdminMember(System.String,System.String)">
+            <summary>
+            添加默认管理员
+            </summary>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminOrgController.RemoveOwner(System.String,System.String)">
+            <summary>
+            移除管理员
+            </summary>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminPermissionController.MyPermissions(WCloud.Member.Application.PermissionValidator.IPermissionValidatorService)">
+            <summary>
+            查询我的权限
+            </summary>
+            <param name="_validator"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminPermissionController.QueryAllPermissions">
+            <summary>
+            查询所有权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:WCloud.Member.Api.Controller.AdminRoleController">
+            <summary>
+            角色
+            </summary>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminRoleController.QueryAntTree">
+            <summary>
+            ant design的树结构
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminRoleController.QueryAll">
+            <summary>
+            查询所有角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminRoleController.Delete(System.String)">
+            <summary>
+            删除角色
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminRoleController.Save(System.String)">
+            <summary>
+            添加角色
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminRoleController.SetUserRole(System.String,System.String)">
+            <summary>
+            给用户设置角色
+            </summary>
+            <param name="user_uid"></param>
+            <param name="role"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.AdminRoleController.SetRolePermission(System.String,System.String)">
+            <summary>
+            给角色设置权限
+            </summary>
+            <param name="role_uid"></param>
+            <param name="permission"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserManagementController.Query_(System.String,System.Nullable{System.Int32},System.Nullable{System.Boolean})">
+            <summary>
+            查询user
+            </summary>
+            <param name="q"></param>
+            <param name="page"></param>
+            <param name="isremove"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserAccountController.WxOauthLogin(System.String,System.String,System.String)">
+            <summary>
+            微信第三方登陆
+            </summary>
+            <param name="code"></param>
+            <param name="nick_name"></param>
+            <param name="avatar_url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserAccountController.OauthPwdLogin(System.String,System.String)">
+            <summary>
+            密码授权模式
+            </summary>
+            <param name="user_name"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserAccountController.RefreshToken(System.String)">
+            <summary>
+            刷新token
+            </summary>
+            <param name="refresh_token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserAccountController.SetUserPhone(System.String,System.String,System.String)">
+            <summary>
+            微信设置用户登陆手机号
+            </summary>
+            <param name="code"></param>
+            <param name="iv"></param>
+            <param name="encryptedData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserAccountController.CheckUserPhone">
+            <summary>
+            检查用户是否绑定手机
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserAccountController.GetUserPhone">
+            <summary>
+            读取用户绑定的手机号
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserAccountController.Logout">
+            <summary>
+            退出登陆
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserAccountController.LoginUserInfo">
+            <summary>
+            登陆用户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserAccountController.test_jwt">
+            <summary>
+            生成jwt
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserIdConfirmController.UserIdCardInfo(WCloud.Member.Application.Service.IUserService)">
+            <summary>
+            获取用户实名认证信息
+            </summary>
+            <param name="userService"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserIdConfirmController.IsIdCardConfirmed">
+            <summary>
+            检查实名认证是否通过
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserIdConfirmController.SetUserIdCard(WCloud.Member.Application.Service.IUserService,System.String,System.String,System.String)">
+            <summary>
+            提交实名认证信息
+            </summary>
+            <param name="userService"></param>
+            <param name="code"></param>
+            <param name="idcard"></param>
+            <param name="real_name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserIdConfirmController.SendOneTimeCode(WCloud.Framework.MessageBus.IMessagePublisher)">
+            <summary>
+            发送实名认证验证码
+            </summary>
+            <param name="messagePublisher"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserInfoController.UpdateProfile(System.String)">
+            <summary>
+            更新个人信息
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.Member.Api.Controller.UserInfoController.UpdateAvatar(System.String)">
+            <summary>
+            更新头像
+            </summary>
+            <param name="avatar_url"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

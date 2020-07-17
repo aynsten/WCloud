@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  gateway-api:
+    image: gateway-api:fri
+    container_name: gateway-api
+    restart: unless-stopped
+    ports:
+      - "8888:8888"
+    networks:
+      - xx
+networks:
+  xx:
+    external:
+      name: xx

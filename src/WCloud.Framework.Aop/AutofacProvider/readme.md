@@ -1,0 +1,4 @@
+# autofac
+
+> autofac结合iserviceprovider使用还是离不开servicecollection
+> 所以干脆就使用servicecollection好了

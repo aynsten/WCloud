@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WCloud.CommonService.Api</name>
+    </assembly>
+    <members>
+        <member name="T:WCloud.CommonService.Api.Controller.CacheManageController">
+            <summary>
+            管理缓存
+            </summary>
+        </member>
+        <member name="M:WCloud.CommonService.Api.Controller.CacheManageController.Query">
+            <summary>
+            获取缓存key
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.CommonService.Api.Controller.CacheManageController.RemoveCacheKey(System.String,System.String,System.String)">
+            <summary>
+            清空缓存
+            </summary>
+            <param name="method_name">缓存key管理方法名，除此以外还有动态参数</param>
+            <returns></returns>
+        </member>
+        <member name="T:WCloud.CommonService.Api.Controller.CommonController">
+            <summary>
+            公用组件
+            </summary>
+        </member>
+        <member name="M:WCloud.CommonService.Api.Controller.CommonController.Upload(WCloud.CommonService.Application.FileUpload.IFileUploadService,Microsoft.AspNetCore.Http.IFormFile,System.String)">
+            <summary>
+            上传文件
+            </summary>
+            <param name="_uploadService"></param>
+            <param name="file"></param>
+            <param name="catalog"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.CommonService.Api.Controller.MenuController.QueryMenuTree(System.String)">
+            <summary>
+            查询菜单
+            </summary>
+            <param name="group"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.CommonService.Api.Controller.MenuController.SaveMenu(System.String)">
+            <summary>
+            添加或者更新菜单
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.CommonService.Api.Controller.MenuController.DeleteMenu(System.String)">
+            <summary>
+            删除菜单
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.CommonService.Api.Controller.MessageController.Delete(System.String)">
+            <summary>
+            删除消息
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.CommonService.Api.Controller.TagController.QueryAll">
+            <summary>
+            查询所有
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.CommonService.Api.Controller.TagController.Save(System.String)">
+            <summary>
+            添加或者更新
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.CommonService.Api.Controller.TagController.Delete(System.String)">
+            <summary>
+            删除标签
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WCloud.CommonService.Api.Controller.TagController.MigrateTag(System.String,System.String)">
+            <summary>
+            迁移标签
+            </summary>
+            <param name="from_uid"></param>
+            <param name="to_uid"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WCloud.CommonService.Api.Controller.UserCommonController">
+            <summary>
+            公用组件
+            </summary>
+        </member>
+        <member name="M:WCloud.CommonService.Api.Controller.UserCommonController.Upload(WCloud.CommonService.Application.FileUpload.IFileUploadService,Microsoft.AspNetCore.Http.IFormFile,System.String)">
+            <summary>
+            上传文件
+            </summary>
+            <param name="_uploadService"></param>
+            <param name="file"></param>
+            <param name="catalog"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

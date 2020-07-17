@@ -1,0 +1,70 @@
+﻿@model LoginViewModel
+
+<div class="row" style="margin-top:30px;">
+
+    <div class="col-sm-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <b>账号登陆</b>
+                </h3>
+            </div>
+            <div class="panel-body">
+
+                <form id="login_form">
+
+                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+
+                    <fieldset>
+                        <div class="form-group">
+                            <label>用户名</label>
+                            <input class="form-control" name="username" placeholder="Username" autofocus>
+                        </div>
+                        <div class="form-group">
+                            <label>密码</label>
+                            <input type="password" class="form-control" name="password" placeholder="Password" autocomplete="off">
+                        </div>
+                        <div class="form-group" style="text-align:right">
+                            <button class="btn btn-primary">Login</button>
+                        </div>
+                    </fieldset>
+                </form>
+
+            </div>
+
+            <script type="text/javascript">
+                $(function () {
+                    $('#login_form').submit(function () {
+                        var data = $(this).serialize();
+                        $.post('/Account/LoginViaPass', data, function (res) {
+                            if (res.Success) {
+                                var returnUrl = $("input[name='returnUrl']").val();
+                                window.location.href = returnUrl;
+                            }
+                            else {
+                                alert(res.ErrorMsg);
+                            }
+                        });
+                        return false;
+                    });
+                });
+            </script>
+
+            @if (Model.VisibleExternalProviders.Any())
+            {
+                <div class="panel-footer">
+                    @foreach (var provider in Model.VisibleExternalProviders)
+                    {
+                        <a class="btn btn-link btn-sm"
+                           asp-controller="External"
+                           asp-action="Challenge"
+                           asp-route-provider="@provider.AuthenticationScheme"
+                           asp-route-returnUrl="@Model.ReturnUrl">@provider.DisplayName</a>
+                    }
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>

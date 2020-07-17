@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  member-api:
+    image: member-api:fri
+    container_name: member-api
+    restart: unless-stopped
+    ports:
+      - "5002:5002"
+    networks:
+      - xx
+networks:
+  xx:
+    external:
+      name: xx

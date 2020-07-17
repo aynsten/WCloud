@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="29.0.2" />
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="3.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Logging\WCloud.Framework.Logging.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.MessageBus\WCloud.Framework.MessageBus.csproj" />
+    <ProjectReference Include="..\WCloud.Member.Application.Contracts\WCloud.Member.Application.Contracts.csproj" />
+    <ProjectReference Include="..\WCloud.Member.DataAccess.EF\WCloud.Member.DataAccess.EF.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="User\" />
+    <Folder Include="Permission\" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WCloud.Framework.Database.Abstractions\WCloud.Framework.Database.Abstractions.csproj" />
+    <ProjectReference Include="..\WCloud.Member.Shared\WCloud.Member.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,1 @@
+### 不应该添加对账户体系data access的依赖，应该在controller层使用member.application.contract读取数据，再拼装

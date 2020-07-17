@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;1591;</NoWarn>
+    <DocumentationFile>WCloud.CommonService.Api.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1591;</NoWarn>
+    <DocumentationFile>WCloud.CommonService.Api.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Autofac" Version="3.0.2" />
+  </ItemGroup>
+    
+  <ItemGroup>
+    <ProjectReference Include="..\WCloud.CommonService.Application\WCloud.CommonService.Application.csproj" />
+    <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Apm\WCloud.Framework.Apm.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.MVC\WCloud.Framework.MVC.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Socket\WCloud.Framework.Socket.csproj" />
+    <ProjectReference Include="..\WCloud.Member.Authentication\WCloud.Member.Authentication.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="WCloud.CommonService.Api.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugSymbols></DebugSymbols>
+    <DebugType></DebugType>
+    <NoWarn>1701;1702;1591</NoWarn>
+    <IntermediateOutputPath></IntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="3.1.1" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="3.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WCloud.Framework.Apm\WCloud.Framework.Apm.csproj" />
+    <ProjectReference Include="..\WCloud.Member.Application\WCloud.Member.Application.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.MessageBus\WCloud.Framework.MessageBus.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Redis\WCloud.Framework.Redis.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Socket\WCloud.Framework.Socket.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Storage\WCloud.Framework.Storage.csproj" />
+    <ProjectReference Include="..\WCloud.Identity.Providers\WCloud.Identity.Providers.csproj" />
+    <ProjectReference Include="..\Lib\Lib.csproj" />
+    <ProjectReference Include="..\WCloud.CommonService.Application\WCloud.CommonService.Application.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="idsrv4.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+</Project>

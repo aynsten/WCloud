@@ -1,0 +1,108 @@
+version: "3.4"
+
+x-deft: &x-deft
+  restart: unless-stopped
+  networks:
+    - xx
+
+x-env: &x-env
+  swagger: "true"
+  #nlog存储位置
+  log_base_dir: /app-log/
+  ASPNETCORE_ENVIRONMENT: Production
+
+services:
+  admin-consumer:
+    <<: *x-deft
+    image: admin-consumer:fri
+    container_name: admin-consumer
+    build:
+      context: .
+      dockerfile: docker-admin-consumer/Dockerfile
+    environment:
+      <<: *x-env
+      #初始化数据库
+      init_db: "true"
+      #拷贝用户头像需要
+      static_save_path: "/nginx-static"
+      static_file_server: "http://bd.hiwj.cn:7777"
+    volumes:
+      # 把文件上传目录挂载到宿主机器
+      - /nginx-static:/nginx-static
+      - /app-log/:/app-log/
+  #管理员
+  admin-api:
+    <<: *x-deft
+    image: admin-api:fri
+    container_name: admin-api
+    build:
+      context: .
+      dockerfile: docker-admin/Dockerfile
+    depends_on:
+      - admin-consumer
+    environment:
+      <<: *x-env
+      static_save_path: "/nginx-static"
+      static_file_server: "http://bd.hiwj.cn:7777"
+    volumes:
+      # 把文件上传目录挂载到宿主机器
+      - /nginx-static:/nginx-static
+      - /app-log/:/app-log/
+  #授权服务器
+  identity-web:
+    <<: *x-deft
+    container_name: identity-web
+    image: identity-web:fri
+    build:
+      context: .
+      dockerfile: docker-identity/Dockerfile
+    depends_on:
+      - admin-consumer
+    environment:
+      <<: *x-env
+      #初始化数据库
+      init_db: "true"
+      #下面这个可能不需要
+      static_save_path: "/nginx-static"
+      static_file_server: "http://bd.hiwj.cn:7777"
+      #public_origin: "https://id.domain.com"
+    volumes:
+      # 把文件上传目录挂载到宿主机器
+      - /nginx-static:/nginx-static
+      - /app-log/:/app-log/
+  #---------------------------------------------------------------
+  #用户
+  member-api:
+    <<: *x-deft
+    image: member-api:fri
+    container_name: member-api
+    build:
+      context: .
+      dockerfile: docker-member/Dockerfile
+    depends_on:
+      - identity-web
+    environment:
+      <<: *x-env
+    volumes:
+      - /app-log/:/app-log/
+  #网关
+  gateway-api:
+    <<: *x-deft
+    image: gateway-api:fri
+    container_name: gateway-api
+    build:
+      context: .
+      dockerfile: docker-gateway/Dockerfile
+    depends_on:
+      - identity-web
+    environment:
+      <<: *x-env
+      micro_services: "admin,member"
+      # 跨域
+      CorsHosts: "http://bd.hiwj.cn:7000"
+    volumes:
+      - /app-log/:/app-log/
+networks:
+  xx:
+    external:
+      name: xx

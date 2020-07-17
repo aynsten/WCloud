@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  common-service-api:
+    image: common-service-api:fri
+    container_name: common-service-api
+    restart: unless-stopped
+    ports:
+      - "5005:5005"
+    networks:
+      - xx
+networks:
+  xx:
+    external:
+      name: xx

@@ -1,0 +1,23 @@
+﻿using System;
+
+namespace Lib.ioc
+{
+    /// <summary>
+    /// 单利实现
+    /// </summary>
+    public interface ISingleInstanceService : IDisposable
+    {
+        /// <summary>
+        /// 数值越小，越先释放
+        /// </summary>
+        int DisposeOrder { get; }
+    }
+
+    /// <summary>
+    /// 单利实现
+    /// </summary>
+    public interface ISingleInstanceService<T> : ISingleInstanceService
+    {
+        T Instance { get; }
+    }
+}

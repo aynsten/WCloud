@@ -1,11 +1,11 @@
-﻿using Lib.extension;
-using Lib.helper;
-using org.apache.zookeeper;
-using org.apache.zookeeper.data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Lib.extension;
+using Lib.helper;
+using org.apache.zookeeper;
 using static org.apache.zookeeper.ZooDefs;
 
 namespace Lib.zookeeper
@@ -17,20 +17,26 @@ namespace Lib.zookeeper
     {
         static void __check_path__(string path)
         {
-            if (ValidateHelper.IsEmpty(path))
-            {
-                throw new ArgumentException("zookeeper路径为空");
-            }
-            if (!path.StartsWith("/"))
-            {
-                throw new ArgumentException("zookeeper路径必须斜杠开头");
-            }
+            path.Should().NotBeNullOrEmpty("zookeeper路径为空");
+            path.StartsWith("/").Should().BeTrue("zookeeper路径必须斜杠开头");
         }
 
-        public static List<string> SplitZookeeperPath(this string path) =>
-            path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        public static string[] SplitZookeeperPath(this string path)
+        {
+            var res = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+            return res;
+        }
 
-        public static string AsZookeeperPath(this IEnumerable<string> path) => $"/{string.Join("/", path.Where(x => x?.Length > 0))}";
+        public static string AsZookeeperPath(this IEnumerable<string> path)
+        {
+            var valid_path = path.Where(x => x?.Length > 0).ToArray();
+            var res = "/";
+            if (valid_path.Any())
+            {
+                res += string.Join("/", path.Where(x => x?.Length > 0));
+            }
+            return res;
+        }
 
         public static async Task<string> CreateNode_(this ZooKeeper client, string path, CreateMode mode, byte[] data = null)
         {
@@ -40,18 +46,6 @@ namespace Lib.zookeeper
             {
                 throw new Exception("创建节点失败");
             }
-            return res;
-        }
-
-        public static async Task<bool> WatchNode_(this ZooKeeper client, string path, Watcher watcher)
-        {
-            var res = await client.ExistAsync_(path, watcher ?? throw new ArgumentNullException(nameof(watcher)));
-            return res;
-        }
-
-        public static async Task<bool> StopWatchNode_(this ZooKeeper client, string path)
-        {
-            var res = await client.ExistAsync_(path);
             return res;
         }
 
@@ -81,15 +75,15 @@ namespace Lib.zookeeper
             foreach (var itm in sp)
             {
                 p += $"/{itm}";
-                if (await client.ExistAsync_(p))
-                    continue;
-
-                await client.CreateNode_(p, CreateMode.PERSISTENT);
+                if (!await client.ExistAsync_(p))
+                {
+                    await client.CreateNode_(p, CreateMode.PERSISTENT);
+                }
             }
         }
 
-        public static async Task<string> CreateSequentialPath_(this ZooKeeper client,
-            string path, byte[] data = null, bool persistent = true)
+        public static async Task<string> CreateSequentialPath_(this ZooKeeper client, string path,
+            byte[] data = null, bool persistent = true)
         {
             __check_path__(path);
 

@@ -1,9 +1,9 @@
-﻿using Polly;
-using StackExchange.Redis;
-using System;
-using Lib.helper;
+﻿using System;
 using System.Threading.Tasks;
 using Lib.distributed;
+using Lib.helper;
+using Polly;
+using StackExchange.Redis;
 
 namespace Lib.redis
 {

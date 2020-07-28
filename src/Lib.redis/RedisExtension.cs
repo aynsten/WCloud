@@ -1,5 +1,4 @@
 ﻿using StackExchange.Redis;
-using System.Threading.Tasks;
 
 namespace Lib.redis
 {
@@ -10,15 +9,6 @@ namespace Lib.redis
             var res = db == null ? con.GetDatabase() : con.GetDatabase(db.Value);
 
             return res;
-        }
-
-        [System.Obsolete]
-        public static async Task ConsumeList(this IDatabase db, string key)
-        {
-            while (true)
-            {
-
-            }
         }
     }
 }

@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="RedLock.net" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.1" />
     <PackageReference Include="Polly" Version="7.2.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.0.601" />

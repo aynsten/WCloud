@@ -29,10 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="RedLock.net" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\WCloud.CommonService.Application\WCloud.CommonService.Application.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Logging\WCloud.Framework.Logging.csproj" />
     <ProjectReference Include="..\WCloud.Member.Application\WCloud.Member.Application.csproj" />

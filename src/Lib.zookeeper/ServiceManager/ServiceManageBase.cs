@@ -30,7 +30,7 @@ namespace Lib.zookeeper.ServiceManager
             if (!this._base_path.StartsWith("/") || this._base_path.EndsWith("/"))
                 throw new Exception("path必须以/开头，并且不能以/结尾");
 
-            this._base_path_level = this._base_path.SplitZookeeperPath().Count;
+            this._base_path_level = this._base_path.SplitZookeeperPath().Count();
             this._service_path_level = this._base_path_level + 1;
             this._endpoint_path_level = this._service_path_level + 1;
 
@@ -56,13 +56,13 @@ namespace Lib.zookeeper.ServiceManager
             func.ExecuteWithRetryAsync_(3, delay: i => TimeSpan.FromMilliseconds(100 * i));
 
         protected bool IsServiceRootLevel(string path) =>
-            path.SplitZookeeperPath().Count == this._base_path_level;
+            path.SplitZookeeperPath().Count() == this._base_path_level;
 
         protected bool IsServiceLevel(string path) =>
-            path.SplitZookeeperPath().Count == this._service_path_level;
+            path.SplitZookeeperPath().Count() == this._service_path_level;
 
         protected bool IsEndpointLevel(string path) =>
-            path.SplitZookeeperPath().Count == this._endpoint_path_level;
+            path.SplitZookeeperPath().Count() == this._endpoint_path_level;
 
         protected (string service_name, string endpoint_name) GetServiceAndEndpointNodeName(string path)
         {

@@ -1,12 +1,12 @@
-﻿using Lib.core;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Lib.core;
 using Lib.extension;
 using Lib.helper;
 using Lib.zookeeper.watcher;
 using Microsoft.Extensions.Logging;
 using org.apache.zookeeper;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Lib.zookeeper.ServiceManager
 {
@@ -173,7 +173,9 @@ namespace Lib.zookeeper.ServiceManager
             x.EndpointNodeName == data.endpoint_name);
 
             if (this.OnServiceChangedAsync != null)
+            {
                 await this.OnServiceChangedAsync.Invoke();
+            }
         }
 
         /// <summary>
@@ -186,7 +188,7 @@ namespace Lib.zookeeper.ServiceManager
             var event_type = e.get_Type();
             var path = e.getPath();
 
-            var path_level = path.SplitZookeeperPath().Count;
+            var path_level = path.SplitZookeeperPath().Count();
             if (path_level < this._base_path_level || path_level > this._endpoint_path_level)
             {
                 this.logger.AddWarningLog($"节点无法被处理{path}");

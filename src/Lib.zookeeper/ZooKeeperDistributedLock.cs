@@ -40,7 +40,7 @@ namespace Lib.zookeeper
             this.provider = provider;
             this.logger = this.provider.ResolveLogger<ZooKeeperDistributedLock>();
             this._client = client ?? throw new ArgumentNullException(nameof(client));
-            this._lock_path = base_path.SplitZookeeperPath().AddItem_(lock_name).AsZookeeperPath();
+            this._lock_path = base_path.SplitZookeeperPath().ToList().AddItem_(lock_name).AsZookeeperPath();
 
             this._watcher = new CallBackWatcher(this.WatcherCallback);
             this._timeout = timeout ?? TimeSpan.FromSeconds(60);
@@ -78,7 +78,7 @@ namespace Lib.zookeeper
 #if DEBUG
                 this.logger.LogInformation("setup watch" + DateTime.UtcNow.Ticks);
 #endif
-                var success = await this.Client.WatchNode_($"{this._lock_path}/{children[index - 1]}", this._watcher);
+                var success = await this.Client.ExistAsync_($"{this._lock_path}/{children[index - 1]}", this._watcher);
                 if (!success)
                 {
                     //watch失败，有可能前序节点被删除，重新尝试watch

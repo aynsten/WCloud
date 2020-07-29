@@ -24,7 +24,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Lib.redis\Lib.redis.csproj" />
     <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Database.Abstractions\WCloud.Framework.Database.Abstractions.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Logging\WCloud.Framework.Logging.csproj" />

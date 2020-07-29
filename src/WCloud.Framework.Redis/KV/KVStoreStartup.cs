@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Lib.helper;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace WCloud.Framework.Redis
+namespace WCloud.Framework.Redis.KV
 {
     public static class KVStoreStartup
     {

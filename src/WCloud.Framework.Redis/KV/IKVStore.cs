@@ -4,7 +4,7 @@ using Lib.redis;
 using System;
 using System.Threading.Tasks;
 
-namespace WCloud.Framework.Redis
+namespace WCloud.Framework.Redis.KV
 {
     /// <summary>
     /// kv存储，在数据允许丢失的情况下使用

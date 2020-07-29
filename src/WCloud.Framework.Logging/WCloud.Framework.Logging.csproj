@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
-    <ProjectReference Include="..\Lib.redis\Lib.redis.csproj" />
   </ItemGroup>
   
 </Project>

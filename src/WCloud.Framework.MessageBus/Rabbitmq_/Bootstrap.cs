@@ -1,9 +1,12 @@
-﻿using Lib.data;
+﻿using FluentAssertions;
+using Lib.data;
+using Lib.extension;
 using Lib.ioc;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using System;
 using System.Linq;
+using System.Reflection;
 using WCloud.Framework.MessageBus.Rabbitmq_.Providers;
 
 namespace WCloud.Framework.MessageBus.Rabbitmq_
@@ -59,6 +62,27 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
         }
 
         /// <summary>
+        /// 注册所有的消费
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="ass"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddRabbitmqConsumers(this IServiceCollection services, Assembly[] ass)
+        {
+            ass.Should().NotBeNullOrEmpty();
+
+            var consumers = ass.GetAllTypes().Where(x => x.IsNormalClass() && x.IsAssignableTo_<IRabbitMqConsumer>()).ToArray();
+
+            foreach (var c in consumers)
+            {
+                services.AddSingleton(c);
+                services.AddSingleton(typeof(IRabbitMqConsumer), c);
+            }
+
+            return services;
+        }
+
+        /// <summary>
         /// 找到依赖注入中的消费（单例），开启他们
         /// </summary>
         public static IServiceProvider StartConcume(this IServiceProvider provider)
@@ -75,6 +99,28 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
             {
                 consumers.ToList().ForEach(x => x.Dispose());
                 throw;
+            }
+
+            return provider;
+        }
+
+        public static IServiceProvider StopConcume(this IServiceProvider provider)
+        {
+            using var s = provider.CreateScope();
+            var logger = s.ServiceProvider.ResolveLogger<IRabbitMqConsumer>();
+
+            var consumers = provider.ResolveAll_<IRabbitMqConsumer>();
+
+            foreach (var m in consumers)
+            {
+                try
+                {
+                    m.Dispose();
+                }
+                catch (Exception e)
+                {
+                    logger.AddErrorLog(e.Message, e);
+                }
             }
 
             return provider;

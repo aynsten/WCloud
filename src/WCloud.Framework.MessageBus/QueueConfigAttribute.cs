@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentAssertions;
+using System;
 
 namespace WCloud.Framework.MessageBus
 {
@@ -9,15 +10,29 @@ namespace WCloud.Framework.MessageBus
 
         public string ExchangeType { get; set; } = "topic";
 
+        public string RoutingKey { get; set; }
+
+        /// <summary>
+        /// 自动删除
+        /// </summary>
         public bool AutoDelete { get; set; } = false;
 
+        /// <summary>
+        /// 排他，客户端断开就删除队列
+        /// </summary>
         public bool Exclusive { get; set; } = false;
 
+        /// <summary>
+        /// 持久化
+        /// </summary>
         public bool Durable { get; set; } = true;
+
+        public int? Concurrency { get; set; }
 
         public QueueConfigAttribute(string name)
         {
-            this.QueueName = name ?? throw new ArgumentNullException(nameof(QueueConfigAttribute));
+            name.Should().NotBeNullOrEmpty();
+            this.QueueName = name;
         }
     }
 }

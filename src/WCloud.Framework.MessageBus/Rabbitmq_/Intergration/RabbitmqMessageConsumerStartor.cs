@@ -11,6 +11,11 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Intergration
             this.provider = provider;
         }
 
+        public void Dispose()
+        {
+            this.provider.StopConcume();
+        }
+
         public void StartComsume()
         {
             this.provider.StartConcume();

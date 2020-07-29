@@ -11,29 +11,35 @@ using WCloud.Framework.MessageBus.Rabbitmq_.Providers;
 
 namespace WCloud.Framework.MessageBus.Rabbitmq_.Intergration
 {
-    internal class RabbitmqMessageConsumer<T> : RabbitMqConsumerBase<T> where T : class, IMessageBody
+    internal class RabbitmqMessageConsumer<MessageType> : RabbitMqConsumerBase<MessageType> where MessageType : class, IMessageBody
     {
         public RabbitmqMessageConsumer(IServiceProvider provider,
-            ILogger<RabbitmqMessageConsumer<T>> logger,
+            ILogger<RabbitmqMessageConsumer<MessageType>> logger,
             IConnection connection,
             ISerializeProvider _serializer) :
-            base(provider, logger, connection, _serializer, new ConsumeOptionFromAttribute<T>())
+            base(provider, logger, connection, _serializer, new ConsumeOptionFromAttribute<MessageType>(provider))
         {
+            var map = this.provider.ResolveMessageTypeMapping<MessageType>();
+
             //exchange
             this._channel.ExchangeDeclare(exchange: ConstConfig.ExchangeName, type: "topic", durable: true, autoDelete: false);
             //queue
             var queue_res = this._channel.QueueDeclare(this._option.QueueName, durable: true, exclusive: false, autoDelete: false);
             //route
             var args = new Dictionary<string, object>();
-            this._channel.RouteFromExchangeToQueue(ConstConfig.ExchangeName, queue_res.QueueName, routing_key: this._option.QueueName, args);
+            this._channel.RouteFromExchangeToQueue(
+                exchange: ConstConfig.ExchangeName,
+                queue: queue_res.QueueName,
+                routing_key: map.Config.GetRoutingKey(),
+                args: args);
         }
 
-        public override async Task<bool> OnMessageReceived(ConsumerMessage<T> message)
+        public override async Task OnMessageReceived(IMessageConsumeContext<MessageType> message)
         {
-            using var s = this.provider.CreateScope();
-            var consumers = s.ServiceProvider.ResolveConsumerOptional<T>();
+            var model = message.Message;
 
-            var model = message.MessageModel;
+            using var s = this.provider.CreateScope();
+            var consumers = s.ServiceProvider.ResolveConsumerOptional<MessageType>();
 
             foreach (var c in consumers)
             {
@@ -41,11 +47,9 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Intergration
                 this.logger.LogInformation($"消费：{model.ToJson()}");
 #endif
 
-                var data = new BasicMessageConsumeContext<T>(model);
+                var data = new BasicMessageConsumeContext<MessageType>(model);
                 await c.Consume(data);
             }
-
-            return true;
         }
     }
 }

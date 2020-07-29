@@ -6,6 +6,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Generic;
+using WCloud.Core.MessageBus;
 
 namespace WCloud.Framework.MessageBus.Rabbitmq_
 {
@@ -14,15 +15,6 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
         public Message MessageArgs { get; protected set; }
 
         public T MessageModel { get; protected set; }
-    }
-
-    public class ConsumerMessage<T> : MessageBase<T, BasicDeliverEventArgs>
-    {
-        public ConsumerMessage(ISerializeProvider _serializer, BasicDeliverEventArgs res)
-        {
-            this.MessageModel = _serializer.Deserialize<T>(res.Body.ToArray());
-            this.MessageArgs = res;
-        }
     }
 
     public class BasicGetMessage<T> : MessageBase<T, BasicGetResult>
@@ -189,13 +181,18 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
         public TimeSpan? ConfirmTimeout { get; set; } = TimeSpan.FromSeconds(3);
     }
 
-    public class ConsumeOptionFromAttribute<T> : ConsumeOption
+    public class ConsumeOptionFromAttribute<T> : ConsumeOption where T : class, IMessageBody
     {
-        public ConsumeOptionFromAttribute()
+        public ConsumeOptionFromAttribute(IServiceProvider provider)
         {
-            var config = typeof(T).__get_config__();
+            var config = provider.ResolveMessageTypeMapping<T>()?.Config;
+            config.Should().NotBeNull();
 
             this.QueueName = config.QueueName;
+            if (config.Concurrency != null && config.Concurrency.Value > 0)
+            {
+                this.ConcurrencySize = (ushort)config.Concurrency.Value;
+            }
         }
     }
 
@@ -239,11 +236,9 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
         {
             base.Valid();
 
-            if (this.BatchSize <= 0)
-                throw new ArgumentException(nameof(this.BatchSize));
+            this.BatchSize.Should().BeGreaterThan(0);
 
-            if (this.BatchTimeout != null && this.BatchTimeout.Seconds <= 0)
-                throw new ArgumentException(nameof(this.BatchTimeout));
+            (this.BatchTimeout != null && this.BatchTimeout.Seconds > 0).Should().BeTrue();
         }
     }
 

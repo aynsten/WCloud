@@ -4,6 +4,7 @@ using Lib.data;
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
@@ -14,7 +15,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
     /// <summary>
     /// 测试ok
     /// </summary>
-    public abstract class RabbitMqConsumerBase<T> : IRabbitMqConsumer
+    public abstract class RabbitMqConsumerBase<T> : IRabbitMqConsumer where T : class
     {
         protected readonly IServiceProvider provider;
         protected readonly ILogger logger;
@@ -56,28 +57,51 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
             this._consumer.Received += async (sender, args) =>
             {
                 using var s = this.provider.CreateScope();
+
+                var body = this.__deserialize__(args.Body.ToArray());
+                if (body == null)
+                {
+                    return;
+                }
+                var context = new BasicMessageConsumeContext<T>(body);
+                if (!this._option.AutoAck)
+                {
+                    context.AckHandler = async (success) =>
+                    {
+                        if (success)
+                            this._channel.BasicAck(args.DeliveryTag, multiple: true);
+                        else
+                            this._channel.BasicNack(args.DeliveryTag, multiple: true, requeue: true);
+                        await Task.CompletedTask;
+                    };
+                }
+
                 try
                 {
-                    var res = await this.OnMessageReceived(new ConsumerMessage<T>(this._serializer, args));
-                    if (!res)
-                    {
-                        throw new MsgException("未能消费");
-                    }
-                    if (!this._option.AutoAck)
-                    {
-                        this._channel.BasicAck(args.DeliveryTag, multiple: true);
-                    }
+                    await this.OnMessageReceived(context);
+                    await context.Ack(true);
                 }
                 catch (Exception e)
                 {
                     //log errors
                     this.logger.AddErrorLog($"rabbitmq消费发生异常:{e.Message}", e);
-                    if (!this._option.AutoAck)
-                    {
-                        this._channel.BasicNack(args.DeliveryTag, multiple: true, requeue: true);
-                    }
+                    await context.Ack(false);
                 }
             };
+        }
+
+        T __deserialize__(byte[] bs)
+        {
+            try
+            {
+                var res = Policy.Handle<Exception>().Retry(3).Execute(() => this._serializer.Deserialize<T>(bs));
+                return res;
+            }
+            catch (Exception e)
+            {
+                this.logger.AddErrorLog(e.Message, e);
+                return default;
+            }
         }
 
         public void StartConsume()
@@ -99,7 +123,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
                 consumer: this._consumer);
         }
 
-        public abstract Task<bool> OnMessageReceived(ConsumerMessage<T> message);
+        public abstract Task OnMessageReceived(IMessageConsumeContext<T> context);
 
         public void Dispose()
         {

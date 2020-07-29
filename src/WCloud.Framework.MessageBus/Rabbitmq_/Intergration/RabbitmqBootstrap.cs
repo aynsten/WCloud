@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
@@ -8,24 +6,21 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Intergration
 {
     public static class RabbitmqBootstrap
     {
-        internal static IServiceCollection AddRabbitmqMessageBus(this IServiceCollection services, Type[] consumer_types = null)
+        internal static IServiceCollection AddRabbitmqMessageBus(this IServiceCollection services)
         {
             services.AddScoped<IMessagePublisher, RabbitmqMessagePublisher>();
             services.AddSingleton<IConsumerStartor, RabbitmqMessageConsumerStartor>();
 
-            if (ValidateHelper.IsNotEmpty(consumer_types))
-            {
-                __reg_rabbitmq_consumers__(services, consumer_types);
-            }
+            __reg_rabbitmq_consumers__(services);
 
             return services;
         }
 
-        static void __reg_rabbitmq_consumers__(this IServiceCollection services, Type[] all_types)
+        static void __reg_rabbitmq_consumers__(this IServiceCollection services)
         {
-            all_types.Should().NotBeNull();
+            var mapping = services.ResolveConsumerMapping();
 
-            var message_types = all_types.Select(x => x.__get_message_type__()).ToArray();
+            var message_types = mapping.Select(x => x.MessageType).Distinct().ToArray();
 
             Type __build_redis_consumer__(Type message_type)
             {

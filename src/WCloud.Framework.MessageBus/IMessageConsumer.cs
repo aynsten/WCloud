@@ -14,21 +14,25 @@ namespace WCloud.Framework.MessageBus
     public class BasicMessageConsumeContext<T> : IMessageConsumeContext<T>
     {
         private readonly T _message;
-        private readonly Func<bool, Task> _ack_handler;
-        public BasicMessageConsumeContext(T message, Func<bool, Task> _ack_handler = null)
+        public Func<bool, Task> AckHandler { get; set; }
+        public BasicMessageConsumeContext(T message)
         {
             message.Should().NotBeNull();
             this._message = message;
-            this._ack_handler = _ack_handler;
         }
 
         public T Message => this._message;
 
+        private bool ack_handled = false;
         public async Task Ack(bool ack)
         {
-            if (this._ack_handler != null)
+            if (this.AckHandler != null)
             {
-                await this._ack_handler.Invoke(ack);
+                if (!this.ack_handled)
+                {
+                    await this.AckHandler.Invoke(ack);
+                    this.ack_handled = true;
+                }
             }
         }
     }

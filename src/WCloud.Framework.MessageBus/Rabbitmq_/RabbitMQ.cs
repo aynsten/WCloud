@@ -1,5 +1,6 @@
 ﻿namespace WCloud.Framework.MessageBus.Rabbitmq_
 {
+    [System.Obsolete]
     public class RabbitMQ
     {
         public string ServerAndPort { get; set; }

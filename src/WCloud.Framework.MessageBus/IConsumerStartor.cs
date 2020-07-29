@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WCloud.Framework.MessageBus
 {
-    public interface IConsumerStartor
+    /// <summary>
+    /// 开启或者关闭消息消费
+    /// </summary>
+    public interface IConsumerStartor : IDisposable
     {
         void StartComsume();
     }

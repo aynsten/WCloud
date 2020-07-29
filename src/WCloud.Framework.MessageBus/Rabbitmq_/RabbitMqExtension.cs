@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 using System;
+using System.Linq;
 
 namespace WCloud.Framework.MessageBus.Rabbitmq_
 {
@@ -40,6 +41,13 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
             rabbit.Password.Should().NotBeNullOrEmpty(nameof(rabbit.Password));
 
             return rabbit;
+        }
+
+        public static string GetRoutingKey(this QueueConfigAttribute config)
+        {
+            var res = new[] { config.RoutingKey, config.QueueName }.FirstOrDefault();
+            res.Should().NotBeNullOrEmpty();
+            return res;
         }
     }
 }

@@ -27,7 +27,7 @@ namespace WCloud.Framework.MessageBus.Redis_
         private readonly ISerializeProvider serializeProvider;
         private readonly ILogger<RedisConsumer<T>> logger;
 
-        private readonly string queue_key;
+        private readonly QueueConfigAttribute config;
 
         public RedisConsumer(IServiceProvider provider,
             IRedisDatabaseSelector redisDatabaseSelector,
@@ -40,7 +40,8 @@ namespace WCloud.Framework.MessageBus.Redis_
 
             this.redisDatabaseSelector = redisDatabaseSelector;
 
-            this.queue_key = typeof(T).FullName;
+            var map = provider.ResolveMessageTypeMapping<T>();
+            this.config = map.Config;
 
             this.cancellationToken = new CancellationTokenSource();
         }
@@ -48,14 +49,16 @@ namespace WCloud.Framework.MessageBus.Redis_
         public void StartConsume()
         {
             this.tasks.Should().BeNullOrEmpty("消费任务已经开启");
-            this.tasks = Com.Range(2).Select(x => Task.Run(this.Consume, this.cancellationToken.Token)).ToArray();
+            var concurrency = this.config.Concurrency ?? 1;
+            concurrency = Math.Max(concurrency, 1);
+            this.tasks = Com.Range(concurrency).Select(x => Task.Run(this.Consume, this.cancellationToken.Token)).ToArray();
         }
 
         Task __wait__() => Task.Delay(TimeSpan.FromMilliseconds(100));
 
         async Task __fetch_and_consume__()
         {
-            var bs = (byte[])await this.redisDatabaseSelector.Database.ListRightPopAsync(this.queue_key);
+            var bs = (byte[])await this.redisDatabaseSelector.Database.ListRightPopAsync(this.config.QueueName);
 
             var model = ValidateHelper.IsNotEmpty(bs) ?
                 this.serializeProvider.Deserialize<T>(bs) :

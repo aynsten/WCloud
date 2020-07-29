@@ -115,6 +115,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
             }
         }
 
+#if DEBUG
         [Obsolete]
         void TransactionTest()
         {
@@ -131,5 +132,6 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
                 _channel.TxRollback();
             }
         }
+#endif
     }
 }

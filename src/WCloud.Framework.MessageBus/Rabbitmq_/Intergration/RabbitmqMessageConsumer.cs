@@ -11,16 +11,19 @@ using WCloud.Framework.MessageBus.Rabbitmq_.Providers;
 
 namespace WCloud.Framework.MessageBus.Rabbitmq_.Intergration
 {
-    public class RabbitmqMessageConsumer<T> : RabbitMqConsumerBase<T> where T : class, IMessageBody
+    internal class RabbitmqMessageConsumer<T> : RabbitMqConsumerBase<T> where T : class, IMessageBody
     {
         public RabbitmqMessageConsumer(IServiceProvider provider,
             ILogger<RabbitmqMessageConsumer<T>> logger,
             IConnection connection,
             ISerializeProvider _serializer) :
-            base(provider, logger, connection, _serializer, new ConsumeOption<T>())
+            base(provider, logger, connection, _serializer, new ConsumeOptionFromAttribute<T>())
         {
+            //exchange
             this._channel.ExchangeDeclare(exchange: ConstConfig.ExchangeName, type: "topic", durable: true, autoDelete: false);
+            //queue
             var queue_res = this._channel.QueueDeclare(this._option.QueueName, durable: true, exclusive: false, autoDelete: false);
+            //route
             var args = new Dictionary<string, object>();
             this._channel.RouteFromExchangeToQueue(ConstConfig.ExchangeName, queue_res.QueueName, routing_key: this._option.QueueName, args);
         }

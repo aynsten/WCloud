@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WCloud.Framework.MessageBus.Config
+﻿namespace WCloud.Framework.MessageBus.Rabbitmq_
 {
     public class RabbitMQ
     {

@@ -1,4 +1,5 @@
-﻿using Lib.core;
+﻿using FluentAssertions;
+using Lib.core;
 using Lib.data;
 using Lib.helper;
 using RabbitMQ.Client;
@@ -188,11 +189,13 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
         public TimeSpan? ConfirmTimeout { get; set; } = TimeSpan.FromSeconds(3);
     }
 
-    public class ConsumeOption<T> : ConsumeOption
+    public class ConsumeOptionFromAttribute<T> : ConsumeOption
     {
-        public ConsumeOption()
+        public ConsumeOptionFromAttribute()
         {
-            this.QueueName = "message_bus_" + typeof(T).FullName.Replace('.', '_');
+            var config = typeof(T).__get_config__();
+
+            this.QueueName = config.QueueName;
         }
     }
 
@@ -220,8 +223,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
 
         public override void Valid()
         {
-            if (ValidateHelper.IsEmpty(this.QueueName))
-                throw new ArgumentNullException(nameof(this.QueueName));
+            this.QueueName.Should().NotBeNullOrEmpty();
         }
     }
 

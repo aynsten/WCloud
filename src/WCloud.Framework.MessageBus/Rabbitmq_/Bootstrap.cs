@@ -22,7 +22,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
         /// <summary>
         /// 使用消息队列
         /// </summary>
-        public static IServiceCollection UseRabbitMq(this IServiceCollection collection, RabbitMqOption configuration)
+        public static IServiceCollection AddRabbitMq(this IServiceCollection collection, RabbitMqOption configuration)
         {
             var factory = new ConnectionFactory
             {
@@ -32,7 +32,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
                 UserName = configuration.UserName,
                 Password = configuration.Password,
                 VirtualHost = configuration.VirtualHost,
-                NetworkRecoveryInterval = TimeSpan.FromSeconds(1)
+                NetworkRecoveryInterval = TimeSpan.FromSeconds(5)
             };
             if (configuration.SocketTimeout != null)
             {
@@ -63,7 +63,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
         /// </summary>
         public static IServiceProvider StartConcume(this IServiceProvider provider)
         {
-            var consumers = provider.ResolveAll_<IRabbitMqConsumer>().ToList();
+            var consumers = provider.ResolveAll_<IRabbitMqConsumer>();
             try
             {
                 foreach (var m in consumers)
@@ -73,7 +73,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
             }
             catch
             {
-                consumers.ForEach(x => x.Dispose());
+                consumers.ToList().ForEach(x => x.Dispose());
                 throw;
             }
 

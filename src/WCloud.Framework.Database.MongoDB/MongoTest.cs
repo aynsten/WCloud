@@ -19,6 +19,15 @@ namespace WCloud.Framework.Database.MongoDB
         {
             base.CreateModel(modelBuilder);
         }
+
+        void test()
+        {
+            var update = new UpdateDefinitionBuilder<xx>();
+            update.Inc(x => x.Id, 1);
+
+
+            this.xx.UpdateOne(x => true, null);
+        }
     }
 
     [DependsOn(typeof(AbpMongoDbModule))]

@@ -7,7 +7,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
 using WCloud.Core.MessageBus;
-using WCloud.Framework.MessageBus.Masstransit_;
+using WCloud.Framework.MessageBus.Rabbitmq_;
+using WCloud.Framework.MessageBus.Rabbitmq_.Intergration;
 using WCloud.Framework.MessageBus.Redis_;
 
 namespace WCloud.Framework.MessageBus
@@ -25,19 +26,32 @@ namespace WCloud.Framework.MessageBus
 
             consumer_ass ??= new Assembly[] { };
 
+            //找到所有消费
             var all_consumer_types = consumer_ass.FindMessageConsumers();
+            //注册消费
             services.AddMessageConsumers(all_consumer_types);
 
-            var use_redis_message_provider = true;
-            if (use_redis_message_provider)
+            var provider = config.GetMessageBusProvider();
+            if (provider == "redis")
             {
                 //使用redis
                 services.AddRedisMessageBus(config, consumer_types: all_consumer_types);
             }
+            else if (provider == "kafka")
+            {
+                throw new NotImplementedException();
+            }
             else
             {
-                //使用masstransit
-                services.AddMasstransitMessageBus(config, consumer_types: all_consumer_types);
+                //使用rabbitmq
+                var rabbit_config = config.GetRabbitmqOrThrow();
+                var option = new RabbitMqOption()
+                {
+                    HostName = rabbit_config.ServerAndPort,
+                    UserName = rabbit_config.User,
+                    Password = rabbit_config.Password
+                };
+                services.AddRabbitMq(option).AddRabbitmqMessageBus(consumer_types: all_consumer_types);
             }
 
             return services;

@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Lib.helper;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -9,7 +8,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Intergration
 {
     public static class RabbitmqBootstrap
     {
-        internal static IServiceCollection AddRedisMessageBus(this IServiceCollection services, IConfiguration config, Type[] consumer_types = null)
+        internal static IServiceCollection AddRabbitmqMessageBus(this IServiceCollection services, Type[] consumer_types = null)
         {
             services.AddScoped<IMessagePublisher, RabbitmqMessagePublisher>();
             services.AddSingleton<IConsumerStartor, RabbitmqMessageConsumerStartor>();

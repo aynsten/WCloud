@@ -31,6 +31,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
             provider.Should().NotBeNull();
             logger.Should().NotBeNull();
             connection.Should().NotBeNull();
+            connection.IsOpen.Should().BeTrue();
             _serializer.Should().NotBeNull();
             option.Should().NotBeNull();
 
@@ -59,7 +60,9 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
                 {
                     var res = await this.OnMessageReceived(new ConsumerMessage<T>(this._serializer, args));
                     if (!res)
+                    {
                         throw new MsgException("未能消费");
+                    }
                     if (!this._option.AutoAck)
                     {
                         this._channel.BasicAck(args.DeliveryTag, multiple: true);

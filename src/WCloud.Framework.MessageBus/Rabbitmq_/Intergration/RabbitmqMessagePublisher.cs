@@ -14,7 +14,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Intergration
 
         async Task IMessagePublisher.PublishAsync<T>(string key, T model, CancellationToken cancellationToken)
         {
-            var options = new ConsumeOption<T>();
+            var options = new ConsumeOptionFromAttribute<T>();
 
             this.rabbitMqProducer.SendMessage(exchange: ConstConfig.ExchangeName, routeKey: options.QueueName, model);
 

@@ -88,10 +88,6 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
             config.Should().NotBeNull();
 
             this.QueueName = config.QueueName;
-            if (config.ConcurrencySize != null && config.ConcurrencySize.Value > 0)
-            {
-                this.ConcurrencySize = (ushort)config.ConcurrencySize.Value;
-            }
         }
     }
 
@@ -137,6 +133,14 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
 
             (this.BatchTimeout != null && this.BatchTimeout.Seconds > 0).Should().BeTrue();
         }
+    }
+
+    [System.Obsolete]
+    public class RabbitMQ
+    {
+        public string ServerAndPort { get; set; }
+        public string User { get; set; }
+        public string Password { get; set; }
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Lib.extension;
+using WCloud.Core;
 using WCloud.Core.Authentication.Model;
 using WCloud.Core.MessageBus;
 using WCloud.Member.Shared;
@@ -7,6 +8,7 @@ using WCloud.MetroAd.Event;
 
 namespace WCloud.Admin.Message
 {
+    [QueueConfig(ConfigSet.MessageBus.Queue.MetroAd)]
     public class OperationLogMessage : OperationLogEntity, IMessageBody
     {
         public OperationLogMessage() { }

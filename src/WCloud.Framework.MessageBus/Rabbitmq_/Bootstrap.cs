@@ -48,7 +48,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
             }
 
             collection.AddDisposableSingleInstanceService(new RabbitConnectionWrapper(factory));
-            collection.AddSingleton(provider => provider.Resolve_<RabbitConnectionWrapper>().Connection);
+            collection.AddSingleton<IConnection>(provider => provider.Resolve_<RabbitConnectionWrapper>().Connection);
             //add default message producer
             collection.AddSingleton<IRabbitMqProducer>(provider =>
             {

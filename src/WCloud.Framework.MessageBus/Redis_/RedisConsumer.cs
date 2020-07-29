@@ -49,9 +49,7 @@ namespace WCloud.Framework.MessageBus.Redis_
         public void StartConsume()
         {
             this.tasks.Should().BeNullOrEmpty("消费任务已经开启");
-            var concurrency = this.config.ConcurrencySize ?? 1;
-            concurrency = Math.Max(concurrency, 1);
-            this.tasks = Com.Range(concurrency).Select(x => Task.Run(this.Consume, this.cancellationToken.Token)).ToArray();
+            this.tasks = Com.Range(1).Select(x => Task.Run(this.Consume, this.cancellationToken.Token)).ToArray();
         }
 
         Task __wait__() => Task.Delay(TimeSpan.FromMilliseconds(100));

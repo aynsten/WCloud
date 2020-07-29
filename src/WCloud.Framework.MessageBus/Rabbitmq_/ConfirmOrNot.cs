@@ -1,7 +1,7 @@
 ﻿using RabbitMQ.Client;
 using System;
 
-namespace WCloud.Framework.MessageBus.Rabbitmq_.Helper
+namespace WCloud.Framework.MessageBus.Rabbitmq_
 {
     /// <summary>
     /// 出scope自动确认消息，无法确认就抛错

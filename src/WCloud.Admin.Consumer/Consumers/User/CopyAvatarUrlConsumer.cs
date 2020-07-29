@@ -8,7 +8,6 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WCloud.CommonService.Application.FileUpload;
-using WCloud.Core;
 using WCloud.Core.Cache;
 using WCloud.Framework.MessageBus;
 using WCloud.Member.DataAccess.EF;
@@ -20,7 +19,6 @@ namespace WCloud.Admin.Consumer.Consumers
     /// <summary>
     /// 复制微信头像到自己服务器
     /// </summary>
-    [QueueConfig(ConfigSet.MessageBus.Queue.User)]
     public class CopyAvatarUrlConsumer : IMessageConsumer<CopyAvatarMessage>, Lib.core.IFinder
     {
         private readonly IServiceProvider provider;

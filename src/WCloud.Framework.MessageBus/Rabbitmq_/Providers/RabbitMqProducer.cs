@@ -5,7 +5,6 @@ using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WCloud.Framework.MessageBus.Rabbitmq_.Helper;
 
 namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
 {
@@ -92,7 +91,9 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
             }
         }
 
-        public void SendMessage<T>(string queue, T message, SendMessageOption option = null)
+
+#if DEBUG
+        void SendMessage<T>(string queue, T message, SendMessageOption option = null)
         {
             option ??= new SendMessageOption() { };
             using var _channel = this._connection.CreateModel();
@@ -114,8 +115,6 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
                 throw;
             }
         }
-
-#if DEBUG
         [Obsolete]
         void TransactionTest()
         {

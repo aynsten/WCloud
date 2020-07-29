@@ -5,7 +5,6 @@ using WCloud.Framework.MessageBus;
 
 namespace WCloud.Admin.Consumer.Consumers
 {
-    [QueueConfig("timer_test")]
     public class TimeConsumer : IMessageConsumer<TimeMessage>
     {
         private readonly ILogger logger;

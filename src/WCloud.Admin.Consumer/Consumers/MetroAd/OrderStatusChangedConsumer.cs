@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using WCloud.Core;
 using WCloud.Core.Cache;
 using WCloud.Framework.MessageBus;
 using WCloud.MetroAd;
@@ -17,7 +16,6 @@ using WCloud.MetroAd.Shared.Message;
 
 namespace WCloud.Admin.Consumer.Consumers
 {
-    [QueueConfig(ConfigSet.MessageBus.Queue.MetroAd)]
     public class OrderStatusChangedConsumer : IMessageConsumer<OrderStatusChangedMessage>, Lib.core.IFinder
     {
         private readonly IServiceProvider provider;

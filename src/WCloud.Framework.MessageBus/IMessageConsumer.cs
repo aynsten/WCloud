@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using WCloud.Core.MessageBus;
 
@@ -23,15 +24,14 @@ namespace WCloud.Framework.MessageBus
 
         public T Message => this._message;
 
-        private bool ack_handled = false;
+        int ack_handled = 0;
         public async Task Ack(bool ack)
         {
             if (this.AckHandler != null)
             {
-                if (!this.ack_handled)
+                if (Interlocked.Exchange(ref ack_handled, 1) == 0)
                 {
                     await this.AckHandler.Invoke(ack);
-                    this.ack_handled = true;
                 }
             }
         }

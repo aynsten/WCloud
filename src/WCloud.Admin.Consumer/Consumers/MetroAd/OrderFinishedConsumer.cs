@@ -3,13 +3,11 @@ using Lib.ioc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-using WCloud.Core;
 using WCloud.Framework.MessageBus;
 using WCloud.MetroAd.Shared.Message;
 
 namespace WCloud.Admin.MessageConsumers
 {
-    [QueueConfig(ConfigSet.MessageBus.Queue.MetroAd)]
     public class OrderFinishedConsumer : IMessageConsumer<OrderFinishedMessage>, Lib.core.IFinder
     {
         private readonly IServiceProvider provider;

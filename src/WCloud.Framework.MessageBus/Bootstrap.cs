@@ -15,6 +15,7 @@ using WCloud.Framework.MessageBus.Redis_;
 
 namespace WCloud.Framework.MessageBus
 {
+    [QueueConfig("timer_test")]
     public class TimeMessage : IMessageBody
     {
         public DateTime TimeUtc { get; set; }

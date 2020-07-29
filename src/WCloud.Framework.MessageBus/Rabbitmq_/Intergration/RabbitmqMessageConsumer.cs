@@ -26,9 +26,9 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Intergration
                 autoDelete: false);
             //queue
             var queue_res = this._channel.QueueDeclare(queue: this._option.QueueName,
-                durable: map.Config.Durable,
-                exclusive: map.Config.Exclusive,
-                autoDelete: map.Config.AutoDelete);
+                durable: map.Config.QueueDurable,
+                exclusive: map.Config.QueueExclusive,
+                autoDelete: map.Config.QueueAutoDelete);
             //route
             var args = new Dictionary<string, object>();
             this._channel.RouteFromExchangeToQueue(

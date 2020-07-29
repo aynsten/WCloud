@@ -30,15 +30,6 @@ namespace WCloud.Framework.MessageBus
             return all_types;
         }
 
-        public static Type __get_message_type__(this Type t)
-        {
-            var ins = t.GetInterfaces().Where(x => x.IsGenericType_(typeof(IMessageConsumer<>))).FirstOrDefault();
-            ins.Should().NotBeNull("not a consumer type");
-            var generic_type = ins.GetGenericArguments().FirstOrDefault();
-            generic_type.Should().NotBeNull("oops,consumer type should have a generic parameter");
-            return generic_type;
-        }
-
         public static IMessageConsumer<T>[] ResolveConsumerOptional<T>(this IServiceProvider provider) where T : class, IMessageBody
         {
             var res = provider.ResolveAll_<IMessageConsumer<T>>();

@@ -8,8 +8,6 @@ namespace WCloud.Framework.MessageBus
     {
         public string QueueName { get; private set; }
 
-        public string ExchangeType { get; set; } = "topic";
-
         public string RoutingKey { get; set; }
 
         /// <summary>
@@ -27,7 +25,7 @@ namespace WCloud.Framework.MessageBus
         /// </summary>
         public bool Durable { get; set; } = true;
 
-        public int? Concurrency { get; set; }
+        public int? ConcurrencySize { get; set; }
 
         public QueueConfigAttribute(string name)
         {

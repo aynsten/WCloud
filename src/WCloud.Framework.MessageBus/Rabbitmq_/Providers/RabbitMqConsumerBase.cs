@@ -25,23 +25,18 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
         protected readonly IModel _channel;
         protected readonly AsyncEventingBasicConsumer _consumer;
 
-        public RabbitMqConsumerBase(IServiceProvider provider,
-            ILogger logger, IConnection connection, ISerializeProvider _serializer,
-            ConsumeOption option)
+        public RabbitMqConsumerBase(IServiceProvider provider, ILogger logger, IConnection connection, ConsumeOption option)
         {
             provider.Should().NotBeNull();
             logger.Should().NotBeNull();
             connection.Should().NotBeNull();
-            connection.IsOpen.Should().BeTrue();
-            _serializer.Should().NotBeNull();
             option.Should().NotBeNull();
 
             this.provider = provider;
             this.logger = logger;
-            this._serializer = _serializer;
             this._option = option;
-            this._option.Valid();
 
+            this._serializer = provider.ResolveSerializer();
             this._channel = connection.CreateModel();
 
             //qos

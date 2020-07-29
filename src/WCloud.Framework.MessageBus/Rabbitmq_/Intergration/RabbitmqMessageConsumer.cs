@@ -1,5 +1,4 @@
-﻿using Lib.data;
-using Lib.extension;
+﻿using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
@@ -15,16 +14,21 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Intergration
     {
         public RabbitmqMessageConsumer(IServiceProvider provider,
             ILogger<RabbitmqMessageConsumer<MessageType>> logger,
-            IConnection connection,
-            ISerializeProvider _serializer) :
-            base(provider, logger, connection, _serializer, new ConsumeOptionFromAttribute<MessageType>(provider))
+            IConnection connection) :
+            base(provider, logger, connection, new ConsumeOptionFromAttribute<MessageType>(provider))
         {
             var map = this.provider.ResolveMessageTypeMapping<MessageType>();
 
             //exchange
-            this._channel.ExchangeDeclare(exchange: ConstConfig.ExchangeName, type: "topic", durable: true, autoDelete: false);
+            this._channel.ExchangeDeclare(exchange: ConstConfig.ExchangeName,
+                type: "topic",
+                durable: true,
+                autoDelete: false);
             //queue
-            var queue_res = this._channel.QueueDeclare(this._option.QueueName, durable: true, exclusive: false, autoDelete: false);
+            var queue_res = this._channel.QueueDeclare(queue: this._option.QueueName,
+                durable: map.Config.Durable,
+                exclusive: map.Config.Exclusive,
+                autoDelete: map.Config.AutoDelete);
             //route
             var args = new Dictionary<string, object>();
             this._channel.RouteFromExchangeToQueue(

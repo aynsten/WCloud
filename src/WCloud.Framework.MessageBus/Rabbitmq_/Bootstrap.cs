@@ -53,7 +53,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
             collection.AddSingleton<IRabbitMqProducer>(provider =>
             {
                 var con = provider.Resolve_<IConnection>();
-                var serializer = provider.Resolve_<ISerializeProvider>();
+                var serializer = provider.ResolveSerializer();
                 var res = new RabbitMqProducer(con, serializer);
                 return res;
             });

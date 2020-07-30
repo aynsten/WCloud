@@ -27,6 +27,7 @@
     <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Database.Abstractions\WCloud.Framework.Database.Abstractions.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Logging\WCloud.Framework.Logging.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Redis\WCloud.Framework.Redis.csproj" />
   </ItemGroup>
 
 </Project>

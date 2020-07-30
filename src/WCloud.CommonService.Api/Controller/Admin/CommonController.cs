@@ -10,6 +10,7 @@ using WCloud.CommonService.Application.FileUpload;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
 using WCloud.Framework.MVC.BaseController;
+using WCloud.Framework.Redis;
 using WCloud.Member.Authentication.ControllerExtensions;
 
 namespace WCloud.CommonService.Api.Controller
@@ -66,7 +67,7 @@ namespace WCloud.CommonService.Api.Controller
         }
 
         [HttpPost, ApiRoute]
-        public async Task<IActionResult> redis_test([FromServices] Lib.redis.RedisConnectionWrapper con)
+        public async Task<IActionResult> redis_test([FromServices] RedisConnectionWrapper con)
         {
             var db = con.Connection.GetDatabase((int)WCloud.Core.ConfigSet.Redis.KV存储);
 

@@ -1,5 +1,5 @@
-﻿using Lib.redis;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
+using WCloud.Framework.Redis;
 
 namespace WCloud.Framework.MessageBus.Redis_
 {

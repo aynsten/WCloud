@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Redis\WCloud.Framework.Redis.csproj" />
   </ItemGroup>
 
 </Project>

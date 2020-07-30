@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
@@ -60,10 +61,25 @@ namespace WCloud.IM.Server
                 config.UseLogProvider(new AspNetCoreLogProvider(provider.Resolve_<ILoggerFactory>()));
             });
             services.AddHangfireServer();
+            services.AddTransient<xx>();
 
 #if DEBUG
             services.AddRouting().AddMvc(option => option.AddExceptionHandler()).AddJsonProvider_();
 #endif
+        }
+
+        class xx
+        {
+            private readonly ILogger logger;
+            public xx(ILogger<xx> logger)
+            {
+                this.logger = logger;
+            }
+            public async Task Log()
+            {
+                this.logger.LogInformation($"{nameof(SignalModule)}启动成功");
+                await Task.CompletedTask;
+            }
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
@@ -92,6 +108,10 @@ namespace WCloud.IM.Server
             app.UseHangfireServer();
             app.UseHangfireDashboard();
             app.StartHangfireJobs_();
+            //创建一个测试定时任务
+            using var s = app.ApplicationServices.CreateScope();
+            var job_client = s.ServiceProvider.Resolve_<IBackgroundJobClient>();
+            job_client.Schedule<xx>(x => x.Log(), TimeSpan.FromSeconds(30));
 
 #if DEBUG
             app.UseRouting();

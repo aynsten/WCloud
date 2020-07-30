@@ -1,9 +1,7 @@
-﻿using CrystalQuartz.AspNetCore;
-using Hangfire;
+﻿using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System;
-using WCloud.Framework.Jobs.Quartz_;
 
 namespace WCloud.Framework.Jobs
 {
@@ -11,9 +9,6 @@ namespace WCloud.Framework.Jobs
     {
         public static IApplicationBuilder UseQuartzWebUI(this IApplicationBuilder app)
         {
-            var scheduler = app.ApplicationServices.QuartzScheduler();
-            //visit http://ip:port/quartz
-            app.UseCrystalQuartz(() => scheduler);
             app.Use(async (context, next) =>
             {
                 if (context.Request.Path.ToString().StartsWith("/quartz", StringComparison.CurrentCultureIgnoreCase))

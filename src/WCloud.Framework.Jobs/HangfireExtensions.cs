@@ -16,12 +16,6 @@ namespace WCloud.Framework.Jobs
 {
     public static class HangfireExtensions
     {
-        [Obsolete]
-        static void test()
-        {
-            RecurringJob.AddOrUpdate<IMyHangfireJob>(x => Task.CompletedTask, () => Cron.Hourly(1));
-        }
-
         static Type[] __jobs__(Assembly[] ass)
         {
             var tps = ass.GetAllTypes()
@@ -75,7 +69,7 @@ namespace WCloud.Framework.Jobs
             return services;
         }
 
-        static void __add_recurring_job__<T>(IServiceProvider provider) where T : IMyHangfireJob
+        static void __add_recurring_job__<T>(IRecurringJobManager manager) where T : IMyHangfireJob
         {
             var t = typeof(T);
             t.IsClass.Should().BeTrue();
@@ -86,22 +80,24 @@ namespace WCloud.Framework.Jobs
 
             var job_id = job_config.JobId ?? $"{t.Namespace}.{t.Name}";
 
-            RecurringJob.AddOrUpdate<T>(job_id, x => x.ExecuteAsync(), () => job_config.CronExpression);
+            manager.AddOrUpdate<T>(job_id, x => x.ExecuteAsync(), () => job_config.CronExpression);
         }
 
         public static IApplicationBuilder StartHangfireJobs_(this IApplicationBuilder builder)
         {
-            var reg_func = typeof(HangfireExtensions).GetMethods().FirstOrDefault(x => x.Name == nameof(__add_recurring_job__));
+            var ms = typeof(HangfireExtensions).GetMethods(BindingFlags.Static | BindingFlags.NonPublic);
+            var reg_func = ms.FirstOrDefault(x => x.Name == nameof(__add_recurring_job__));
             reg_func.Should().NotBeNull();
 
             using var s = builder.ApplicationServices.CreateScope();
 
             var jobs = s.ServiceProvider.Resolve_<JobsContainer>();
+            var job_manager = s.ServiceProvider.Resolve_<IRecurringJobManager>();
 
             foreach (var m in jobs)
             {
                 var f = reg_func.MakeGenericMethod(m);
-                f.Invoke(obj: null, parameters: new object[] { s.ServiceProvider });
+                f.Invoke(obj: null, parameters: new object[] { job_manager });
             }
 
             return builder;

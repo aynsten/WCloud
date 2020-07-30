@@ -1,7 +1,7 @@
-﻿using System;
-using Lib.extension;
+﻿using Lib.extension;
 using Lib.ioc;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace WCloud.Framework.MessageBus.Redis_
 {
@@ -14,9 +14,32 @@ namespace WCloud.Framework.MessageBus.Redis_
             this.provider = provider;
         }
 
+        public void Dispose()
+        {
+            using var s = this.provider.CreateScope();
+            var logger = s.ServiceProvider.ResolveLogger<RedisConsumerStartor>();
+
+            var consumers = s.ServiceProvider.ResolveAll_<IRedisConsumer>();
+
+            foreach (var m in consumers)
+            {
+                try
+                {
+                    m.Dispose();
+                }
+                catch (Exception e)
+                {
+                    logger.AddErrorLog("stop redis consumer", e);
+                }
+            }
+        }
+
         public void StartComsume()
         {
-            var consumers = this.provider.ResolveAll_<IRedisConsumer>();
+            using var s = this.provider.CreateScope();
+            var logger = s.ServiceProvider.ResolveLogger<RedisConsumerStartor>();
+
+            var consumers = s.ServiceProvider.ResolveAll_<IRedisConsumer>();
 
             foreach (var m in consumers)
             {
@@ -26,10 +49,9 @@ namespace WCloud.Framework.MessageBus.Redis_
                 }
                 catch (Exception e)
                 {
-                    this.provider.Resolve_<ILogger<RedisConsumerStartor>>().AddErrorLog("start redis consumer", e);
+                    logger.AddErrorLog("start redis consumer", e);
                 }
             }
-
         }
     }
 }

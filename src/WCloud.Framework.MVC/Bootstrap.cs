@@ -3,7 +3,6 @@ using Lib.data;
 using Lib.extension;
 using Lib.helper;
 using Lib.ioc;
-using Lib.redis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +26,8 @@ using WCloud.Core.Validator;
 using WCloud.Framework.Filters;
 using WCloud.Framework.Logging;
 using WCloud.Framework.Middleware;
+using WCloud.Framework.Redis;
+using WCloud.Framework.Redis.implement;
 using WCloud.Framework.Startup;
 
 namespace WCloud.Framework.MVC

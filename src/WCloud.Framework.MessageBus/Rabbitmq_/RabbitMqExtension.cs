@@ -1,5 +1,8 @@
-﻿using RabbitMQ.Client;
+﻿using FluentAssertions;
+using Microsoft.Extensions.Configuration;
+using RabbitMQ.Client;
 using System;
+using WCloud.Core.MessageBus;
 
 namespace WCloud.Framework.MessageBus.Rabbitmq_
 {
@@ -21,6 +24,30 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
                     return "x-delayed-message";
             }
             throw new NotSupportedException();
+        }
+
+        public static RabbitMQ GetRabbitmqOrThrow(this IConfiguration config)
+        {
+            var section = "rabbit";
+            var rabbit = new RabbitMQ()
+            {
+                ServerAndPort = config[$"{section}:server"],
+                User = config[$"{section}:user"],
+                Password = config[$"{section}:pass"]
+            };
+
+            rabbit.ServerAndPort.Should().NotBeNullOrEmpty(nameof(rabbit.ServerAndPort));
+            rabbit.User.Should().NotBeNullOrEmpty(nameof(rabbit.User));
+            rabbit.Password.Should().NotBeNullOrEmpty(nameof(rabbit.Password));
+
+            return rabbit;
+        }
+
+        public static string GetRoutingKey(this QueueConfigAttribute config)
+        {
+            var res = config.QueueName;
+            res.Should().NotBeNullOrEmpty();
+            return res;
         }
     }
 }

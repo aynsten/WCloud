@@ -32,7 +32,6 @@ namespace WCloud.Admin.Consumer.Consumers
     /// <summary>
     /// 发送实名认证短信
     /// </summary>
-    [QueueConfig(ConfigSet.MessageBus.Queue.User)]
     public class IdConfirmSmsConsumer : IMessageConsumer<UserPhoneBindSmsMessage>, Lib.core.IFinder
     {
         private readonly IServiceProvider provider;

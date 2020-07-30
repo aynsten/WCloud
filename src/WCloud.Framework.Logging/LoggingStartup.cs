@@ -4,12 +4,9 @@ using Lib.io;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
-using StackExchange.Redis;
 using System;
 using System.IO;
 using System.Linq;
-using WCloud.Core;
-using WCloud.Framework.Logging.elk;
 
 namespace WCloud.Framework.Logging
 {
@@ -50,26 +47,6 @@ namespace WCloud.Framework.Logging
                 }
             }
             return builder;
-        }
-
-        /// <summary>
-        /// logstash
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="config"></param>
-        /// <param name="con"></param>
-        [Obsolete("不用这个了，现在使用agent收集json log")]
-        public static void __add_logstash_redis_input__(this ILoggingBuilder builder, IConnectionMultiplexer con)
-        {
-            //elk
-            builder.AddElkRedisPipline(con, option =>
-            {
-                option.Database = (int)ConfigSet.Redis.消息队列;
-                option.Key = "logstash";
-                option.MinLevel = LogLevel.Warning;
-                option.MaxLevel = LogLevel.Critical;
-                return option;
-            });
         }
 
         /// <summary>

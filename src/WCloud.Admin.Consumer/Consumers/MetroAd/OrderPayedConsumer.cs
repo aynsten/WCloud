@@ -16,7 +16,6 @@ using WCloud.MetroAd.Shared.Message;
 
 namespace WCloud.Admin.Consumer.Consumers
 {
-    [QueueConfig(ConfigSet.MessageBus.Queue.MetroAd)]
     public class OrderPayedConsumer : IMessageConsumer<OrderPayedMessage>, Lib.core.IFinder
     {
         private readonly IServiceProvider provider;

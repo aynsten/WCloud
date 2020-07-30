@@ -1,4 +1,6 @@
 ﻿using FluentAssertions;
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using WCloud.Core.MessageBus;
 
@@ -7,11 +9,13 @@ namespace WCloud.Framework.MessageBus
     public interface IMessageConsumeContext<T>
     {
         T Message { get; }
+        Task Ack(bool ack);
     }
 
     public class BasicMessageConsumeContext<T> : IMessageConsumeContext<T>
     {
         private readonly T _message;
+        public Func<bool, Task> AckHandler { get; set; }
         public BasicMessageConsumeContext(T message)
         {
             message.Should().NotBeNull();
@@ -19,6 +23,18 @@ namespace WCloud.Framework.MessageBus
         }
 
         public T Message => this._message;
+
+        int ack_handled = 0;
+        public async Task Ack(bool ack)
+        {
+            if (this.AckHandler != null)
+            {
+                if (Interlocked.Exchange(ref ack_handled, 1) == 0)
+                {
+                    await this.AckHandler.Invoke(ack);
+                }
+            }
+        }
     }
 
     /// <summary>

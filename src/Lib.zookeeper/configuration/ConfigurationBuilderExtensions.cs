@@ -21,8 +21,6 @@ namespace Lib.zookeeper.configuration
                 option = config.Invoke(option);
             }
 
-            option.Valid();
-
             var zkConfigSource = new ZKConfigurationSource(option, client, cancellationToken);
 
             return builder.Add(zkConfigSource);

@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using WCloud.Core;
 using WCloud.Core.Cache;
 using WCloud.Framework.MessageBus;
 using WCloud.Member.DataAccess.EF;
@@ -16,7 +15,6 @@ using WCloud.Member.Shared.MessageBody;
 
 namespace WCloud.Admin.MessageConsumers
 {
-    [QueueConfig(ConfigSet.MessageBus.Queue.Admin)]
     public class RolePermissionChangedConsumer : IMessageConsumer<RolePermissionUpdatedMessage>, Lib.core.IFinder
     {
         private readonly IServiceProvider provider;

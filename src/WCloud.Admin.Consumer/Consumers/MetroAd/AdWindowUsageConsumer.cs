@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WCloud.Core;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.MessageBus;
 using WCloud.MetroAd;
@@ -19,7 +18,6 @@ namespace WCloud.Admin.Consumer.Consumers
     /// <summary>
     /// 广告位使用率统计数据准备
     /// </summary>
-    [QueueConfig(ConfigSet.MessageBus.Queue.MetroAd)]
     public class AdWindowUsageConsumer : IMessageConsumer<AdWindowUsageLogMessage>, Lib.core.IFinder
     {
         private readonly IServiceProvider provider;

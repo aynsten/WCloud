@@ -1,7 +1,4 @@
-﻿using FluentAssertions;
-using Lib.helper;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
@@ -9,25 +6,22 @@ namespace WCloud.Framework.MessageBus.Redis_
 {
     public static class RedisBootstrap
     {
-        internal static IServiceCollection AddRedisMessageBus(this IServiceCollection services, IConfiguration config, Type[] consumer_types = null)
+        internal static IServiceCollection AddRedisMessageBus(this IServiceCollection services)
         {
             services.AddScoped<IMessagePublisher, RedisMessagePublisher>();
             services.AddSingleton<IConsumerStartor, RedisConsumerStartor>();
             services.AddSingleton<IRedisDatabaseSelector, RedisDatabaseSelector>();
 
-            if (ValidateHelper.IsNotEmpty(consumer_types))
-            {
-                __reg_redis_consumers__(services, consumer_types);
-            }
+            __reg_redis_consumers__(services);
 
             return services;
         }
 
-        static void __reg_redis_consumers__(this IServiceCollection services, Type[] all_types)
+        static void __reg_redis_consumers__(this IServiceCollection services)
         {
-            all_types.Should().NotBeNull();
+            var mapping = services.ResolveConsumerMapping();
 
-            var message_types = all_types.Select(x => x.__get_message_type__()).ToArray();
+            var message_types = mapping.Select(x => x.MessageType).Distinct().ToArray();
 
             Type __build_redis_consumer__(Type message_type)
             {

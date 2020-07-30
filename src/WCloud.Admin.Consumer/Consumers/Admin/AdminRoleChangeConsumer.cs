@@ -2,7 +2,6 @@
 using Lib.ioc;
 using System;
 using System.Threading.Tasks;
-using WCloud.Core;
 using WCloud.Core.Cache;
 using WCloud.Framework.MessageBus;
 using WCloud.Member.Shared.MessageBody;
@@ -12,7 +11,6 @@ namespace WCloud.Admin.MessageConsumers
     /// <summary>
     /// 用户角色发生变更，用于清楚缓存
     /// </summary>
-    [QueueConfig(ConfigSet.MessageBus.Queue.Admin)]
     public class AdminRoleChangedConsumer : IMessageConsumer<UserRoleChangedMessage>, Lib.core.IFinder
     {
         private readonly IServiceProvider provider;

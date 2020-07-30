@@ -5,13 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="7.0.0" />
+    <PackageReference Include="Confluent.Kafka" Version="1.5.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lib.redis\Lib.redis.csproj" />
-    <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Redis\WCloud.Framework.Redis.csproj" />
   </ItemGroup>
 
 </Project>

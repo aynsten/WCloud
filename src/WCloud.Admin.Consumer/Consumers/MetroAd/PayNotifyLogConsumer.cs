@@ -4,7 +4,6 @@ using Lib.ioc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-using WCloud.Core;
 using WCloud.Framework.MessageBus;
 using WCloud.MetroAd;
 using WCloud.MetroAd.Message;
@@ -15,7 +14,6 @@ namespace WCloud.Admin.Consumer.Consumers
     /// <summary>
     /// 支付回调通知
     /// </summary>
-    [QueueConfig(ConfigSet.MessageBus.Queue.MetroAd)]
     public class PayNotifyLogConsumer : IMessageConsumer<PayNotifyLogMessage>, Lib.core.IFinder
     {
         private readonly IServiceProvider provider;

@@ -5,14 +5,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using WCloud.Admin.Message;
-using WCloud.Core;
 using WCloud.Framework.MessageBus;
 using WCloud.MetroAd;
 using WCloud.MetroAd.Event;
 
 namespace WCloud.Admin.MessageConsumers
 {
-    [QueueConfig(ConfigSet.MessageBus.Queue.MetroAd)]
     public class OperationLogConsumer : IMessageConsumer<OperationLogMessage>, Lib.core.IFinder
     {
         private readonly IServiceProvider provider;

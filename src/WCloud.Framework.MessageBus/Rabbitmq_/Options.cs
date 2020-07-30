@@ -1,38 +1,10 @@
-﻿using Lib.core;
-using Lib.data;
-using Lib.helper;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
+﻿using FluentAssertions;
 using System;
 using System.Collections.Generic;
+using WCloud.Core.MessageBus;
 
 namespace WCloud.Framework.MessageBus.Rabbitmq_
 {
-    public abstract class MessageBase<T, Message>
-    {
-        public Message MessageArgs { get; protected set; }
-
-        public T MessageModel { get; protected set; }
-    }
-
-    public class ConsumerMessage<T> : MessageBase<T, BasicDeliverEventArgs>
-    {
-        public ConsumerMessage(ISerializeProvider _serializer, BasicDeliverEventArgs res)
-        {
-            this.MessageModel = _serializer.Deserialize<T>(res.Body.ToArray());
-            this.MessageArgs = res;
-        }
-    }
-
-    public class BasicGetMessage<T> : MessageBase<T, BasicGetResult>
-    {
-        public BasicGetMessage(ISerializeProvider _serializer, BasicGetResult res)
-        {
-            this.MessageModel = _serializer.Deserialize<T>(res.Body.ToArray());
-            this.MessageArgs = res;
-        }
-    }
-
     /// <summary>
     /// exchange类型
     /// </summary>
@@ -67,54 +39,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
         delay = 5,
     }
 
-    /// <summary>
-    /// 优先级
-    /// </summary>
-    public enum MessagePriority : byte
-    {
-        /// <summary>
-        /// 优先级0
-        /// </summary>
-        None = 0,
-        /// <summary>
-        /// 优先级1
-        /// </summary>
-        Lowest = 1,
-        /// <summary>
-        /// 优先级2
-        /// </summary>
-        AboveLowest = 2,
-        /// <summary>
-        /// 优先级3
-        /// </summary>
-        Low = 3,
-        /// <summary>
-        /// 优先级4
-        /// </summary>
-        BelowNormal = 4,
-        /// <summary>
-        /// 优先级5
-        /// </summary>
-        Normal = 5,
-        /// <summary>
-        /// 优先级6
-        /// </summary>
-        AboveNormal = 6,
-        /// <summary>
-        /// 优先级7
-        /// </summary>
-        Hight = 7,
-        /// <summary>
-        /// 优先级8
-        /// </summary>
-        BelowHighest = 8,
-        /// <summary>
-        /// 优先级9
-        /// </summary>
-        Highest = 9
-    }
-
-    public class ExchangeOption : OptionBase
+    public class ExchangeOption
     {
         /// <summary>
         /// 持久化
@@ -132,7 +57,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
         public virtual IDictionary<string, object> Args { get; set; }
     }
 
-    public class QueueOption : OptionBase
+    public class QueueOption
     {
         /// <summary>
         /// 队列是否持久化
@@ -155,48 +80,18 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
         public virtual IDictionary<string, object> Args { get; set; }
     }
 
-    public class SendMessageOption : OptionBase
+    public class ConsumeOptionFromAttribute<T> : ConsumeOption where T : class, IMessageBody
     {
-        /// <summary>
-        /// 是否持久化
-        /// </summary>
-        public bool Persistent { get; set; } = true;
-
-        /// <summary>
-        /// 优先级
-        /// </summary>
-        public MessagePriority? Priority { get; set; }
-
-        /// <summary>
-        /// 消息延迟
-        /// </summary>
-        public TimeSpan? Delay { get; set; }
-
-        /// <summary>
-        /// 其他参数
-        /// </summary>
-        public IDictionary<string, object> Properties { get; set; }
-
-        /// <summary>
-        /// 是否使用事务，确认消息发送成功
-        /// </summary>
-        public bool Confirm { get; set; } = false;
-
-        /// <summary>
-        /// 消息确认超时时间
-        /// </summary>
-        public TimeSpan? ConfirmTimeout { get; set; } = TimeSpan.FromSeconds(3);
-    }
-
-    public class ConsumeOption<T> : ConsumeOption
-    {
-        public ConsumeOption()
+        public ConsumeOptionFromAttribute(IServiceProvider provider)
         {
-            this.QueueName = "message_bus_" + typeof(T).FullName.Replace('.', '_');
+            var config = provider.ResolveMessageTypeMapping<T>()?.Config;
+            config.Should().NotBeNull();
+
+            this.QueueName = config.QueueName;
         }
     }
 
-    public class ConsumeOption : OptionBase
+    public class ConsumeOption
     {
         /// <summary>
         /// 队列
@@ -218,10 +113,9 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
         /// </summary>
         public string ConsumerName { get; set; }
 
-        public override void Valid()
+        public virtual void Valid()
         {
-            if (ValidateHelper.IsEmpty(this.QueueName))
-                throw new ArgumentNullException(nameof(this.QueueName));
+            this.QueueName.Should().NotBeNullOrEmpty();
         }
     }
 
@@ -235,20 +129,24 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
 
         public override void Valid()
         {
-            base.Valid();
+            this.BatchSize.Should().BeGreaterThan(0);
 
-            if (this.BatchSize <= 0)
-                throw new ArgumentException(nameof(this.BatchSize));
-
-            if (this.BatchTimeout != null && this.BatchTimeout.Seconds <= 0)
-                throw new ArgumentException(nameof(this.BatchTimeout));
+            (this.BatchTimeout != null && this.BatchTimeout.Seconds > 0).Should().BeTrue();
         }
+    }
+
+    [System.Obsolete]
+    public class RabbitMQ
+    {
+        public string ServerAndPort { get; set; }
+        public string User { get; set; }
+        public string Password { get; set; }
     }
 
     /// <summary>
     /// rabitmq，配置
     /// </summary>
-    public class RabbitMqOption : OptionBase
+    public class RabbitMqOption
     {
         public string HostName { get; set; }
 
@@ -268,10 +166,9 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_
         /// </summary>
         public TimeSpan? SocketTimeout { get; set; }
 
-        public override void Valid()
+        public void Valid()
         {
-            if (ValidateHelper.IsEmpty(this.HostName))
-                throw new ArgumentNullException(nameof(this.HostName));
+            this.HostName.Should().NotBeNullOrEmpty(nameof(this.HostName));
         }
     }
 }

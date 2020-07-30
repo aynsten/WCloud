@@ -1,7 +1,4 @@
-﻿using Lib.ioc;
-using Microsoft.Extensions.Caching.Distributed;
-using System;
-using Lib.helper;
+﻿using Lib.helper;
 
 namespace Lib.cache
 {
@@ -22,12 +19,6 @@ namespace Lib.cache
         {
             data.Success = true;
             return data;
-        }
-
-        public static ICacheProvider ResolveDistributedCache_(this IServiceProvider provider)
-        {
-            var res = provider.Resolve_<ICacheProvider>();
-            return res;
         }
     }
 }

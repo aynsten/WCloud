@@ -7,7 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
     <ProjectReference Include="..\WCloud.Framework.MessageBus\WCloud.Framework.MessageBus.csproj" />
-    <ProjectReference Include="..\Lib.redis\Lib.redis.csproj" />
     <ProjectReference Include="..\Lib\Lib.csproj" />
   </ItemGroup>
 

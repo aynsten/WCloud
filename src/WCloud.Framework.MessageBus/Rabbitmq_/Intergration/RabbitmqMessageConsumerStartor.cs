@@ -1,7 +1,4 @@
-﻿using Lib.extension;
-using Lib.ioc;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 
 namespace WCloud.Framework.MessageBus.Rabbitmq_.Intergration
 {
@@ -14,21 +11,14 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Intergration
             this.provider = provider;
         }
 
+        public void Dispose()
+        {
+            this.provider.StopConcume();
+        }
+
         public void StartComsume()
         {
-            var consumers = this.provider.ResolveAll_<IRabbitMqConsumer>();
-
-            foreach (var m in consumers)
-            {
-                try
-                {
-                    m.StartConsume();
-                }
-                catch (Exception e)
-                {
-                    this.provider.Resolve_<ILogger<RabbitmqMessageConsumerStartor>>().AddErrorLog("start rabbitmq consumer", e);
-                }
-            }
+            this.provider.StartConcume();
         }
     }
 }

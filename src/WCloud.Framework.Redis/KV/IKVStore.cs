@@ -1,6 +1,5 @@
 ﻿using Lib.cache;
 using Lib.helper;
-using Lib.redis;
 using System;
 using System.Threading.Tasks;
 

@@ -1,7 +1,8 @@
 ﻿using Lib.extension;
 using System.Threading;
+using WCloud.Framework.Redis.implement;
 
-namespace Lib.redis
+namespace WCloud.Framework.Redis
 {
     class MQTest
     {

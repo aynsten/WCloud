@@ -1,11 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using Lib.distributed;
+﻿using Lib.distributed;
 using Lib.helper;
 using Polly;
 using StackExchange.Redis;
+using System;
+using System.Threading.Tasks;
+using WCloud.Framework.Redis.implement;
 
-namespace Lib.redis
+namespace WCloud.Framework.Redis.distributelock
 {
     /// <summary>
     /// Redis分布式锁

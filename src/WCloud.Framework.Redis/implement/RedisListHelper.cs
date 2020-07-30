@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Lib.threading;
 using StackExchange.Redis;
 
-namespace Lib.redis
+namespace WCloud.Framework.Redis.implement
 {
     /// <summary>
     /// list

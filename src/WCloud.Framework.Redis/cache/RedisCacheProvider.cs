@@ -1,34 +1,69 @@
+using FluentAssertions;
+using Lib.cache;
 using Lib.extension;
-using Lib.redis;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
+using System.Threading.Tasks;
+using WCloud.Framework.Redis.implement;
 
-namespace Lib.cache
+namespace WCloud.Framework.Redis.cache
 {
     /// <summary>
     /// ʹ��redis��Ϊ����
     /// </summary>
-    public class RedisCacheProvider_
+    public class RedisCacheProvider_ : ICacheProvider
     {
         private readonly RedisHelper _redis;
         private readonly IDatabase _db;
+        private readonly ILogger _logger;
 
-        public RedisCacheProvider_(RedisConnectionWrapper con, int db)
+        public ILogger Logger => this._logger;
+
+        public RedisCacheProvider_(RedisConnectionWrapper con, int db, ILogger<RedisCacheProvider_> logger)
         {
             this._redis = new RedisHelper(con.Connection, db);
             this._db = this._redis.Database;
+            this._logger = logger;
         }
 
         #region Methods
 
         /// <summary>
-        /// Gets or sets the value associated with the specified key.
+        /// Gets a value indicating whether the value associated with the specified key is cached
         /// </summary>
-        /// <typeparam name="T">Type</typeparam>
-        /// <param name="key">The key of the value to get.</param>
-        /// <returns>The value associated with the specified key.</returns>
-        public virtual CacheResult<T> Get<T>(string key)
+        /// <param name="key">key</param>
+        /// <returns>Result</returns>
+        public bool IsSet(string key)
         {
+            key.Should().NotBeNullOrEmpty();
+            var res = this._db.KeyExists(key);
+            return res;
+        }
+
+        public async Task<bool> IsSetAsync(string key)
+        {
+            key.Should().NotBeNullOrEmpty();
+            var res = await this._db.KeyExistsAsync(key);
+            return res;
+        }
+
+        public void Remove(string key)
+        {
+            key.Should().NotBeNullOrEmpty();
+            this._db.KeyDelete(key);
+        }
+
+        public async Task RemoveAsync(string key)
+        {
+            key.Should().NotBeNullOrEmpty();
+            await this._db.KeyDeleteAsync(key);
+        }
+
+        public CacheResult<T> Get_<T>(string key)
+        {
+            key.Should().NotBeNullOrEmpty();
+
             var rValue = this._db.StringGet(key);
             if (rValue.HasValue)
             {
@@ -42,83 +77,41 @@ namespace Lib.cache
             return new CacheResult<T>();
         }
 
-        /// <summary>
-        /// Adds the specified key and object to the cache.
-        /// </summary>
-        public virtual void Set(string key, object data, TimeSpan expire)
+        public void Set_<T>(string key, T data, TimeSpan expire)
         {
+            key.Should().NotBeNullOrEmpty();
+
             var res = new CacheResult<object>(data);
             var json = res.ToJson();
 
             this._db.StringSet(key, (string)json, expire);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the value associated with the specified key is cached
-        /// </summary>
-        /// <param name="key">key</param>
-        /// <returns>Result</returns>
-        public virtual bool IsSet(string key)
+        public async Task<CacheResult<T>> GetAsync_<T>(string key)
         {
-            var ret = this._db.KeyExists(key);
-            return ret;
-        }
+            key.Should().NotBeNullOrEmpty();
 
-        /// <summary>
-        /// Removes the value with the specified key from the cache
-        /// </summary>
-        /// <param name="key">/key</param>
-        public virtual void Remove(string key)
-        {
-            this._db.KeyDelete(key);
-        }
-
-        /// <summary>
-        /// Removes items by pattern
-        /// </summary>
-        /// <param name="pattern">pattern</param>
-        public virtual void RemoveByPattern(string pattern)
-        {
-            var _muxer = this._redis.Connection;
-            foreach (var ep in _muxer.GetEndPoints())
+            var rValue = await this._db.StringGetAsync(key);
+            if (rValue.HasValue)
             {
-                var server = _muxer.GetServer(ep);
-                var keys = server.Keys(pattern: "*" + pattern + "*");
-                foreach (var key in keys)
+                var res = ((string)rValue).JsonToEntity<CacheResult<T>>(throwIfException: false);
+                if (res != null)
                 {
-                    this._db.KeyDelete(key);
+                    return res;
                 }
             }
+
+            return new CacheResult<T>();
         }
 
-        /// <summary>
-        /// Clear all cache data
-        /// </summary>
-        public virtual void Clear()
+        public async Task SetAsync_<T>(string key, T data, TimeSpan expire)
         {
-            var _muxer = this._redis.Connection;
-            foreach (var ep in _muxer.GetEndPoints())
-            {
-                var server = _muxer.GetServer(ep);
-                //we can use the code belwo (commented)
-                //but it requires administration permission - ",allowAdmin=true"
-                //server.FlushDatabase();
+            key.Should().NotBeNullOrEmpty();
 
-                //that's why we simply interate through all elements now
-                var keys = server.Keys();
-                foreach (var key in keys)
-                {
-                    this._db.KeyDelete(key);
-                }
-            }
-        }
+            var res = new CacheResult<object>(data);
+            var json = res.ToJson();
 
-        /// <summary>
-        /// Dispose
-        /// </summary>
-        public virtual void Dispose()
-        {
-            //do nothing
+            await this._db.StringSetAsync(key, (string)json, expire);
         }
 
         #endregion

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using Lib.data;
-using Lib.redis;
+﻿using Lib.data;
 using StackExchange.Redis;
+using System;
+using System.Threading.Tasks;
 
-namespace Lib.redis
+namespace WCloud.Framework.Redis.implement
 {
     /// <summary>
     /// Redis操作

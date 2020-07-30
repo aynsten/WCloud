@@ -1,11 +1,10 @@
 ﻿using FluentAssertions;
 using Lib.extension;
-using Lib.redis;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
 
-namespace WCloud.Framework.Logging.elk
+namespace WCloud.Framework.Redis.elk
 {
     internal class ElkRedisLogger : ILogger
     {

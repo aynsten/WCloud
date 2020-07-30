@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lib.redis
+namespace WCloud.Framework.Redis.implement
 {
     /// <summary>
     /// sorted set

@@ -3,7 +3,7 @@ using Lib.ioc;
 using StackExchange.Redis;
 using System;
 
-namespace Lib.redis
+namespace WCloud.Framework.Redis
 {
     public interface IRedisConnection : IDisposable
     {

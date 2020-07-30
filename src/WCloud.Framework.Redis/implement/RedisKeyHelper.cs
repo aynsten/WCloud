@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lib.redis
+namespace WCloud.Framework.Redis.implement
 {
     /// <summary>
     /// key

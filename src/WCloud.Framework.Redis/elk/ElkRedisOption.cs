@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Logging;
 
-namespace WCloud.Framework.Logging.elk
+namespace WCloud.Framework.Redis.elk
 {
     public class ElkRedisOption
     {

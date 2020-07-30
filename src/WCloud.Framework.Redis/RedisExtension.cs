@@ -1,6 +1,6 @@
 ﻿using StackExchange.Redis;
 
-namespace Lib.redis
+namespace WCloud.Framework.Redis
 {
     public static class RedisExtension
     {

@@ -3,7 +3,7 @@ using StackExchange.Redis;
 using System;
 using System.Collections.Concurrent;
 
-namespace WCloud.Framework.Logging.elk
+namespace WCloud.Framework.Redis.elk
 {
     internal class ElkRedisProvider : ILoggerProvider
     {

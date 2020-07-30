@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Lib.redis
+namespace WCloud.Framework.Redis
 {
     public interface IRedisAll :
         IRedisString__,

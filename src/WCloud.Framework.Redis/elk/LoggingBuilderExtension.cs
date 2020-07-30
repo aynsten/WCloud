@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
 
-namespace WCloud.Framework.Logging.elk
+namespace WCloud.Framework.Redis.elk
 {
     public static class LoggingBuilderExtension
     {

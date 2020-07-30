@@ -4,8 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
+using WCloud.Framework.Redis.implement;
 
-namespace Lib.redis
+namespace WCloud.Framework.Redis
 {
     public static class RedisBootstrap
     {

@@ -11,6 +11,27 @@ namespace WCloud.Test
     [TestClass]
     public class linq_test
     {
+        class cat
+        {
+            public string name { get; set; }
+        }
+
+        [TestMethod]
+        public void xxddssrr()
+        {
+            var parameter = Expression.Parameter(typeof(cat), "x");
+            var member = Expression.Property(parameter, "name");
+            Expression body = Expression.Convert(member, typeof(object));
+
+            body = member;
+
+            var x = Expression.Lambda<Func<cat, object>>(body: body, parameters: new[] { parameter });
+
+            var d = x.ToString();
+
+            var res = x.Compile()(new cat() { name = "blue" });
+        }
+
         public static void AddOrUpdate<T>(Expression<Func<T, Task>> methodCall, Func<string> cronExpression, TimeZoneInfo timeZone = null, string queue = "default")
         {
             //

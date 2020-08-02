@@ -1,18 +1,16 @@
-﻿using Lib.extension;
-using Lib.helper;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Driver.GeoJsonObjectModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Lib.extension;
+using Lib.helper;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace WCloud.Framework.Database.MongoDB
 {
-    public class MongoRepository<T> : IMongoRepository<T>
-        where T : MongoEntityBase
+    public class MongoRepository<T> : IMongoRepository<T> where T : MongoEntityBase
     {
         private readonly IMongoClient _client;
         private readonly IMongoDatabase _db;
@@ -24,33 +22,8 @@ namespace WCloud.Framework.Database.MongoDB
         {
             this._client = wrapper.Client;
 
-            this._db = this._client.GetDatabase(wrapper.CollectionName);
+            this._db = this._client.GetDatabase(wrapper.DatabaseName);
             this._set = this._db.GetCollection<T>(typeof(T).GetTableName());
-        }
-
-        void test()
-        {
-            var set = this._set;
-
-            //map reduce
-            set.MapReduce<_>(
-                new BsonJavaScript("function(){emit(this.user_id,this.age);}"),
-                new BsonJavaScript("function(user_id,age){return Array.avg(age);}"),
-                new MapReduceOptions<T, _>() { });
-
-            //geo index
-            var index = Builders<T>.IndexKeys.Geo2D(x => x._id).Geo2DSphere(x => x._id);
-            set.Indexes.CreateOne(new CreateIndexModel<T>(index, new CreateIndexOptions()
-            {
-                Name = "p"
-            }));
-            set.Indexes.DropOne("p");
-            set.Indexes.DropAll();
-
-            //agg
-            var filter = Builders<T>.Filter.Where(x => x._id == null);
-            var group = Builders<T>.Projection.Exclude(x => x._id).Include(x => x._id);
-            var agg = set.Aggregate().Match(filter).Group(group).SortByCount(x => x.AsObjectId).ToList();
         }
 
         public List<T> QueryNearBy(Expression<Func<T, bool>> where, int page, int pagesize,
@@ -65,18 +38,6 @@ namespace WCloud.Framework.Database.MongoDB
             }
             var range = PagerHelper.GetQueryRange(page, pagesize);
             return this._set.Find(condition).QueryPage(page, pagesize).ToList();
-        }
-
-        void geo_example(Expression<Func<T, object>> field)
-        {
-            var condition = Builders<T>.Filter.Empty;
-            //附近
-            condition &= Builders<T>.Filter.Near(field, 32, 43, maxDistance: 323, minDistance: 4434);
-            //交集
-            condition &= Builders<T>.Filter.GeoIntersects(field,
-                new GeoJsonMultiPolygon<GeoJson2DCoordinates>(new GeoJsonMultiPolygonCoordinates<GeoJson2DCoordinates>(new List<GeoJsonPolygonCoordinates<GeoJson2DCoordinates>>() { })));
-            //范围内
-            condition &= Builders<T>.Filter.GeoWithin(field, new GeoJsonPolygon<GeoJson2DCoordinates>(null));
         }
 
         public int Add(T model)

@@ -1,6 +1,6 @@
 ﻿using WCloud.Member.Application.Service;
 using Lib.helper;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System;

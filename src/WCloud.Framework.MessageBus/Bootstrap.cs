@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using Lib.extension;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

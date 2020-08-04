@@ -1,5 +1,5 @@
 ﻿using Lib.data;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using System;
 

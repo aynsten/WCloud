@@ -1,4 +1,4 @@
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +14,7 @@ namespace WCloud.Test
     public class ef_test
     {
         [Table(nameof(UserTest))]
-        public class UserTest : BaseEntity
+        public class UserTest : EntityBase
         {
             public string Name { get; set; }
         }

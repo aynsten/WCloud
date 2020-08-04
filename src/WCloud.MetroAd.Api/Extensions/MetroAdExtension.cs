@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WCloud.Admin.Message;

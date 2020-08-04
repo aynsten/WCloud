@@ -10,7 +10,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
 {
     public static class MySQLExtension
     {
-        public static EntityTypeBuilder<T> ConfigBaseEntityForMySQL<T>(this EntityTypeBuilder<T> builder) where T : BaseEntity
+        public static EntityTypeBuilder<T> ConfigBaseEntityForMySQL<T>(this EntityTypeBuilder<T> builder) where T : EntityBase
         {
             //--
             builder.HasKey(x => x.Id);

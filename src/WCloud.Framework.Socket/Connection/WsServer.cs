@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;

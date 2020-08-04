@@ -1,5 +1,5 @@
 ﻿using Lib.helper;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

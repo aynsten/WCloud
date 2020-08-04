@@ -1,7 +1,7 @@
 ﻿using System;
 using Lib.data;
 using Lib.extension;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Lib.events
 {

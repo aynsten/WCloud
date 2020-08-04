@@ -2,7 +2,7 @@
 using Lib.cache;
 using Lib.core;
 using Lib.extension;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;

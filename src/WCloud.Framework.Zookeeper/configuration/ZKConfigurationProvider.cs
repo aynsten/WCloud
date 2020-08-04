@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Lib.data;
 using Lib.extension;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Lib.zookeeper.watcher;
 using Microsoft.Extensions.Configuration;
 using org.apache.zookeeper;

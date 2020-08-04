@@ -13,7 +13,7 @@ namespace WCloud.MetroAd.Metro
         public int Id { get; set; }
     }
 
-    public class AdWindowEntity : BaseEntity, IMetroAdTable
+    public class AdWindowEntity : EntityBase, IMetroAdTable
     {
         public string Name { get; set; }
 

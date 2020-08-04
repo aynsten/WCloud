@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
-namespace Lib.ioc
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// 依赖注入对象管理容器

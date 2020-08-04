@@ -10,7 +10,7 @@ namespace WCloud.Member.Domain.User
     ///用户的账户模型
     /// </summary>
     [Table("tb_user")]
-    public class UserEntity : BaseEntity, IMemberShipDBTable,
+    public class UserEntity : EntityBase, IMemberShipDBTable,
         ILogicalDeletion, IUpdateTime, ILoginEntity
     {
         /// <summary>

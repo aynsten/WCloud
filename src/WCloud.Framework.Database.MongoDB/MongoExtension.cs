@@ -58,6 +58,15 @@ namespace WCloud.Framework.Database.MongoDB
             }
         }
 
+        public static FilterDefinition<T> WhereIf<T>(this FilterDefinition<T> filter, bool condition, Expression<Func<T, bool>> where)
+        {
+            if (condition)
+            {
+                filter &= where;
+            }
+            return filter;
+        }
+
         public static IFindFluent<T, T> Take<T>(this IFindFluent<T, T> finder, int take)
         {
             var res = finder.Limit(take);

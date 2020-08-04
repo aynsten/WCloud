@@ -8,7 +8,7 @@ using Lib.data;
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lib.ioc
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class IocRegExtension
     {

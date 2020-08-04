@@ -11,7 +11,7 @@ namespace WCloud.Member.Domain.Tenant
     /// 组织/租户
     /// </summary>
     [Table("tb_org")]
-    public class OrgEntity : BaseEntity, IMemberShipDBTable, ILogicalDeletion, IUpdateTime
+    public class OrgEntity : EntityBase, IMemberShipDBTable, ILogicalDeletion, IUpdateTime
     {
         [Required]
         public virtual string OrgName { get; set; }

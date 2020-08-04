@@ -1,4 +1,4 @@
-﻿using Lib.ioc;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

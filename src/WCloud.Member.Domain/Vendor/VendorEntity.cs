@@ -4,7 +4,7 @@ using WCloud.Framework.Database.Abstractions.Entity;
 namespace WCloud.Member.Domain.Vendor
 {
     [Table("tb_vendor")]
-    public class VendorEntity : BaseEntity, IMemberShipDBTable
+    public class VendorEntity : EntityBase, IMemberShipDBTable
     {
         public string UserName { get; set; }
 

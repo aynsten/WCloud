@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Lib.elasticsearch
+namespace WCloud.Framework.Elasticsearch
 {
     public static class ESBootstrap
     {

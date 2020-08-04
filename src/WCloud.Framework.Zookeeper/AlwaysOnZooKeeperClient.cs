@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace Lib.zookeeper
+namespace WCloud.Framework.Zookeeper
 {
     public class AlwaysOnZooKeeperClient : ZooKeeperClient
     {

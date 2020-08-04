@@ -9,7 +9,7 @@ using ZXing.Common;
 using ZXing.QrCode;
 using ZXing.QrCode.Internal;
 
-namespace Lib.io
+namespace WCloud.Framework.IO
 {
     /// <summary>
     /// 生成二维码和条码

@@ -5,7 +5,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Lib.orleans
+namespace WCloud.Framework.Orleans_
 {
     public interface IHello : Orleans.IGrainWithIntegerKey
     {

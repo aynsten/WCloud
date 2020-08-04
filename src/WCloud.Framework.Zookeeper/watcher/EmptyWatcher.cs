@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lib.zookeeper.watcher
+namespace WCloud.Framework.Zookeeper.watcher
 {
     public class EmptyWatcher : Watcher
     {

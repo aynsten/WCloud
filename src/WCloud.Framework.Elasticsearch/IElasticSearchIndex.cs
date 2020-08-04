@@ -1,7 +1,7 @@
 ﻿using Nest;
 using Lib.data;
 
-namespace Lib.elasticsearch
+namespace WCloud.Framework.Elasticsearch
 {
     /// <summary>
     /// 标记为索引model

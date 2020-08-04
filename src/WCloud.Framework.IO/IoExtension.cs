@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace Lib.io
+namespace WCloud.Framework.IO
 {
     public static class IoExtension
     {

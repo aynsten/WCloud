@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Lib.elasticsearch
+namespace WCloud.Framework.Elasticsearch
 {
     public static class IndexExtension
     {

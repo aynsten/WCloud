@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using Lib.core;
 using Lib.extension;
 using Lib.threading;
-using Lib.zookeeper.watcher;
 using Microsoft.Extensions.Logging;
 using org.apache.zookeeper;
+using WCloud.Framework.Zookeeper.watcher;
 
-namespace Lib.zookeeper
+namespace WCloud.Framework.Zookeeper
 {
     /// <summary>
     /// 资料：邮箱搜索“zookeeper资料”

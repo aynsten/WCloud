@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using org.apache.zookeeper;
 
-namespace Lib.zookeeper.watcher
+namespace WCloud.Framework.Zookeeper.watcher
 {
     public abstract class WatcherBase : Watcher
     {

@@ -8,7 +8,7 @@ using Lib.helper;
 using org.apache.zookeeper;
 using static org.apache.zookeeper.ZooDefs;
 
-namespace Lib.zookeeper
+namespace WCloud.Framework.Zookeeper
 {
     /// <summary>
     /// 删除部分无用扩展

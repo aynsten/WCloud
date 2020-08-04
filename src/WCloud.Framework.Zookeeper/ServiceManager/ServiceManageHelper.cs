@@ -1,7 +1,7 @@
 ﻿using Lib.extension;
 using System;
 
-namespace Lib.zookeeper.ServiceManager
+namespace WCloud.Framework.Zookeeper.ServiceManager
 {
     public static class ServiceManageHelper
     {

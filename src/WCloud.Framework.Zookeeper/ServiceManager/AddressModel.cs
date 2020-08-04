@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lib.zookeeper.ServiceManager
+namespace WCloud.Framework.Zookeeper.ServiceManager
 {
     /// <summary>
     /// 写到zk中的json实体

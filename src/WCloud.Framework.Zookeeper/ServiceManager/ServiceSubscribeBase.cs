@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace Lib.zookeeper.ServiceManager
+namespace WCloud.Framework.Zookeeper.ServiceManager
 {
     public abstract class ServiceSubscribeBase : ServiceManageBase
     {

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Lib.distributed;
 using Lib.extension;
 using Lib.helper;
-using Lib.zookeeper.watcher;
 using Microsoft.Extensions.Logging;
 using org.apache.zookeeper;
+using WCloud.Framework.Zookeeper.watcher;
 
-namespace Lib.zookeeper
+namespace WCloud.Framework.Zookeeper
 {
     /// <summary>
     /// 有一个极端环境为解决

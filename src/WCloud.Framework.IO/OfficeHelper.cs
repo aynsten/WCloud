@@ -1,5 +1,6 @@
 ﻿using Lib.extension;
 using Lib.helper;
+using Lib.io;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
@@ -8,7 +9,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 
-namespace Lib.io
+namespace WCloud.Framework.IO
 {
     /// <summary>
     ///Excel 的摘要说明

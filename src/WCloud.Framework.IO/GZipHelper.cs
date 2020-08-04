@@ -4,7 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-namespace Lib.io
+namespace WCloud.Framework.IO
 {
     public static class GZipHelper
     {

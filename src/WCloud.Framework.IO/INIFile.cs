@@ -3,10 +3,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.IO;
 
-namespace Lib.io
+namespace WCloud.Framework.IO
 {
     /// <summary>
-    /// INI文件读写类。
+    /// INI????????????
     /// </summary>
 	public class INIFile
     {
@@ -15,9 +15,9 @@ namespace Lib.io
         public INIFile(string INIPath)
         {
             this.path = INIPath;
-            if (!File.Exists(this.path ?? throw new Exception("文件地址不能为空")))
+            if (!File.Exists(this.path ?? throw new Exception("????????????????")))
             {
-                throw new Exception($"文件{this.path}不存在");
+                throw new Exception($"????{this.path}??????");
             }
         }
 
@@ -33,7 +33,7 @@ namespace Lib.io
 
 
         /// <summary>
-        /// 写INI文件
+        /// ??INI????
         /// </summary>
         public void IniWriteValue(string Section, string Key, string Value)
         {
@@ -41,7 +41,7 @@ namespace Lib.io
         }
 
         /// <summary>
-        /// 读取INI文件
+        /// ????INI????
         /// </summary>
         public string IniReadValue(string Section, string Key)
         {
@@ -60,7 +60,7 @@ namespace Lib.io
 
 
         /// <summary>
-        /// 删除ini文件下所有段落
+        /// ????ini??????????????
         /// </summary>
         public void ClearAllSection()
         {
@@ -68,7 +68,7 @@ namespace Lib.io
         }
 
         /// <summary>
-        /// 删除ini文件下personal段落下的所有键
+        /// ????ini??????personal??????????????
         /// </summary>
         public void ClearSection(string Section)
         {

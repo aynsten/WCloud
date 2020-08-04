@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Lib.zookeeper.ServiceManager
+namespace WCloud.Framework.Zookeeper.ServiceManager
 {
     /// <summary>
     /// /QPL/WCF/ORDER/m-1

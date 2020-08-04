@@ -4,7 +4,7 @@
 using System.Threading;
 using Microsoft.Extensions.Configuration;
 
-namespace Lib.zookeeper.configuration
+namespace WCloud.Framework.Zookeeper.configuration
 {
     public sealed class ZKConfigurationSource : IConfigurationSource
     {

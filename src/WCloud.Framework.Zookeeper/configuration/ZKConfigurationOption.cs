@@ -1,4 +1,5 @@
-﻿namespace Lib.zookeeper.configuration
+﻿
+namespace WCloud.Framework.Zookeeper.configuration
 {
     public class ZKConfigurationOption
     {

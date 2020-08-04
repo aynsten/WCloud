@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Lib.elasticsearch
+namespace WCloud.Framework.Elasticsearch
 {
     public class ResponseException : BaseException
     {

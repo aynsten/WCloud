@@ -8,7 +8,7 @@ using Lib.extension;
 using Lib.helper;
 using Nest;
 
-namespace Lib.elasticsearch
+namespace WCloud.Framework.Elasticsearch
 {
     public static class UpdateExtension
     {

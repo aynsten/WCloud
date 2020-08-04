@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Lib.zookeeper.watcher
+namespace WCloud.Framework.Zookeeper.watcher
 {
     public class ConnectionStatusWatcher : Watcher
     {

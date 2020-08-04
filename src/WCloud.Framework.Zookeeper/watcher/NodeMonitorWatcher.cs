@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using org.apache.zookeeper;
 
-namespace Lib.zookeeper.watcher
+namespace WCloud.Framework.Zookeeper.watcher
 {
     public class NodeMonitorWatcher : WatcherBase
     {

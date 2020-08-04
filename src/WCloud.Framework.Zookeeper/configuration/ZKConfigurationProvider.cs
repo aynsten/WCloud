@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Lib.data;
 using Lib.extension;
-using Microsoft.Extensions.DependencyInjection;
-using Lib.zookeeper.watcher;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using org.apache.zookeeper;
+using WCloud.Framework.Zookeeper.watcher;
 
-namespace Lib.zookeeper.configuration
+namespace WCloud.Framework.Zookeeper.configuration
 {
     internal sealed class ZKConfigurationProvider : ConfigurationProvider, IConfigurationProvider
     {

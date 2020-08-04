@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Lib.io
+namespace WCloud.Framework.IO
 {
     /// <summary>压缩解压缩</summary>
     public class ZipHelper

@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using Lib.core;
 using Lib.extension;
 using Lib.helper;
-using Lib.zookeeper.watcher;
 using Microsoft.Extensions.Logging;
 using org.apache.zookeeper;
+using WCloud.Framework.Zookeeper.watcher;
 
-namespace Lib.zookeeper.ServiceManager
+namespace WCloud.Framework.Zookeeper.ServiceManager
 {
     /// <summary>
     /// 应该作为静态类

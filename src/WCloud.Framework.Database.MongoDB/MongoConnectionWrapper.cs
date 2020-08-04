@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Microsoft.Extensions.DependencyInjection;
+using Lib.ioc;
 using MongoDB.Driver;
 
 namespace WCloud.Framework.Database.MongoDB

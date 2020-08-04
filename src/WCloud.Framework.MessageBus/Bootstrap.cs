@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.extension;
+using Lib.ioc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using WCloud.Core.MessageBus;
-using WCloud.Framework.MessageBus.Memory;
 using WCloud.Framework.MessageBus.Rabbitmq_;
 using WCloud.Framework.MessageBus.Rabbitmq_.Intergration;
 using WCloud.Framework.MessageBus.Redis_;
@@ -44,10 +44,6 @@ namespace WCloud.Framework.MessageBus
             {
                 //使用redis
                 services.AddRedisMessageBus();
-            }
-            else if (provider == "memory")
-            {
-                services.AddMemoryMeesageBus();
             }
             else if (provider == "kafka")
             {

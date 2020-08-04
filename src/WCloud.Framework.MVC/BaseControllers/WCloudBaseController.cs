@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Lib.ioc;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;

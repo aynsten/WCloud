@@ -11,7 +11,7 @@ namespace WCloud.Member.Domain.Admin
     }
 
     [Table("tb_admin")]
-    public class AdminEntity : EntityBase, IMemberShipDBTable, ILogicalDeletion, IUpdateTime, ILoginEntity
+    public class AdminEntity : BaseEntity, IMemberShipDBTable, ILogicalDeletion, IUpdateTime, ILoginEntity
     {
         /// <summary>
         /// 用于登陆，唯一标志

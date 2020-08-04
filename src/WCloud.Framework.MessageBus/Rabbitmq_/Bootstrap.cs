@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Lib.data;
 using Lib.extension;
-using Microsoft.Extensions.DependencyInjection;
+using Lib.ioc;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using System;

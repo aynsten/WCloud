@@ -1,5 +1,5 @@
 ﻿using WCloud.Core.Apm;
-using Microsoft.Extensions.DependencyInjection;
+using Lib.ioc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

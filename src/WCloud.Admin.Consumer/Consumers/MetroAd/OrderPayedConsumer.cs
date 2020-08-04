@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using Lib.extension;
-using Microsoft.Extensions.DependencyInjection;
+using Lib.ioc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;

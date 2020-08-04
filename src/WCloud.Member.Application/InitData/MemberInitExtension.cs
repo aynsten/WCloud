@@ -1,6 +1,6 @@
 ﻿using Bogus;
 using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
+using Lib.ioc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;

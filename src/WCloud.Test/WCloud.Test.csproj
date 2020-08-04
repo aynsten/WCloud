@@ -17,6 +17,7 @@
     <ProjectReference Include="..\WCloud.Admin\WCloud.Admin.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Database.EntityFrameworkCore\WCloud.Framework.Database.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\WCloud.Identity\WCloud.Identity.csproj" />
+    <ProjectReference Include="..\Lib.zookeeper\Lib.zookeeper.csproj" />
   </ItemGroup>
 
 </Project>

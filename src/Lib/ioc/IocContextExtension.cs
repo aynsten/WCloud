@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Lib.ioc
 {
     public static class IocContextExtension
     {

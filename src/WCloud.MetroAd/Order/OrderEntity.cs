@@ -10,9 +10,9 @@ using WCloud.Member.Domain.User;
 
 namespace WCloud.MetroAd.Order
 {
-    public class OrderEntityDto : DtoBase { }
+    public class OrderEntityDto : BaseDto { }
 
-    public class OrderEntity : EntityBase, ILogicalDeletion, IMetroAdTable
+    public class OrderEntity : BaseEntity, ILogicalDeletion, IMetroAdTable
     {
         /// <summary>
         /// 订单号

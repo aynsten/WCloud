@@ -1,8 +1,7 @@
-﻿using Lib.data;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Lib.data;
 
 namespace WCloud.Framework.Database.Abstractions
 {
@@ -16,12 +15,12 @@ namespace WCloud.Framework.Database.Abstractions
         /// <summary>
         /// 添加多个model
         /// </summary>
-        int Add(T model);
+        int Insert(T model);
 
         /// <summary>
         /// 异步添加
         /// </summary>
-        Task<int> AddAsync(T model);
+        Task<int> InsertAsync(T model);
         #endregion
 
         #region 删除
@@ -64,83 +63,44 @@ namespace WCloud.Framework.Database.Abstractions
         #endregion
 
         #region 查询
-        /// <summary>
-        /// 获取list
-        /// expression和func的使用注意点，参见lib的readme
-        /// </summary>
-        /// <param name="where">where条件</param>
-        /// <param name="orderby">排序条件</param>
-        /// <param name="start">开始位置</param>
-        /// <param name="count">读取条数</param>
-        /// <param name="Desc">正序反序</param>
-        /// <returns></returns>
-        List<T> QueryList<OrderByColumnType>(
-            Expression<Func<T, bool>> where,
-            Expression<Func<T, OrderByColumnType>> orderby = null,
-            bool Desc = true,
-            int? start = null,
-            int? count = null);
-
-        /// <summary>
-        /// 异步查询
-        /// </summary>
-        /// <typeparam name="OrderByColumnType"></typeparam>
-        /// <param name="where"></param>
-        /// <param name="orderby"></param>
-        /// <param name="desc"></param>
-        /// <param name="start"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        Task<List<T>> QueryListAsync<OrderByColumnType>(
-            Expression<Func<T, bool>> where,
-            Expression<Func<T, OrderByColumnType>> orderby = null,
-            bool desc = true,
-            int? start = null,
-            int? count = null);
 
         /// <summary>
         /// 获取list
         /// </summary>
-        /// <param name="where"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        List<T> GetList(Expression<Func<T, bool>> where, int? count = null);
+        T[] QueryMany<OrderByColumn>(Expression<Func<T, bool>> where,
+            int? count = null, int? skip = null,
+            Expression<Func<T, OrderByColumn>> order_by = null, bool desc = true);
 
         /// <summary>
         /// 异步获取list
         /// </summary>
-        /// <param name="where"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        Task<List<T>> GetListAsync(Expression<Func<T, bool>> where, int? count = null);
+        Task<T[]> QueryManyAsync<OrderByColumn>(Expression<Func<T, bool>> where,
+            int? count = null, int? skip = null,
+            Expression<Func<T, OrderByColumn>> order_by = null, bool desc = true);
 
         /// <summary>
         /// 查询第一个
         /// </summary>
-        /// <param name="where"></param>
-        /// <returns></returns>
-        T GetFirst(Expression<Func<T, bool>> where);
+        T QueryOne(Expression<Func<T, bool>> where);
 
         /// <summary>
         /// 异步获取第一个
         /// </summary>
-        /// <param name="where"></param>
-        /// <returns></returns>
-        Task<T> GetFirstAsync(Expression<Func<T, bool>> where);
+        Task<T> QueryOneAsync(Expression<Func<T, bool>> where);
 
         /// <summary>
         /// 查询记录数（判断记录是否存在请使用Exist方法，效率更高）
         /// </summary>
         /// <param name="where"></param>
         /// <returns></returns>
-        int GetCount(Expression<Func<T, bool>> where);
+        int QueryCount(Expression<Func<T, bool>> where);
 
         /// <summary>
         /// 异步获取count
         /// </summary>
         /// <param name="where"></param>
         /// <returns></returns>
-        Task<int> GetCountAsync(Expression<Func<T, bool>> where);
+        Task<int> QueryCountAsync(Expression<Func<T, bool>> where);
 
         /// <summary>
         /// 查询是否存在 

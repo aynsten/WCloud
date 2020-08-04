@@ -11,7 +11,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="DbContextType"></typeparam>
     public class WCloudEFRepository<T, DbContextType> : EFRepository<T, DbContextType>
-        where T : BaseEntity
+        where T : EntityBase
         where DbContextType : DbContext
     {
         public WCloudEFRepository(IServiceProvider provider) : base(provider) { }

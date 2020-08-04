@@ -1,7 +1,7 @@
 ﻿using Hangfire;
 using Hangfire.AspNetCore;
 using Hangfire.MemoryStorage;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.WebSockets;

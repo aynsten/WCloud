@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WCloud.Framework.Database.EntityFrameworkCore.Service;
@@ -17,7 +18,7 @@ namespace WCloud.MetroAd.Metro
         {
             line_uid.Should().NotBeNullOrEmpty();
 
-            var res = await this._repo.GetListAsync(x => x.MetroLineUID == line_uid, count: 5000);
+            var res = await this._repo.QueryManyAsync(x => x.MetroLineUID == line_uid, count: 5000);
 
             return res;
         }

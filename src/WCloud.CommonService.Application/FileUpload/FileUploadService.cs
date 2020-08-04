@@ -110,7 +110,7 @@ namespace WCloud.CommonService.Application.FileUpload
 
             var model = this.__map__(file_name, bs, catalog);
             //如果之前有人上传过就直接返回
-            var previous_uploaded = await this._uploadRepo.GetFirstAsNoTrackAsync(x =>
+            var previous_uploaded = await this._uploadRepo.QueryOneAsNoTrackAsync(x =>
             x.FileHash == model.FileHash &&
             x.Catalog == model.Catalog &&
             x.StorageProvider == model.StorageProvider);
@@ -132,7 +132,7 @@ namespace WCloud.CommonService.Application.FileUpload
             await this.__upload_to_qiniu__(model, bs);
             //保存到数据库
             model.InitSelf();
-            await this._uploadRepo.AddAsync(model);
+            await this._uploadRepo.InsertAsync(model);
 
             return res.SetSuccessData(model);
         }

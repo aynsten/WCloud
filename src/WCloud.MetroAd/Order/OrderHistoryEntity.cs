@@ -5,7 +5,7 @@ using WCloud.Framework.Database.EntityFrameworkCore;
 
 namespace WCloud.MetroAd.Order
 {
-    public class OrderHistoryEntity : BaseEntity, IMetroAdTable
+    public class OrderHistoryEntity : EntityBase, IMetroAdTable
     {
         public OrderHistoryEntity() { }
 

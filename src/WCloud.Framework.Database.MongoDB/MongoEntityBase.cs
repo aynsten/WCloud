@@ -1,6 +1,6 @@
-﻿using Lib.data;
+﻿using System;
+using Lib.data;
 using MongoDB.Bson;
-using System;
 
 namespace WCloud.Framework.Database.MongoDB
 {
@@ -8,5 +8,9 @@ namespace WCloud.Framework.Database.MongoDB
     public abstract class MongoEntityBase : IDBTable
     {
         public virtual ObjectId _id { get; set; }
+
+        public virtual string UID { get; set; }
+
+        public virtual DateTime CreateTimeUtc { get; set; }
     }
 }

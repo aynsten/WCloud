@@ -1,12 +1,12 @@
-﻿using Lib.data;
-using Lib.extension;
-using Lib.helper;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Lib.data;
+using Lib.extension;
+using Lib.helper;
+using Microsoft.EntityFrameworkCore;
 using WCloud.Core.Authentication.Model;
 using WCloud.Framework.Database.Abstractions.Entity;
 
@@ -27,7 +27,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
     }
 
     public abstract class OrgRepository<T, DbContextType> : WCloudEFRepository<T, DbContextType>, IOrgRepository__<T>
-        where T : BaseEntity, IDBTable, IOrgRow
+        where T : EntityBase, IDBTable, IOrgRow
         where DbContextType : DbContext
     {
         public string OrgUID { get; private set; }
@@ -77,25 +77,25 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
             return res;
         }
 
-        public override int Add(T model)
+        public override int Insert(T model)
         {
             var res = this.__AddBulk__(this.Database, new[] { model }, context => context.SaveChanges());
             return res;
         }
 
-        public override async Task<int> AddAsync(T model)
+        public override async Task<int> InsertAsync(T model)
         {
             var res = this.__AddBulk__(this.Database, new[] { model }, context => context.SaveChangesAsync());
             return await res;
         }
 
-        public override int AddBulk(IEnumerable<T> models)
+        public override int InsertBulk(IEnumerable<T> models)
         {
             var res = __AddBulk__(this.Database, models, context => context.SaveChanges());
             return res;
         }
 
-        public override async Task<int> AddBulkAsync(IEnumerable<T> models)
+        public override async Task<int> InsertBulkAsync(IEnumerable<T> models)
         {
             var res = __AddBulk__(this.Database, models, context => context.SaveChangesAsync());
             return await res;
@@ -107,50 +107,6 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
         /// <param name="query"></param>
         /// <returns></returns>
         IQueryable<T> __Query__(IQueryable<T> query) => query.Where(x => x.OrgUID == this.OrgUID);
-
-        public override List<T> QueryList<OrderByColumnType>(Expression<Func<T, bool>> where, Expression<Func<T, OrderByColumnType>> orderby = null, bool Desc = true, int? start = null, int? count = null)
-        {
-            var query = this.__Query__(this.NoTrackingQueryable);
-            query = query.WhereIfNotNull(where);
-
-            if (orderby != null)
-            {
-                query = query.OrderBy_(orderby, Desc);
-            }
-            if (start != null)
-            {
-                if (orderby == null)
-                    throw new ArgumentException("使用skip前必须先排序");
-                query = query.Skip(start.Value);
-            }
-            if (count != null)
-            {
-                query = query.Take(count.Value);
-            }
-            return query.ToList();
-        }
-
-        public override async Task<List<T>> QueryListAsync<OrderByColumnType>(Expression<Func<T, bool>> where, Expression<Func<T, OrderByColumnType>> orderby = null, bool Desc = true, int? start = null, int? count = null)
-        {
-            var query = this.__Query__(this.NoTrackingQueryable);
-            query = query.WhereIfNotNull(where);
-
-            if (orderby != null)
-            {
-                query = query.OrderBy_(orderby, Desc);
-            }
-            if (start != null)
-            {
-                if (orderby == null)
-                    throw new ArgumentException("使用skip前必须先排序");
-                query = query.Skip(start.Value);
-            }
-            if (count != null)
-            {
-                query = query.Take(count.Value);
-            }
-            return await query.ToListAsync();
-        }
 
         public override bool Exist(Expression<Func<T, bool>> where)
         {
@@ -166,14 +122,14 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
             return await query.AnyAsync();
         }
 
-        public override int GetCount(Expression<Func<T, bool>> where)
+        public override int QueryCount(Expression<Func<T, bool>> where)
         {
             var query = this.__Query__(this.NoTrackingQueryable);
             query = query.WhereIfNotNull(where);
             return query.Count();
         }
 
-        public override async Task<int> GetCountAsync(Expression<Func<T, bool>> where)
+        public override async Task<int> QueryCountAsync(Expression<Func<T, bool>> where)
         {
             var query = this.__Query__(this.NoTrackingQueryable);
             query = query.WhereIfNotNull(where);
@@ -190,28 +146,28 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
             throw new NotSupportedException(nameof(GetByKeysAsync));
         }
 
-        public override T GetFirst(Expression<Func<T, bool>> where)
+        public override T QueryOne(Expression<Func<T, bool>> where)
         {
             var query = this.__Query__(this.TrakingQueryable);
             query = query.WhereIfNotNull(where);
             return query.FirstOrDefault();
         }
 
-        public override async Task<T> GetFirstAsync(Expression<Func<T, bool>> where)
+        public override async Task<T> QueryOneAsync(Expression<Func<T, bool>> where)
         {
             var query = this.__Query__(this.TrakingQueryable);
             query = query.WhereIfNotNull(where);
             return await query.FirstOrDefaultAsync();
         }
 
-        public override T GetFirstAsNoTrack(Expression<Func<T, bool>> where)
+        public override T QueryOneAsNoTrack(Expression<Func<T, bool>> where)
         {
             var query = this.__Query__(this.NoTrackingQueryable);
             query = query.WhereIfNotNull(where);
             return query.FirstOrDefault();
         }
 
-        public override async Task<T> GetFirstAsNoTrackAsync(Expression<Func<T, bool>> where)
+        public override async Task<T> QueryOneAsNoTrackAsync(Expression<Func<T, bool>> where)
         {
             var query = this.__Query__(this.NoTrackingQueryable);
             query = query.WhereIfNotNull(where);

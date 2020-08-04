@@ -8,7 +8,7 @@ using Volo.Abp.Localization;
 
 namespace WCloud.Member.Application.Service.impl
 {
-    [Lib.ioc.NotRegIoc]
+    [Microsoft.Extensions.DependencyInjection.NotRegIoc]
     public class AbpPermissionService : IPermissionService
     {
         private readonly IPermissionDefinitionManager permissionService;

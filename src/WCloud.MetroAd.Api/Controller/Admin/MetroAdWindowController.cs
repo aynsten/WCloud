@@ -2,7 +2,7 @@
 using Lib.cache;
 using Lib.core;
 using Lib.extension;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -73,7 +73,7 @@ namespace WCloud.MetroAd.Api.Controller
             model.ImageListJson = this.stringArraySerializer.Serialize(model.ImageList);
 
             var repo = this.HttpContext.RequestServices.Resolve_<IMetroAdRepository<MetroStationEntity>>();
-            var station = await repo.GetFirstAsNoTrackAsync(x => x.UID == model.MetroStationUID);
+            var station = await repo.QueryOneAsNoTrackAsync(x => x.UID == model.MetroStationUID);
 
             if (station == null)
                 throw new MsgException("线路不存在");

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -14,13 +15,39 @@ using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.MongoDB
 {
-    public class Mongoxx<T> where T:MongoEntityBase
+    public class Mongoxx<T> where T : MongoEntityBase
     {
         private readonly IMongoClient _client;
         private readonly IMongoDatabase _db;
         private readonly IMongoCollection<T> _set;
 
         public IQueryable<T> Queryable => this._set.AsQueryable();
+
+        class counter_entity : MongoEntityBase
+        {
+            public string Category { get; set; }
+            public int MaxId { get; set; }
+        }
+
+        /// <summary>
+        /// 自增id
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
+        async Task<int> counter(string category)
+        {
+            IMongoCollection<counter_entity> collection = null;
+
+            var builder = new UpdateDefinitionBuilder<counter_entity>();
+            var update = builder.Inc(x => x.MaxId, 1);
+            var entity = await collection.FindOneAndUpdateAsync(x => x.Category == category, update);
+            if (entity == null)
+            {
+                entity = new counter_entity() { Category = category, MaxId = 1 };
+                await collection.InsertOneAsync(entity);
+            }
+            return entity.MaxId;
+        }
 
         void test()
         {
@@ -59,7 +86,7 @@ namespace WCloud.Framework.Database.MongoDB
             condition &= Builders<T>.Filter.GeoWithin(field, new GeoJsonPolygon<GeoJson2DCoordinates>(null));
         }
     }
-    public class xx : BaseEntity { }
+    public class xx : EntityBase { }
 
     [ConnectionStringName("xx")]
     public class MongoDbContextTest : AbpMongoDbContext
@@ -93,7 +120,7 @@ namespace WCloud.Framework.Database.MongoDB
         }
     }
 
-    class MongoRepo<T> : MongoDbRepository<MongoDbContextTest, T> where T : BaseEntity
+    class MongoRepo<T> : MongoDbRepository<MongoDbContextTest, T> where T : EntityBase
     {
         public MongoRepo(IMongoDbContextProvider<MongoDbContextTest> dbContextProvider) : base(dbContextProvider)
         {

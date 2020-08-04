@@ -1,4 +1,4 @@
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +14,7 @@ namespace WCloud.Test
     public class ef_test
     {
         [Table(nameof(UserTest))]
-        public class UserTest : BaseEntity
+        public class UserTest : EntityBase
         {
             public string Name { get; set; }
         }
@@ -84,12 +84,12 @@ namespace WCloud.Test
 
             using (var user_repo = provider.Resolve_<IEFRepository<UserTest>>())
             {
-                user_repo.Add(new UserTest() { Name = "xx" });
-                user_repo.Add(new UserTest() { Name = "xx" });
-                user_repo.Add(new UserTest() { Name = "xx" });
-                user_repo.Add(new UserTest() { Name = "xx" });
+                user_repo.Insert(new UserTest() { Name = "xx" });
+                user_repo.Insert(new UserTest() { Name = "xx" });
+                user_repo.Insert(new UserTest() { Name = "xx" });
+                user_repo.Insert(new UserTest() { Name = "xx" });
 
-                var m = user_repo.GetFirst(x => x.Name == "xx");
+                var m = user_repo.QueryOne(x => x.Name == "xx");
                 m.Name += "-dd";
                 var effected = user_repo.Update(m);
                 Assert.IsTrue(effected > 0);

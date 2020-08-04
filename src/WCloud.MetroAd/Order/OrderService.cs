@@ -3,7 +3,7 @@ using FluentAssertions;
 using Lib.core;
 using Lib.extension;
 using Lib.helper;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -57,7 +57,7 @@ namespace WCloud.MetroAd.Order
 
         public async Task<OrderEntity> GetOrderByNo(string order_no)
         {
-            var res = await this._repo.GetFirstAsNoTrackAsync(x => x.OrderNo == order_no);
+            var res = await this._repo.QueryOneAsNoTrackAsync(x => x.OrderNo == order_no);
             return res;
         }
 
@@ -683,7 +683,7 @@ where OrderNo=@order_no and Status=@where_status
             if (list.Any())
             {
                 var uids = list.Select(x => x.UserUID).Distinct().ToArray();
-                var data = await this._userRepo.GetListAsync(x => uids.Contains(x.UID));
+                var data = await this._userRepo.QueryManyAsync(x => uids.Contains(x.UID));
 
                 var phones = await this._userRepo.Database.Set<UserPhoneEntity>().AsNoTracking()
                     .Where(x => uids.Contains(x.UserUID)).ToArrayAsync();

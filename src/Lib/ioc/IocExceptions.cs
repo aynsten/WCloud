@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Lib.ioc
+namespace Microsoft.Extensions.DependencyInjection
 {
     public class NotRegException : Exception
     {

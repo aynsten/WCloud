@@ -15,7 +15,7 @@ namespace WCloud.Framework.Database.Abstractions.Entity
             return res;
         }
 
-        public static DateTime CreateTimeBeijingTimezone(this BaseEntity model)
+        public static DateTime CreateTimeBeijingTimezone(this EntityBase model)
         {
             var res = model.CreateTimeUtc.AddHours(BeijingTimezoneOffset);
             return res;

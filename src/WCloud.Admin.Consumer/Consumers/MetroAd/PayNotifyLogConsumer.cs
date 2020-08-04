@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using Lib.extension;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
@@ -30,7 +30,7 @@ namespace WCloud.Admin.Consumer.Consumers
 
                 var service = provider.Resolve_<IMetroAdRepository<PaymentNotificationEntity>>();
 
-                await service.AddAsync(context.Message);
+                await service.InsertAsync(context.Message);
             }
             catch (Exception e)
             {

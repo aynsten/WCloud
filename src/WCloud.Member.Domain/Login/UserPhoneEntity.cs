@@ -4,7 +4,7 @@ using WCloud.Framework.Database.Abstractions.Entity;
 namespace WCloud.Member.Domain.Login
 {
     [Table("tb_user_phone")]
-    public class UserPhoneEntity : BaseEntity, IMemberShipDBTable
+    public class UserPhoneEntity : EntityBase, IMemberShipDBTable
     {
         public string UserUID { get; set; }
 

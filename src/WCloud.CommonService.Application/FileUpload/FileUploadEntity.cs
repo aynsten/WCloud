@@ -15,7 +15,7 @@ namespace WCloud.CommonService.Application.FileUpload
     }
 
     [Table("tb_file_upload")]
-    public class FileUploadEntity : BaseEntity, ICommonServiceEntity
+    public class FileUploadEntity : EntityBase, ICommonServiceEntity
     {
         public string Url { get; set; } = string.Empty;
 

@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using Lib.helper;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,7 +15,7 @@ using WCloud.Framework.Database.EntityFrameworkCore.Repository;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore.Service
 {
-    public abstract class BasicService<T> : IBasicService<T> where T : BaseEntity
+    public abstract class BasicService<T> : IBasicService<T> where T : EntityBase
     {
         protected readonly _<string> SUCCESS = new _<string>().SetSuccessData(string.Empty);
 
@@ -47,7 +47,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
 
             await this.CheckBeforeInsert(model);
 
-            await this._repo.AddAsync(model);
+            await this._repo.InsertAsync(model);
         }
 
         public virtual async Task Delete(params string[] uids)
@@ -61,9 +61,9 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
         {
             count.Should().BeInRange(1, 5000);
 
-            var res = await this._repo.QueryListAsync(
+            var res = await this._repo.QueryManyAsync(
                 where: x => x.Id >= 0,
-                orderby: orderby,
+                order_by: orderby,
                 desc: desc,
                 count: count);
 
@@ -74,7 +74,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
         {
             count.Should().BeInRange(1, 5000);
 
-            var res = await this._repo.GetListAsync(x => x.Id >= 0, count: count);
+            var res = await this._repo.QueryManyAsync(x => x.Id >= 0, count: count);
             return res;
         }
 
@@ -121,7 +121,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
             data.Should().NotBeNull();
             data.UID.Should().NotBeNullOrEmpty();
 
-            var model = await this._repo.GetFirstAsync(x => x.UID == data.UID);
+            var model = await this._repo.QueryOneAsync(x => x.UID == data.UID);
             model.Should().NotBeNull();
 
             var update_fields = this.UpdateField(data);
@@ -141,7 +141,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
         {
             uid.Should().NotBeNullOrEmpty();
 
-            var res = await this._repo.GetFirstAsNoTrackAsync(x => x.UID == uid);
+            var res = await this._repo.QueryOneAsNoTrackAsync(x => x.UID == uid);
 
             return res;
         }

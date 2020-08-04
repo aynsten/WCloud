@@ -2,7 +2,7 @@
 
 namespace WCloud.Framework.Database.Abstractions.Entity
 {
-    public abstract class TimeEntityBase : BaseEntity
+    public abstract class TimeEntityBase : EntityBase
     {
         public virtual int TimeYear { get; set; }
 

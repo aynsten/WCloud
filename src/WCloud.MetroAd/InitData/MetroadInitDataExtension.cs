@@ -1,4 +1,4 @@
-﻿using Lib.ioc;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -18,7 +18,7 @@ namespace WCloud.MetroAd.InitData
                 {
                     var data = new string[] { "视频", "文字", "声音", "图文", "图片", "其他" }
                     .Select(x => new MediaTypeEntity() { Name = x }.InitSelf()).ToArray();
-                    repo.AddBulk(data);
+                    repo.InsertBulk(data);
                 }
             }
             return app;
@@ -33,13 +33,13 @@ namespace WCloud.MetroAd.InitData
                 {
                     var data = new string[] { "一号线", "二号线", "三号线", "四号线", "五号线", "六号线" }
                     .Select(x => new MetroLineEntity() { Name = x }.InitSelf()).ToArray();
-                    repo.AddBulk(data);
+                    repo.InsertBulk(data);
 
                     var station_repo = s.ServiceProvider.Resolve_<IMetroAdRepository<MetroStationEntity>>();
                     var metro_line_uid = data.FirstOrDefault().UID;
                     var stations = new string[] { "莘庄", "外环路", "莲花路", "锦江乐园", "上海南站" }
                     .Select(x => new MetroStationEntity() { Name = x, MetroLineUID = metro_line_uid }.InitSelf()).ToArray();
-                    station_repo.AddBulk(stations);
+                    station_repo.InsertBulk(stations);
 
                     var ad_window_repo = s.ServiceProvider.Resolve_<IMetroAdRepository<AdWindowEntity>>();
                     var station_uid = stations.FirstOrDefault().UID;
@@ -51,7 +51,7 @@ namespace WCloud.MetroAd.InitData
                         MetroStationUID = station_uid
                     }.InitSelf()).ToArray();
                     adwindows[0].UID = "123";
-                    ad_window_repo.AddBulk(adwindows);
+                    ad_window_repo.InsertBulk(adwindows);
                 }
             }
             return app;

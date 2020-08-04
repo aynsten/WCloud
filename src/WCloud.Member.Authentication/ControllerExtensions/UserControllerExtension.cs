@@ -1,5 +1,5 @@
 ﻿using Lib.helper;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;

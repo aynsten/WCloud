@@ -37,7 +37,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var data = new _<AdminEntity>();
 
-            var user = await this._adminRepo.GetFirstAsync(x => x.UID == model.UID);
+            var user = await this._adminRepo.QueryOneAsync(x => x.UID == model.UID);
             user.Should().NotBeNull($"admin不存在:{model.UID}");
 
             user.SetField(new
@@ -58,7 +58,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             uid.Should().NotBeNullOrEmpty("admin service getuserbyuid");
 
-            var res = await this._adminRepo.GetFirstAsync(x => x.UID == uid);
+            var res = await this._adminRepo.QueryOneAsync(x => x.UID == uid);
             return res;
         }
 
@@ -82,7 +82,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             name.Should().NotBeNullOrEmpty("adminservice getuserbyusername");
 
-            var res = await this._adminRepo.GetFirstAsync(x => x.UserName == name);
+            var res = await this._adminRepo.QueryOneAsync(x => x.UserName == name);
             return res;
         }
 
@@ -99,7 +99,7 @@ namespace WCloud.Member.Application.Service.impl
                 if (maps.Any())
                 {
                     var role_uids = maps.Select(x => x.RoleUID).ToList();
-                    var roles = await this._roleRepo.GetListAsync(x => role_uids.Contains(x.UID));
+                    var roles = await this._roleRepo.QueryManyAsync(x => role_uids.Contains(x.UID));
 
                     foreach (var m in list)
                     {
@@ -128,7 +128,7 @@ namespace WCloud.Member.Application.Service.impl
                 return res.SetErrorMsg("用户名已存在");
             }
 
-            await this._adminRepo.AddAsync(model);
+            await this._adminRepo.InsertAsync(model);
 
             return res.SetSuccessData(model);
         }

@@ -6,7 +6,7 @@ using WCloud.Framework.Database.EntityFrameworkCore;
 
 namespace WCloud.MetroAd.Statistic
 {
-    public class AdWindowUsageEntity : BaseEntity, IMetroAdTable
+    public class AdWindowUsageEntity : EntityBase, IMetroAdTable
     {
         public string OrderUID { get; set; }
 

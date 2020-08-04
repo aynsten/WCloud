@@ -9,7 +9,7 @@ using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore
 {
-    public class ConfigBaseEntityForMySQLConfiguration<T> : IEntityTypeConfiguration<T> where T : BaseEntity
+    public class ConfigBaseEntityForMySQLConfiguration<T> : IEntityTypeConfiguration<T> where T : EntityBase
     {
         public void Configure(EntityTypeBuilder<T> builder)
         {

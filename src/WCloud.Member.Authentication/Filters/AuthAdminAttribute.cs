@@ -1,6 +1,6 @@
 ﻿using Lib.extension;
 using Lib.helper;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;

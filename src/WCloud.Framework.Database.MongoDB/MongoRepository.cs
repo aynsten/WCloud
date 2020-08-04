@@ -3,27 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Lib.extension;
+using FluentAssertions;
 using Lib.helper;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using WCloud.Framework.Database.MongoDB.Mapping;
 
 namespace WCloud.Framework.Database.MongoDB
 {
     public class MongoRepository<T> : IMongoRepository<T> where T : MongoEntityBase
     {
+        private readonly IServiceProvider provider;
         private readonly IMongoClient _client;
         private readonly IMongoDatabase _db;
-        private readonly IMongoCollection<T> _set;
+        private readonly IMongoCollection<T> _collection;
 
-        public IQueryable<T> Queryable => this._set.AsQueryable();
+        public IQueryable<T> Queryable => this._collection.AsQueryable();
+        public IMongoCollection<T> Collection => this._collection;
 
-        public MongoRepository(MongoConnectionWrapper wrapper)
+        public MongoRepository(IServiceProvider provider, MongoConnectionWrapper wrapper)
         {
+            this.provider = provider;
             this._client = wrapper.Client;
 
             this._db = this._client.GetDatabase(wrapper.DatabaseName);
-            this._set = this._db.GetCollection<T>(typeof(T).GetTableName());
+
+            var collection_name = this.provider.GetMongoEntityCollectionName<T>();
+            this._collection = this._db.GetCollection<T>(collection_name);
         }
 
         public List<T> QueryNearBy(Expression<Func<T, bool>> where, int page, int pagesize,
@@ -36,101 +42,96 @@ namespace WCloud.Framework.Database.MongoDB
             {
                 condition &= Builders<T>.Filter.Where(where);
             }
-            var range = PagerHelper.GetQueryRange(page, pagesize);
-            return this._set.Find(condition).QueryPage(page, pagesize).ToList();
+
+            return this._collection.Find(condition).QueryPage(page, pagesize).ToList();
         }
 
-        public int Add(T model)
+        public int Insert(T model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            model.Should().NotBeNull();
 
-            this._set.InsertOne(model);
+            this._collection.InsertOne(model);
             return 1;
         }
 
-        public async Task<int> AddAsync(T model)
+        public async Task<int> InsertAsync(T model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            model.Should().NotBeNull();
 
-            await this._set.InsertOneAsync(model);
+            await this._collection.InsertOneAsync(model);
             return 1;
         }
 
         public int Delete(T model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            model.Should().NotBeNull();
 
             var filter = Builders<T>.Filter.Where(x => x._id == model._id);
-            return (int)this._set.DeleteMany(filter).DeletedCount;
+            return (int)this._collection.DeleteMany(filter).DeletedCount;
         }
 
         public async Task<int> DeleteAsync(T model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            model.Should().NotBeNull();
 
             var filter = Builders<T>.Filter.Where(x => x._id == model._id);
-            return (int)(await this._set.DeleteManyAsync(filter)).DeletedCount;
+            return (int)(await this._collection.DeleteManyAsync(filter)).DeletedCount;
         }
 
         public int DeleteWhere(Expression<Func<T, bool>> where)
         {
-            where = where ?? throw new ArgumentNullException(nameof(where));
+            where.Should().NotBeNull();
 
-            return (int)this._set.DeleteMany(where).DeletedCount;
+            return (int)this._collection.DeleteMany(where).DeletedCount;
         }
 
         public async Task<int> DeleteWhereAsync(Expression<Func<T, bool>> where)
         {
-            where = where ?? throw new ArgumentNullException(nameof(where));
+            where.Should().NotBeNull();
 
-            return (int)(await this._set.DeleteManyAsync(where)).DeletedCount;
+            return (int)(await this._collection.DeleteManyAsync(where)).DeletedCount;
         }
 
         public bool Exist(Expression<Func<T, bool>> where)
         {
-            return this._set.Find(where).Take(1).FirstOrDefault() != null;
+            where.Should().NotBeNull();
+            return this._collection.Find(where).Take(1).FirstOrDefault() != null;
         }
 
         public async Task<bool> ExistAsync(Expression<Func<T, bool>> where)
         {
-            return (await this._set.FindAsync(where)).FirstOrDefault() != null;
+            where.Should().NotBeNull();
+            return (await this._collection.FindAsync(where)).FirstOrDefault() != null;
         }
 
-        public int GetCount(Expression<Func<T, bool>> where)
+        public int QueryCount(Expression<Func<T, bool>> where)
         {
-            return (int)this._set.CountDocuments(where);
+            where.Should().NotBeNull();
+            return (int)this._collection.CountDocuments(where);
         }
 
-        public async Task<int> GetCountAsync(Expression<Func<T, bool>> where)
+        public async Task<int> QueryCountAsync(Expression<Func<T, bool>> where)
         {
-            return (int)(await this._set.CountDocumentsAsync(where));
+            where.Should().NotBeNull();
+            return (int)(await this._collection.CountDocumentsAsync(where));
         }
 
-        public T GetFirst(Expression<Func<T, bool>> where)
+        public T QueryOne(Expression<Func<T, bool>> where)
         {
-            return this.GetList(where, 1).FirstOrDefault();
+            return this.QueryMany(where, 1).FirstOrDefault();
         }
 
-        public async Task<T> GetFirstAsync(Expression<Func<T, bool>> where)
+        public async Task<T> QueryOneAsync(Expression<Func<T, bool>> where)
         {
-            return (await this.GetListAsync(where, 1)).FirstOrDefault();
+            return (await this.QueryManyAsync(where, 1)).FirstOrDefault();
         }
 
-        public List<T> GetList(Expression<Func<T, bool>> where, int? count = null)
-        {
-            return this.QueryList<object>(where: where, start: 0, count: count);
-        }
-
-        public async Task<List<T>> GetListAsync(Expression<Func<T, bool>> where, int? count = null)
+        public async Task<List<T>> QueryManyAsync(Expression<Func<T, bool>> where, int? count = null)
         {
             return await this.QueryListAsync<object>(where: where, start: 0, count: count);
         }
 
-        public List<T> QueryList<OrderByColumnType>(Expression<Func<T, bool>> where,
+        IFindFluent<T, T> __query_many__<OrderByColumnType>(Expression<Func<T, bool>> where,
             Expression<Func<T, OrderByColumnType>> orderby = null, bool Desc = true,
             int? start = null, int? count = null)
         {
@@ -140,7 +141,7 @@ namespace WCloud.Framework.Database.MongoDB
                 condition &= where;
             }
 
-            var query = this._set.Find(condition);
+            var query = this._collection.Find(condition);
             if (orderby != null)
             {
                 var sort = Builders<T>.Sort.Sort_(orderby, Desc);
@@ -155,65 +156,67 @@ namespace WCloud.Framework.Database.MongoDB
             {
                 query = query.Take(count.Value);
             }
-            return query.ToList();
+            return query;
         }
 
         public async Task<List<T>> QueryListAsync<OrderByColumnType>(Expression<Func<T, bool>> where, Expression<Func<T, OrderByColumnType>> orderby = null, bool Desc = true, int? start = null, int? count = null)
         {
-            var condition = Builders<T>.Filter.Empty;
-            if (where != null)
-            {
-                condition &= where;
-            }
-
-            var query = this._set.Find(condition);
-            if (orderby != null)
-            {
-                var sort = Builders<T>.Sort.Sort_(orderby, Desc);
-                query = query.Sort(sort);
-            }
-
-            if (start != null)
-            {
-                query = query.Skip(start.Value);
-            }
-            if (count != null)
-            {
-                query = query.Take(count.Value);
-            }
-            return await query.ToListAsync();
+            var query = this.__query_many__(where, orderby, Desc, start, count);
+            var res = await query.ToListAsync();
+            return res;
         }
 
         public int Update(T model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            model.Should().NotBeNull();
 
-            var set = this._set;
+            var set = this._collection;
             return (int)set.ReplaceOne(x => x._id == model._id, model).ModifiedCount;
         }
 
         public async Task<int> UpdateAsync(T model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            model.Should().NotBeNull();
 
-            var set = this._set;
+            var set = this._collection;
             return (int)(await set.ReplaceOneAsync(x => x._id == model._id, model)).ModifiedCount;
         }
 
         public T GetByKeys(string key)
         {
+            key.Should().NotBeNull();
+
             var id = ObjectId.Parse(key);
-            return this._set.Find(x => x._id == id).FirstOrDefault();
+            return this._collection.Find(x => x._id == id).FirstOrDefault();
         }
 
         public async Task<T> GetByKeysAsync(string key)
         {
+            key.Should().NotBeNull();
+
             var id = ObjectId.Parse(key);
-            return await this._set.Find(x => x._id == id).FirstOrDefaultAsync();
+            return await this._collection.Find(x => x._id == id).FirstOrDefaultAsync();
         }
 
         public virtual void Dispose() { }
+
+        public T[] QueryMany<OrderByColumn>(Expression<Func<T, bool>> where, int? count = null, int? skip = null, Expression<Func<T, OrderByColumn>> order_by = null, bool desc = true)
+        {
+            var query = this.__query_many__(where, order_by, desc, skip, count);
+            var res = query.ToList().ToArray();
+            return res;
+        }
+
+        public async Task<T[]> QueryManyAsync<OrderByColumn>(Expression<Func<T, bool>> where, int? count = null, int? skip = null, Expression<Func<T, OrderByColumn>> order_by = null, bool desc = true)
+        {
+            var query = this.__query_many__(where, order_by, desc, skip, count);
+            var res = await query.ToListAsync();
+            return res.ToArray();
+        }
+
+        public List<T> QueryMany(Expression<Func<T, bool>> where, int? count = null)
+        {
+            return QueryMany<object>(where: where, count: count).ToList();
+        }
     }
 }

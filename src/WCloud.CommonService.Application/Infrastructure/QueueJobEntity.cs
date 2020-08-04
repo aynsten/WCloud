@@ -6,10 +6,10 @@ using WCloud.Framework.Database.EntityFrameworkCore;
 
 namespace WCloud.CommonService.Application.Infrastructure
 {
-    public class QueueJobEntityDto : QueueJobEntity, IBaseDto { }
+    public class QueueJobEntityDto : QueueJobEntity, IDtoBase { }
 
     [Table("tb_queue_job")]
-    public class QueueJobEntity : BaseEntity, ICommonServiceEntity
+    public class QueueJobEntity : EntityBase, ICommonServiceEntity
     {
         public string JobKey { get; set; }
 

@@ -12,7 +12,7 @@ namespace WCloud.CommonService.Application.FileUpload
     }
 
     [Table("tb_file_owner")]
-    public class FileOwnerEntity : BaseEntity, ICommonServiceEntity
+    public class FileOwnerEntity : EntityBase, ICommonServiceEntity
     {
         public string UserUID { get; set; }
         public string FileUID { get; set; }

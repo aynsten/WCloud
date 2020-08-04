@@ -1,5 +1,5 @@
 ﻿using Lib.extension;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;

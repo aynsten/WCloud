@@ -14,7 +14,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
         /// 初始化后返回自己
         /// </summary>
         public static T InitSelf<T>(this T model, string flag = null)
-            where T : BaseEntity
+            where T : EntityBase
         {
             model.Init(flag);
             return model;
@@ -30,7 +30,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
             return model;
         }
 
-        public static T SetField<T>(this T model, object data) where T : BaseEntity
+        public static T SetField<T>(this T model, object data) where T : EntityBase
         {
             model.Should().NotBeNull();
             data.Should().NotBeNull();
@@ -52,7 +52,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
         /// <summary>
         /// check input=>delete by uids
         /// </summary>
-        public static async Task DeleteByIds<T>(this IRepository<T> repo, string[] uids) where T : BaseEntity
+        public static async Task DeleteByIds<T>(this IRepository<T> repo, string[] uids) where T : EntityBase
         {
             uids.Should().NotBeNullOrEmpty();
             foreach (var uid in uids)
@@ -66,7 +66,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
         /// <summary>
         /// init=>check=>save
         /// </summary>
-        public static async Task<_<T>> AddEntity_<T>(this IRepository<T> repo, T model) where T : BaseEntity
+        public static async Task<_<T>> AddEntity_<T>(this IRepository<T> repo, T model) where T : EntityBase
         {
             var res = new _<T>();
 
@@ -77,7 +77,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
                 return res.SetErrorMsg(msg);
             }
 
-            await repo.AddAsync(model);
+            await repo.InsertAsync(model);
 
             return res.SetSuccessData(model);
         }

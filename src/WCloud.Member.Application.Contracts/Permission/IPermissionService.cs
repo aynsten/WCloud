@@ -1,4 +1,4 @@
-﻿using Lib.ioc;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Authorization.Permissions;
 
 namespace WCloud.Member.Application.Service

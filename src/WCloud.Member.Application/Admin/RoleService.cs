@@ -63,7 +63,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var data = new _<RoleEntity>();
 
-            var role = await this._roleRepo.GetFirstAsync(x => x.UID == model.UID);
+            var role = await this._roleRepo.QueryOneAsync(x => x.UID == model.UID);
             role.Should().NotBeNull($"角色不存在：{model.UID}");
 
             role.NodeName = model.NodeName;
@@ -100,7 +100,7 @@ namespace WCloud.Member.Application.Service.impl
             role_uid.Should().NotBeNullOrEmpty("set role permission role uid");
             permissions.Should().NotBeNull("set role permission permissions");
 
-            var model = await this._roleRepo.GetFirstAsync(x => x.UID == role_uid);
+            var model = await this._roleRepo.QueryOneAsync(x => x.UID == role_uid);
             model.Should().NotBeNull("set role permission");
 
             if (!this.permissionSerializer.Deserialize(model.PermissionJson).AllEqual(permissions))

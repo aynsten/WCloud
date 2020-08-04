@@ -35,7 +35,7 @@ namespace WCloud.Member.Application.Service.impl
 
             model.InitSelf();
 
-            await this._deptRepo.AddAsync(model);
+            await this._deptRepo.InsertAsync(model);
 
             return res.SetSuccessData(model);
         }
@@ -72,7 +72,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var res = new _<DepartmentEntity>();
 
-            var data = await this._deptRepo.GetFirstAsync(x => x.UID == model.UID);
+            var data = await this._deptRepo.QueryOneAsync(x => x.UID == model.UID);
             data.Should().NotBeNull();
 
             if (await this._deptRepo.ExistAsync(x => x.NodeName == model.NodeName && x.UID != model.UID))

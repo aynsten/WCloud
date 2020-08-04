@@ -2,7 +2,7 @@
 using Lib.extension;
 using Lib.helper;
 using Lib.io;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

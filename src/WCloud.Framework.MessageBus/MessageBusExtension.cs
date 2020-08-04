@@ -1,12 +1,10 @@
-﻿using FluentAssertions;
-using Lib.extension;
-using Lib.ioc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Lib.extension;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using WCloud.Core.MessageBus;
 
 namespace WCloud.Framework.MessageBus

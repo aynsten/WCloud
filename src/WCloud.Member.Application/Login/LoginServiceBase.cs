@@ -2,7 +2,7 @@
 using Lib.core;
 using Lib.extension;
 using Lib.helper;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -17,7 +17,7 @@ using WCloud.Member.Shared.Helper;
 
 namespace WCloud.Member.Application.Login
 {
-    public abstract class LoginServiceBase<T> : ILoginService<T> where T : BaseEntity, ILoginEntity, IMemberShipDBTable
+    public abstract class LoginServiceBase<T> : ILoginService<T> where T : EntityBase, ILoginEntity, IMemberShipDBTable
     {
         protected readonly ILogger logger;
         protected readonly IPasswordHelper _passHelper;
@@ -104,7 +104,7 @@ namespace WCloud.Member.Application.Login
                 model.UID = specific_uid;
             }
 
-            await this._userRepo.AddAsync(model);
+            await this._userRepo.InsertAsync(model);
             data.SetSuccessData(model);
             return data;
         }
@@ -114,7 +114,7 @@ namespace WCloud.Member.Application.Login
             uid.Should().NotBeNullOrEmpty();
             pwd.Should().NotBeNullOrEmpty();
 
-            var user = await this._userRepo.GetFirstAsync(x => x.UID == uid);
+            var user = await this._userRepo.QueryOneAsync(x => x.UID == uid);
             user.Should().NotBeNull("用户不存在，无法修改密码");
 
             user.PassWord = this._passHelper.Encrypt(pwd);

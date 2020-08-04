@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using Lib.extension;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ namespace WCloud.Admin.MessageConsumers
                 context.Message.UID.Should().NotBeNullOrEmpty("请初始化操作日志");
 
                 var service = provider.Resolve_<IMetroAdRepository<OperationLogEntity>>();
-                await service.AddAsync(context.Message);
+                await service.InsertAsync(context.Message);
             }
             catch (Exception e)
             {

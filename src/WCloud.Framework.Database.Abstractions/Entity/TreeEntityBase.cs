@@ -6,7 +6,7 @@ namespace WCloud.Framework.Database.Abstractions.Entity
     /// <summary>
     /// 树结构
     /// </summary>
-    public abstract class TreeEntityBase : BaseEntity
+    public abstract class TreeEntityBase : EntityBase
     {
         /// <summary>
         /// 默认值是1

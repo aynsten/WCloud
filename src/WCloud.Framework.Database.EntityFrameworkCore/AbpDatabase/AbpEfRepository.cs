@@ -10,7 +10,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.AbpDatabase
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IAbpEfRepository<T> : IEfCoreRepository<T, int>
-        where T : BaseEntity
+        where T : EntityBase
     {
         //
     }
@@ -21,7 +21,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.AbpDatabase
     /// <typeparam name="DbContextImpl"></typeparam>
     /// <typeparam name="T"></typeparam>
     public abstract class AbpEfRepositoryBase<DbContextImpl, T> : EfCoreRepository<DbContextImpl, T, int>, IAbpEfRepository<T>
-        where T : BaseEntity
+        where T : EntityBase
         where DbContextImpl : AbpDbContext<DbContextImpl>
     {
         public AbpEfRepositoryBase(IServiceProvider provider) : this(new IocAbpDbContextProvider<DbContextImpl>(provider))

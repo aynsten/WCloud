@@ -13,13 +13,13 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
     public abstract partial class EFRepositoryBase<T>
     {
         #region 添加
-        public virtual int Add(T model)
+        public virtual int Insert(T model)
         {
             var res = this.__AddBulk(this.Database, new[] { model }, context => context.SaveChanges());
             return res;
         }
 
-        public virtual async Task<int> AddAsync(T model)
+        public virtual async Task<int> InsertAsync(T model)
         {
             var res = this.__AddBulk(this.Database, new[] { model }, context => context.SaveChangesAsync());
             return await res;
@@ -213,14 +213,45 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
             return handler.Invoke(query);
         }
 
-        public virtual List<T> QueryList<OrderByColumnType>(
+        IQueryable<T> __query_many__<OrderByColumnType>(
             Expression<Func<T, bool>> where,
-            Expression<Func<T, OrderByColumnType>> orderby = null,
-            bool Desc = true,
-            int? start = null,
-            int? count = null)
+            Expression<Func<T, OrderByColumnType>> orderby,
+            bool desc,
+            int? start,
+            int? count)
         {
-            var res = this.__query_list__(where, orderby, Desc, start, count, query => query.ToList());
+            var query = this.NoTrackingQueryable;
+            query = query.WhereIfNotNull(where);
+
+            if (orderby != null)
+            {
+                query = query.OrderBy_(orderby, desc);
+            }
+            if (start != null)
+            {
+                if (orderby == null)
+                    throw new ArgumentException("使用skip前必须先排序");
+                query = query.Skip(start.Value);
+            }
+            if (count != null)
+            {
+                query = query.Take(count.Value);
+            }
+
+            return query;
+        }
+
+        public T[] QueryMany<OrderByColumn>(Expression<Func<T, bool>> where, int? count = null, int? skip = null, Expression<Func<T, OrderByColumn>> order_by = null, bool desc = true)
+        {
+            var query = this.__query_many__(where, orderby: order_by, desc: desc, start: skip, count: count);
+            var res = query.ToArray();
+            return res;
+        }
+
+        public async Task<T[]> QueryManyAsync<OrderByColumn>(Expression<Func<T, bool>> where, int? count = null, int? skip = null, Expression<Func<T, OrderByColumn>> order_by = null, bool desc = true)
+        {
+            var query = this.__query_many__(where, orderby: order_by, desc: desc, start: skip, count: count);
+            var res = await query.ToArrayAsync();
             return res;
         }
 
@@ -235,24 +266,24 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
             return await res;
         }
 
-        public virtual List<T> GetList(Expression<Func<T, bool>> where, int? count = null)
+        public virtual List<T> QueryMany(Expression<Func<T, bool>> where, int? count = null)
         {
-            return QueryList<object>(where: where, count: count);
+            return QueryMany<object>(where: where, count: count).ToList();
         }
 
-        public virtual async Task<List<T>> GetListAsync(Expression<Func<T, bool>> where, int? count = null)
+        public virtual async Task<List<T>> QueryManyAsync(Expression<Func<T, bool>> where, int? count = null)
         {
             return await QueryListAsync<object>(where: where, count: count);
         }
 
-        public virtual T GetFirst(Expression<Func<T, bool>> where)
+        public virtual T QueryOne(Expression<Func<T, bool>> where)
         {
             var query = this.TrakingQueryable;
             query = query.WhereIfNotNull(where);
             return query.FirstOrDefault();
         }
 
-        public virtual async Task<T> GetFirstAsync(Expression<Func<T, bool>> where)
+        public virtual async Task<T> QueryOneAsync(Expression<Func<T, bool>> where)
         {
             var query = this.TrakingQueryable;
             query = query.WhereIfNotNull(where);
@@ -273,14 +304,14 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        public virtual int GetCount(Expression<Func<T, bool>> where)
+        public virtual int QueryCount(Expression<Func<T, bool>> where)
         {
             var query = this.NoTrackingQueryable;
             query = query.WhereIfNotNull(where);
             return query.Count();
         }
 
-        public virtual async Task<int> GetCountAsync(Expression<Func<T, bool>> where)
+        public virtual async Task<int> QueryCountAsync(Expression<Func<T, bool>> where)
         {
             var query = this.NoTrackingQueryable;
             query = query.WhereIfNotNull(where);

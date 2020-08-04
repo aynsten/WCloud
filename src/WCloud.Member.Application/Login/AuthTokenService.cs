@@ -69,7 +69,7 @@ namespace WCloud.Member.Application.Service.impl
             if (!token.IsValid(out var msg))
                 throw new MsgException(msg);
 
-            await this._tokenRepo.InsertAsync(token);
+            await this._tokenRepo.AddAsync(token);
 
             var token_data = this.Parse(token);
 
@@ -81,7 +81,7 @@ namespace WCloud.Member.Application.Service.impl
             access_token.Should().NotBeNullOrEmpty("get user id by token,token");
 
             var now = DateTime.UtcNow;
-            var token = await this._tokenRepo.QueryOneAsync(x => x.UID == access_token);
+            var token = await this._tokenRepo.GetFirstAsync(x => x.UID == access_token);
 
             if (token == null || token.ExpiryTimeUtc < now)
                 return null;
@@ -118,7 +118,7 @@ namespace WCloud.Member.Application.Service.impl
 
             while (true)
             {
-                var list = await this._tokenRepo.QueryManyAsync(x => x.UserUID == user_uid, count: batch_count);
+                var list = await this._tokenRepo.GetListAsync(x => x.UserUID == user_uid, count: batch_count);
                 var token_uids = list.Select(x => x.UID).Distinct().ToArray();
                 if (!token_uids.Any())
                     return;
@@ -150,7 +150,7 @@ namespace WCloud.Member.Application.Service.impl
             access_token.Should().NotBeNullOrEmpty("refresh token,token");
 
             var now = DateTime.UtcNow;
-            var token = await this._tokenRepo.QueryOneAsync(x => x.UID == access_token);
+            var token = await this._tokenRepo.GetFirstAsync(x => x.UID == access_token);
             if (token == null || token.ExpiryTimeUtc < now)
                 return;
 

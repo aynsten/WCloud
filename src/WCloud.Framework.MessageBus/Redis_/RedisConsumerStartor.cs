@@ -1,5 +1,5 @@
 ﻿using Lib.extension;
-using Microsoft.Extensions.DependencyInjection;
+using Lib.ioc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 

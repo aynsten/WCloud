@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Lib.ioc
 {
     public static class TypesExtension
     {

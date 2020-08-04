@@ -132,7 +132,7 @@ namespace WCloud.CommonService.Application.FileUpload
             await this.__upload_to_qiniu__(model, bs);
             //保存到数据库
             model.InitSelf();
-            await this._uploadRepo.InsertAsync(model);
+            await this._uploadRepo.AddAsync(model);
 
             return res.SetSuccessData(model);
         }

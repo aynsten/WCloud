@@ -17,7 +17,7 @@ namespace WCloud.MetroAd.Metro
         {
             station_uid.Should().NotBeNullOrEmpty();
 
-            var res = await this._repo.QueryManyAsync(x => x.MetroStationUID == station_uid, count: 5000);
+            var res = await this._repo.GetListAsync(x => x.MetroStationUID == station_uid, count: 5000);
 
             return res;
         }

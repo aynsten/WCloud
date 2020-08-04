@@ -65,7 +65,7 @@ namespace WCloud.Member.Application.Service.impl
             org_role_uid.Should().NotBeNullOrEmpty("save org role permission org_role_uid");
             permissions.Should().NotBeNull("save org role permission permissions");
 
-            var model = await this._orgRoleRepo.QueryOneAsync(x => x.UID == org_role_uid && x.OrgUID == org_uid);
+            var model = await this._orgRoleRepo.GetFirstAsync(x => x.UID == org_role_uid && x.OrgUID == org_uid);
             model.Should().NotBeNull("org role");
 
             if (!this.permissionSerializer.Deserialize(model.PermissionJson).AllEqual(permissions))

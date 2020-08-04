@@ -6,7 +6,7 @@ using WCloud.Framework.Database.EntityFrameworkCore.Repository;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore.Service
 {
-    public abstract class BasicServiceRemovable<T> : BasicService<T>, IBasicServiceRemovable<T> where T : EntityBase, ILogicalDeletion
+    public abstract class BasicServiceRemovable<T> : BasicService<T>, IBasicServiceRemovable<T> where T : BaseEntity, ILogicalDeletion
     {
         public BasicServiceRemovable(IServiceProvider provider, IEFRepository<T> _repo) : base(provider, _repo)
         {

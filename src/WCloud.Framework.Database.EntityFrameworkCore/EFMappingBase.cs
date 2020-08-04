@@ -9,7 +9,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
     /// fluent map base class
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class EFMappingBase<T> : IEntityTypeConfiguration<T> where T : EntityBase, IDBTable
+    public abstract class EFMappingBase<T> : IEntityTypeConfiguration<T> where T : BaseEntity, IDBTable
     {
         public abstract void Configure(EntityTypeBuilder<T> builder);
     }

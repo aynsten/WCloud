@@ -56,7 +56,7 @@ namespace WCloud.Member.Application.Service.impl
                 return res.SetErrorMsg("名称已经存在");
             }
 
-            await this._orgRepo.InsertAsync(model);
+            await this._orgRepo.AddAsync(model);
 
             res.SetSuccessData(model);
             return res;
@@ -76,7 +76,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             uid.Should().NotBeNullOrEmpty();
 
-            var org = await this._orgRepo.QueryOneAsync(x => x.UID == uid);
+            var org = await this._orgRepo.GetFirstAsync(x => x.UID == uid);
             org.Should().NotBeNull($"客户不存在:{uid}");
 
             org.IsDeleted = (!active).ToBoolInt();
@@ -91,7 +91,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var res = new _<OrgEntity>();
 
-            var entity = await this._orgRepo.QueryOneAsync(x => x.UID == model.UID);
+            var entity = await this._orgRepo.GetFirstAsync(x => x.UID == model.UID);
 
             entity.Should().NotBeNull("组织不存在");
 
@@ -117,7 +117,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             org_uid.Should().NotBeNullOrEmpty();
 
-            var res = await this._orgRepo.QueryOneAsync(x => x.UID == org_uid);
+            var res = await this._orgRepo.GetFirstAsync(x => x.UID == org_uid);
             return res;
         }
 
@@ -139,7 +139,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             user_uid.Should().NotBeNullOrEmpty();
 
-            var res = await this._orgMemberRepo.QueryManyAsync(x => x.MemberApproved > 0 && x.UserUID == user_uid);
+            var res = await this._orgMemberRepo.GetListAsync(x => x.MemberApproved > 0 && x.UserUID == user_uid);
             return res;
         }
 
@@ -148,7 +148,7 @@ namespace WCloud.Member.Application.Service.impl
             org_uids.Should().NotBeNull();
             org_uids.Should().NotBeNullOrEmpty();
 
-            var res = await this._orgRepo.QueryManyAsync(x => org_uids.Contains(x.UID));
+            var res = await this._orgRepo.GetListAsync(x => org_uids.Contains(x.UID));
             return res;
         }
 
@@ -208,7 +208,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var res = new _<OrgMemberEntity>();
 
-            var entity = await this._orgMemberRepo.QueryOneAsync(x => x.OrgUID == org_uid && x.UserUID == user_uid);
+            var entity = await this._orgMemberRepo.GetFirstAsync(x => x.OrgUID == org_uid && x.UserUID == user_uid);
 
             entity.Should().NotBeNull("管理员不存在");
 
@@ -371,7 +371,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var res = new _<OrgEntity>();
 
-            var org = await this._orgRepo.QueryOneAsync(x => x.UID == org_uid);
+            var org = await this._orgRepo.GetFirstAsync(x => x.UID == org_uid);
             org.Should().NotBeNull();
 
             if (!await this._orgRepo.ExistAsync(x => x.OrgName == name && x.UID != org.UID))

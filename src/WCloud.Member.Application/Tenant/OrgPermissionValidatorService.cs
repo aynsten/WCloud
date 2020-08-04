@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Lib.cache;
 using Lib.extension;
-using Microsoft.Extensions.DependencyInjection;
+using Lib.ioc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

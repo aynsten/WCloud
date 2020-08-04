@@ -9,7 +9,7 @@ namespace WCloud.Member.Domain.Login
     /// token/不是oauth token
     /// </summary>
     [Table("tb_login_token")]
-    public class AuthTokenEntity : EntityBase, IMemberShipDBTable, IUpdateTime
+    public class AuthTokenEntity : BaseEntity, IMemberShipDBTable, IUpdateTime
     {
         [Required]
         public virtual string RefreshToken { get; set; }

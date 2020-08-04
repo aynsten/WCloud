@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Lib.ioc;
 using System.Threading.Tasks;
 using WCloud.Framework.Database.Abstractions.Service;
 

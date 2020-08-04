@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Microsoft.Extensions.DependencyInjection;
+using Lib.ioc;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 

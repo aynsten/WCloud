@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Lib.ioc
 {
     /// <summary>
     /// 单利实现

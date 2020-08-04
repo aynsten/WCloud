@@ -5,7 +5,7 @@ using WCloud.Framework.Database.EntityFrameworkCore;
 
 namespace WCloud.CommonService.Application.KVStore
 {
-    public class KVStoreEntity : EntityBase, ICommonServiceEntity
+    public class KVStoreEntity : BaseEntity, ICommonServiceEntity
     {
         public string Key { get; set; }
         public string Value { get; set; }

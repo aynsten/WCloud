@@ -47,7 +47,7 @@ namespace WCloud.Member.Application.Service.impl
             model.UID.Should().NotBeNullOrEmpty("update menu uid");
 
             var data = new _<MenuEntity>();
-            var menu = await this._menuRepo.QueryOneAsync(x => x.UID == model.UID);
+            var menu = await this._menuRepo.GetFirstAsync(x => x.UID == model.UID);
             menu.Should().NotBeNull("菜单不存在");
 
             menu.NodeName = model.NodeName;
@@ -70,7 +70,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             uid.Should().NotBeNullOrEmpty("get menu by uid,uid");
 
-            var res = await this._menuRepo.QueryOneAsync(x => x.UID == uid);
+            var res = await this._menuRepo.GetFirstAsync(x => x.UID == uid);
             return res;
         }
     }

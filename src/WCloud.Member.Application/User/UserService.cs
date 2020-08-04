@@ -58,7 +58,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var data = new _<UserEntity>();
 
-            var user = await this._userRepo.QueryOneAsync(x => x.UID == model.UID);
+            var user = await this._userRepo.GetFirstAsync(x => x.UID == model.UID);
             user.Should().NotBeNull($"用户不存在:{model.UID}");
 
             user.SetField(new
@@ -89,7 +89,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var data = new _<UserEntity>();
 
-            var user = await this._userRepo.QueryOneAsync(x => x.UID == user_uid);
+            var user = await this._userRepo.GetFirstAsync(x => x.UID == user_uid);
             user.Should().NotBeNull($"用户不存在:{user_uid}");
 
             user.IdCard = idcard;
@@ -109,7 +109,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var data = new _<UserEntity>();
 
-            var user = await this._userRepo.QueryOneAsync(x => x.UID == user_uid);
+            var user = await this._userRepo.GetFirstAsync(x => x.UID == user_uid);
             user.Should().NotBeNull($"用户不存在:{user_uid}");
 
             user.UserImg = avatar_url;
@@ -125,7 +125,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             uid.Should().NotBeNullOrEmpty();
 
-            var res = await this._userRepo.QueryOneAsync(x => x.UID == uid);
+            var res = await this._userRepo.GetFirstAsync(x => x.UID == uid);
             return res;
         }
 
@@ -190,7 +190,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             name.Should().NotBeNullOrEmpty();
 
-            var res = await this._userRepo.QueryOneAsync(x => x.UserName == name);
+            var res = await this._userRepo.GetFirstAsync(x => x.UserName == name);
             return res;
         }
 

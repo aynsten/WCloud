@@ -13,14 +13,14 @@ namespace WCloud.Framework.MVC.BaseController
 {
     [Obsolete]
     abstract class BasicServiceController<T> : BasicServiceController<IBasicService<T>, T>
-       where T : BaseEntity
+       where T : EntityBase
     {
         protected BasicServiceController(IBasicService<T> service) : base(_service: service) { }
     }
 
     public abstract class BasicServiceController<ServiceType, EntityType> : WCloudBaseController
         where ServiceType : IBasicService<EntityType>
-        where EntityType : BaseEntity
+        where EntityType : EntityBase
     {
         protected readonly _<string> SUCCESS = new _<string>().SetSuccessData(string.Empty);
 

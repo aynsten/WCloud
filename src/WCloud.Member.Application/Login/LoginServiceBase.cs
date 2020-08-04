@@ -17,7 +17,7 @@ using WCloud.Member.Shared.Helper;
 
 namespace WCloud.Member.Application.Login
 {
-    public abstract class LoginServiceBase<T> : ILoginService<T> where T : BaseEntity, ILoginEntity, IMemberShipDBTable
+    public abstract class LoginServiceBase<T> : ILoginService<T> where T : EntityBase, ILoginEntity, IMemberShipDBTable
     {
         protected readonly ILogger logger;
         protected readonly IPasswordHelper _passHelper;

@@ -6,9 +6,9 @@ using WCloud.Framework.Database.EntityFrameworkCore;
 
 namespace WCloud.MetroAd.Metro
 {
-    public class MetroStationEntityDto : BaseDto { }
+    public class MetroStationEntityDto : DtoBase { }
 
-    public class MetroStationEntity : BaseEntity, IMetroAdTable
+    public class MetroStationEntity : EntityBase, IMetroAdTable
     {
         public virtual string Name { get; set; }
 

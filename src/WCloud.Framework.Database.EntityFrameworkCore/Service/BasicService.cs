@@ -15,7 +15,7 @@ using WCloud.Framework.Database.EntityFrameworkCore.Repository;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore.Service
 {
-    public abstract class BasicService<T> : IBasicService<T> where T : BaseEntity
+    public abstract class BasicService<T> : IBasicService<T> where T : EntityBase
     {
         protected readonly _<string> SUCCESS = new _<string>().SetSuccessData(string.Empty);
 

@@ -6,9 +6,9 @@ using WCloud.Framework.Database.EntityFrameworkCore;
 
 namespace WCloud.MetroAd.Order
 {
-    public class PaymentNotificationEntityDto : BaseDto { }
+    public class PaymentNotificationEntityDto : DtoBase { }
 
-    public class PaymentNotificationEntity : BaseEntity, IMetroAdTable
+    public class PaymentNotificationEntity : EntityBase, IMetroAdTable
     {
         public virtual int PayMethod { get; set; }
 

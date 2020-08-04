@@ -6,13 +6,13 @@ namespace WCloud.CommonService.Application
 {
     public interface ICommonServiceEntity : Lib.data.IDBTable { }
 
-    public interface ICommonServiceRepository<T> : IEFRepository<T> where T : BaseEntity, ICommonServiceEntity
+    public interface ICommonServiceRepository<T> : IEFRepository<T> where T : EntityBase, ICommonServiceEntity
     {
         //
     }
 
     public class CommonServiceRepository<T> : EFRepository<T, CommonServiceDbContext>, ICommonServiceRepository<T>
-        where T : BaseEntity, ICommonServiceEntity
+        where T : EntityBase, ICommonServiceEntity
     {
         public CommonServiceRepository(IServiceProvider provider) : base(provider) { }
     }

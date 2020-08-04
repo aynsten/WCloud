@@ -8,14 +8,14 @@ using Volo.Abp.Domain.Entities;
 
 namespace WCloud.Framework.Database.Abstractions.Entity
 {
-    public interface IBaseDto : IEntityDto { }
+    public interface IDtoBase : IEntityDto { }
 
     public interface IDto : IEntityDto<int>
     {
         //
     }
 
-    public abstract class BaseDto : IDto, IBaseDto
+    public abstract class DtoBase : IDto, IDtoBase
     {
         public int Id { get; set; }
     }
@@ -23,7 +23,7 @@ namespace WCloud.Framework.Database.Abstractions.Entity
     /// <summary>
     /// 实体基类
     /// </summary>
-    public abstract class BaseEntity : Entity<int>, IDBTable
+    public abstract class EntityBase : Entity<int>, IDBTable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -49,7 +49,7 @@ namespace WCloud.Framework.Database.Abstractions.Entity
 
         public override bool Equals(object obj)
         {
-            var other = obj as BaseEntity;
+            var other = obj as EntityBase;
             if (other is null)
             {
                 return false;
@@ -80,7 +80,7 @@ namespace WCloud.Framework.Database.Abstractions.Entity
             }
         }
 
-        public static bool operator ==(BaseEntity x, BaseEntity y)
+        public static bool operator ==(EntityBase x, EntityBase y)
         {
             if (object.Equals(x, null))
             {
@@ -92,7 +92,7 @@ namespace WCloud.Framework.Database.Abstractions.Entity
             }
         }
 
-        public static bool operator !=(BaseEntity x, BaseEntity y)
+        public static bool operator !=(EntityBase x, EntityBase y)
         {
             return !(x == y);
         }

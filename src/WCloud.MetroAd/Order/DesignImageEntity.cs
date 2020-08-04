@@ -7,7 +7,7 @@ using WCloud.Member.Domain.Admin;
 
 namespace WCloud.MetroAd.Order
 {
-    public class DesignImageEntity : BaseEntity, IMetroAdTable
+    public class DesignImageEntity : EntityBase, IMetroAdTable
     {
         public virtual string OrderUID { get; set; }
 

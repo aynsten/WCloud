@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Lib.core;
 using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
+using Lib.ioc;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -13,14 +13,14 @@ namespace WCloud.Framework.MVC.BaseController
 {
     [Obsolete]
     abstract class BasicServiceController<T> : BasicServiceController<IBasicService<T>, T>
-       where T : EntityBase
+       where T : BaseEntity
     {
         protected BasicServiceController(IBasicService<T> service) : base(_service: service) { }
     }
 
     public abstract class BasicServiceController<ServiceType, EntityType> : WCloudBaseController
         where ServiceType : IBasicService<EntityType>
-        where EntityType : EntityBase
+        where EntityType : BaseEntity
     {
         protected readonly _<string> SUCCESS = new _<string>().SetSuccessData(string.Empty);
 

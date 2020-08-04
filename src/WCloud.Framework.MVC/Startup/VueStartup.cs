@@ -1,7 +1,7 @@
 ﻿using Lib.cache;
 using Lib.extension;
 using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
+using Lib.ioc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

@@ -9,9 +9,9 @@ using WCloud.MetroAd.Metro;
 
 namespace WCloud.MetroAd.Showcase
 {
-    public class CaseEntityDto : DtoBase { }
+    public class CaseEntityDto : BaseDto { }
 
-    public class CaseEntity : EntityBase, IMetroAdTable
+    public class CaseEntity : BaseEntity, IMetroAdTable
     {
         public virtual string Name { get; set; }
 

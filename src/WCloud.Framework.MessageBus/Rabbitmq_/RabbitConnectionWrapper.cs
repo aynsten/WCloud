@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Lib.ioc;
 using RabbitMQ.Client;
 using System;
 

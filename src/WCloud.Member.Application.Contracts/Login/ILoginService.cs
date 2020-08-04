@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Lib.ioc;
 using System;
 using System.Threading.Tasks;
 using WCloud.Member.Domain;

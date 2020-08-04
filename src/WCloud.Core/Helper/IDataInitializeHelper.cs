@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WCloud.Core.Helper
 {
-    public interface IDataInitializeHelper : Microsoft.Extensions.DependencyInjection.IAutoRegistered
+    public interface IDataInitializeHelper : Lib.ioc.IAutoRegistered
     {
         Task CreateDatabase();
 

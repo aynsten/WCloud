@@ -8,7 +8,7 @@ namespace WCloud.Member.Domain.Tenant
     /// 租户成员的角色关联
     /// </summary>
     [Table("tb_org_member_role")]
-    public class OrgMemberRoleEntity : EntityBase, IMemberShipDBTable
+    public class OrgMemberRoleEntity : BaseEntity, IMemberShipDBTable
     {
         [Required]
         public virtual string OrgUID { get; set; }

@@ -6,10 +6,10 @@ using WCloud.Framework.Database.EntityFrameworkCore;
 
 namespace WCloud.CommonService.Application.Message
 {
-    public class UserMessageEntityDto : UserMessageEntity, IDtoBase { }
+    public class UserMessageEntityDto : UserMessageEntity, IBaseDto { }
 
     [Table("tb_user_message")]
-    public class UserMessageEntity : EntityBase, ICommonServiceEntity
+    public class UserMessageEntity : BaseEntity, ICommonServiceEntity
     {
         public virtual string FromUID { get; set; } = "system";
 

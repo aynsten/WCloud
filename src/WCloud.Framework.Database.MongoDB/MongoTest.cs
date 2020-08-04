@@ -59,7 +59,7 @@ namespace WCloud.Framework.Database.MongoDB
             condition &= Builders<T>.Filter.GeoWithin(field, new GeoJsonPolygon<GeoJson2DCoordinates>(null));
         }
     }
-    public class xx : EntityBase { }
+    public class xx : BaseEntity { }
 
     [ConnectionStringName("xx")]
     public class MongoDbContextTest : AbpMongoDbContext
@@ -93,7 +93,7 @@ namespace WCloud.Framework.Database.MongoDB
         }
     }
 
-    class MongoRepo<T> : MongoDbRepository<MongoDbContextTest, T> where T : EntityBase
+    class MongoRepo<T> : MongoDbRepository<MongoDbContextTest, T> where T : BaseEntity
     {
         public MongoRepo(IMongoDbContextProvider<MongoDbContextTest> dbContextProvider) : base(dbContextProvider)
         {

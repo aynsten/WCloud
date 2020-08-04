@@ -25,7 +25,7 @@ namespace WCloud.IM.Server
         public override void Configure(IApplicationBuilder app, IHostApplicationLifetime lifetime)
         {
             app.InitializeApplication();
-            lifetime.ApplicationStopping.Register(() => Microsoft.Extensions.DependencyInjection.IocContext.Instance.Dispose());
+            lifetime.ApplicationStopping.Register(() => Lib.ioc.IocContext.Instance.Dispose());
         }
 
         public override void ConfigureContainer(ContainerBuilder builder)

@@ -1,5 +1,5 @@
 ﻿using Lib.core;
-using Microsoft.Extensions.DependencyInjection;
+using Lib.ioc;
 using System;
 using Volo.Abp.EntityFrameworkCore;
 

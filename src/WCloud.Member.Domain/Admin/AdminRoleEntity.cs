@@ -8,7 +8,7 @@ namespace WCloud.Member.Domain.Admin
     /// 用户角色关联
     /// </summary>
     [Table("tb_admin_role")]
-    public class AdminRoleEntity : EntityBase, IMemberShipDBTable
+    public class AdminRoleEntity : BaseEntity, IMemberShipDBTable
     {
         /// <summary>
         /// 用户ID

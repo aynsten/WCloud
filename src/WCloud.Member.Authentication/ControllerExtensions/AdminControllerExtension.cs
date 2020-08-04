@@ -1,5 +1,5 @@
 ﻿using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
+using Lib.ioc;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WCloud.Core;

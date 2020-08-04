@@ -13,7 +13,4 @@
     <ProjectReference Include="..\WCloud.Framework.Redis\WCloud.Framework.Redis.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Memory\" />
-  </ItemGroup>
 </Project>

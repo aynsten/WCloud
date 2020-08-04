@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+using Lib.ioc;
 using Microsoft.Extensions.Logging;
 
 namespace Lib.extension

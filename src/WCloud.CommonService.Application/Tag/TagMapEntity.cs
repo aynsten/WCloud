@@ -5,10 +5,10 @@ using WCloud.Framework.Database.EntityFrameworkCore;
 
 namespace WCloud.CommonService.Application.Tag
 {
-    public class TagMapEntityDto : TagMapEntity, IDtoBase { }
+    public class TagMapEntityDto : TagMapEntity, IBaseDto { }
 
     [Table("tb_tag_map")]
-    public class TagMapEntity : EntityBase, ICommonServiceEntity
+    public class TagMapEntity : BaseEntity, ICommonServiceEntity
     {
         public string TagUID { get; set; }
 

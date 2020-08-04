@@ -111,7 +111,7 @@ namespace WCloud.CommonService.Application.Tag
             }
         }
 
-        public async Task SaveTags<T>(T model, IEnumerable<string> tags_uid) where T : EntityBase
+        public async Task SaveTags<T>(T model, IEnumerable<string> tags_uid) where T : BaseEntity
         {
             model.Should().NotBeNull("save tags model");
 

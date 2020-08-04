@@ -7,7 +7,7 @@ namespace WCloud.Framework.MVC.BaseController
 {
     public abstract class BasicServiceRemovableController<ServiceType, EntityType> : BasicServiceController<ServiceType, EntityType>
         where ServiceType : IBasicServiceRemovable<EntityType>
-        where EntityType : EntityBase, ILogicalDeletion
+        where EntityType : BaseEntity, ILogicalDeletion
     {
         [HttpPost, ApiRoute]
         public virtual async Task<IActionResult> Remove([FromForm]string uid)

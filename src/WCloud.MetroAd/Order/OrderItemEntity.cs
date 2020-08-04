@@ -8,9 +8,9 @@ using WCloud.MetroAd.Metro;
 
 namespace WCloud.MetroAd.Order
 {
-    public class OrderItemEntityDto : DtoBase { }
+    public class OrderItemEntityDto : BaseDto { }
 
-    public class OrderItemEntity : EntityBase, IMetroAdTable
+    public class OrderItemEntity : BaseEntity, IMetroAdTable
     {
         public virtual string OrderUID { get; set; }
 

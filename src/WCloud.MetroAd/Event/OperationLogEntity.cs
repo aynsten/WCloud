@@ -14,7 +14,7 @@ namespace WCloud.MetroAd.Event
     }
 
     [Table("tb_operation_log")]
-    public class OperationLogEntity : EntityBase, IMetroAdTable
+    public class OperationLogEntity : BaseEntity, IMetroAdTable
     {
         public virtual int AccountType { get; set; } = (int)AccountTypeEnum.Admin;
 

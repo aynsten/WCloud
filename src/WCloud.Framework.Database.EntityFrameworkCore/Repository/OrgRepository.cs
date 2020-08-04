@@ -27,7 +27,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
     }
 
     public abstract class OrgRepository<T, DbContextType> : WCloudEFRepository<T, DbContextType>, IOrgRepository__<T>
-        where T : EntityBase, IDBTable, IOrgRow
+        where T : BaseEntity, IDBTable, IOrgRow
         where DbContextType : DbContext
     {
         public string OrgUID { get; private set; }

@@ -9,7 +9,7 @@ namespace WCloud.Member.Domain.Login
     /// 外部账号关联登陆
     /// </summary>
     [Table("tb_login_external_account")]
-    public class ExternalLoginMapEntity : EntityBase, IMemberShipDBTable
+    public class ExternalLoginMapEntity : BaseEntity, IMemberShipDBTable
     {
         [Required]
         public virtual string ProviderKey { get; set; }

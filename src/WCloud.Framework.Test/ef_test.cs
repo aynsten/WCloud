@@ -14,7 +14,7 @@ namespace WCloud.Test
     public class ef_test
     {
         [Table(nameof(UserTest))]
-        public class UserTest : EntityBase
+        public class UserTest : BaseEntity
         {
             public string Name { get; set; }
         }

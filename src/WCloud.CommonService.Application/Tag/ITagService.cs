@@ -12,7 +12,7 @@ namespace WCloud.CommonService.Application.Tag
         Task<_<TagEntity>> UpdateTag(TagEntity data);
         Task DeleteTag(string uid);
         Task MigrateTag(string from_uid, string to_uid);
-        Task SaveTags<T>(T model, IEnumerable<string> tags_uid) where T : EntityBase;
+        Task SaveTags<T>(T model, IEnumerable<string> tags_uid) where T : BaseEntity;
         Task SaveTags<T>(string subject_id, IEnumerable<string> tags_uid);
     }
 }

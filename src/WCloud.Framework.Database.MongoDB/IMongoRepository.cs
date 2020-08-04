@@ -1,5 +1,4 @@
 ﻿using Lib.helper;
-using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -10,8 +9,6 @@ namespace WCloud.Framework.Database.MongoDB
 {
     public interface IMongoRepository<T> : ILinqRepository<T>, IRepository<T> where T : MongoEntityBase
     {
-        IMongoCollection<T> Collection { get; }
-
         T GetByKeys(string key);
 
         Task<T> GetByKeysAsync(string key);

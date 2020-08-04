@@ -11,7 +11,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
     public static class RepositoryExtension
     {
 
-        public static async Task RemoveByUIDs<T>(this IEFRepository<T> repo, string[] uids) where T : EntityBase, ILogicalDeletion
+        public static async Task RemoveByUIDs<T>(this IEFRepository<T> repo, string[] uids) where T : BaseEntity, ILogicalDeletion
         {
             uids.Should().NotBeNullOrEmpty();
 
@@ -30,7 +30,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
             }
         }
 
-        public static async Task RecoverByUIDs<T>(this IEFRepository<T> repo, string[] uids) where T : EntityBase, ILogicalDeletion
+        public static async Task RecoverByUIDs<T>(this IEFRepository<T> repo, string[] uids) where T : BaseEntity, ILogicalDeletion
         {
             uids.Should().NotBeNullOrEmpty();
 

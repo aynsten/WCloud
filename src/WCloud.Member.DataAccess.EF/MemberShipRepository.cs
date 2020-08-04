@@ -9,7 +9,7 @@ namespace WCloud.Member.DataAccess.EF
     /// 会员中心仓储实现
     /// </summary>
     public class MemberShipRepository<T> : WCloudEFRepository<T, MemberShipDbContext>, IMSRepository<T>
-        where T : EntityBase, IMemberShipDBTable
+        where T : BaseEntity, IMemberShipDBTable
     {
         public MemberShipRepository(IServiceProvider provider) : base(provider) { }
     }

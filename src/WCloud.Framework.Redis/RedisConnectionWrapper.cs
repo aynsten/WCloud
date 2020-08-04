@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 using System;
 

@@ -1,5 +1,5 @@
 ﻿using Lib.extension;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Ocelot.Middleware;
 using System;
 using System.Linq;

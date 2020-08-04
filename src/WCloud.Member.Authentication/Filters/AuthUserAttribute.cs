@@ -1,4 +1,4 @@
-﻿using Lib.ioc;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Threading.Tasks;
 using WCloud.Core;

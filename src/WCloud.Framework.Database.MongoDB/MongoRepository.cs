@@ -17,6 +17,7 @@ namespace WCloud.Framework.Database.MongoDB
         private readonly IMongoCollection<T> _set;
 
         public IQueryable<T> Queryable => this._set.AsQueryable();
+        public IMongoCollection<T> Collection => this._set;
 
         public MongoRepository(MongoConnectionWrapper wrapper)
         {

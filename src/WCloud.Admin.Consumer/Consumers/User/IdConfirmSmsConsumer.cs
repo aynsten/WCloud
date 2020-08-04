@@ -4,7 +4,7 @@ using Aliyun.Acs.Core.Profile;
 using FluentAssertions;
 using Lib.core;
 using Lib.extension;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;

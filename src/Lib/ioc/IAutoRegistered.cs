@@ -1,7 +1,7 @@
 ﻿using Lib.core;
 using System;
 
-namespace Lib.ioc
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// autofac 自动查找注册，

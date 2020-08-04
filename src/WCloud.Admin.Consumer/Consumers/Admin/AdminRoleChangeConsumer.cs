@@ -1,5 +1,5 @@
 ﻿using Lib.cache;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 using WCloud.Core.Cache;

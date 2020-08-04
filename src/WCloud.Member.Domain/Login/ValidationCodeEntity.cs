@@ -5,7 +5,7 @@ namespace WCloud.Member.Domain.Login
     /// <summary>
     /// 一次性登录用的code/验证码
     /// </summary>
-    public class ValidationCodeEntity : BaseEntity, IMemberShipDBTable
+    public class ValidationCodeEntity : EntityBase, IMemberShipDBTable
     {
         public virtual string UserUID { get; set; }
 

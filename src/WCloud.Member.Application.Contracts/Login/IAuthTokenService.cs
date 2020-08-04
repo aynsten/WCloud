@@ -1,4 +1,4 @@
-﻿using Lib.ioc;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using WCloud.Core.Authentication.Model;
 using WCloud.Core.Cache;

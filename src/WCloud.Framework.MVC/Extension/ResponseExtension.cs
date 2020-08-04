@@ -1,6 +1,6 @@
 ﻿using Lib.helper;
 using Microsoft.AspNetCore.Http;
-using Lib.ioc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WCloud.Framework.MVC.Extension
 {

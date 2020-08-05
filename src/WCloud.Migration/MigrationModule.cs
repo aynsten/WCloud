@@ -1,23 +1,20 @@
-﻿using Lib.extension;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using System.Reflection;
+using System.Threading.Tasks;
+using Lib.extension;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Reflection;
-using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
 using WCloud.Core.Helper;
 using WCloud.Framework.MVC;
 using WCloud.Member.Application;
-using WCloud.MetroAd;
 
 namespace WCloud.Migration
 {
     [DependsOn(
-        typeof(MetroAdModule),
         typeof(MemberModule),
         typeof(CommonServiceModule),
         typeof(Volo.Abp.AspNetCore.Mvc.AbpAspNetCoreMvcModule)

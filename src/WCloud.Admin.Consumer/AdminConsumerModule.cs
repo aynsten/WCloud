@@ -1,8 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
@@ -11,13 +10,10 @@ using WCloud.Framework.MVC;
 using WCloud.Member.Application;
 using WCloud.Member.Application.InitData;
 using WCloud.Member.DataAccess.EF;
-using WCloud.MetroAd;
-using WCloud.MetroAd.InitData;
 
 namespace WCloud.Admin.Consumer
 {
     [DependsOn(
-        typeof(MetroAdModule),
         typeof(MemberModule),
         typeof(CommonServiceModule),
         typeof(Volo.Abp.AspNetCore.Mvc.AbpAspNetCoreMvcModule)
@@ -96,12 +92,6 @@ namespace WCloud.Admin.Consumer
                    .InitAdminUsers()
                    .InitOrgInfo()
                    .AddRandomUserAndJoinOrg();
-            }
-
-            using (var db = s.ServiceProvider.Resolve_<MetroAdDbContext>())
-            {
-                db.Database.EnsureCreated();
-                app.ApplicationServices.InitMediaTypes().InitMetroLinesAndStations();
             }
         }
     }

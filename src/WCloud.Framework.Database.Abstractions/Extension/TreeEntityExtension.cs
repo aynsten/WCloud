@@ -167,7 +167,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
             }
             else
             {
-                var parent = await repo.GetFirstAsync(x => x.UID == model.ParentUID);
+                var parent = await repo.QueryOneAsync(x => x.UID == model.ParentUID);
                 parent.Should().NotBeNull("父节点为空");
                 model.Level = parent.Level + 1;
             }
@@ -178,16 +178,16 @@ namespace WCloud.Framework.Database.Abstractions.Extension
                 return res;
             }
 
-            await repo.AddAsync(model);
+            await repo.InsertAsync(model);
             return res.SetSuccessData(model);
         }
 
         public static async Task DeleteTreeNodeRecursively<T>(this IRepository<T> repo, string node_uid) where T : TreeEntityBase
         {
-            var node = await repo.GetFirstAsync(x => x.UID == node_uid);
+            var node = await repo.QueryOneAsync(x => x.UID == node_uid);
             node.Should().NotBeNull();
 
-            var list = await repo.GetListAsync(x => x.GroupKey == node.GroupKey);
+            var list = await repo.QueryManyAsync(x => x.GroupKey == node.GroupKey);
             list.Count.Should().BeLessOrEqualTo(5000);
 
             var dead_nodes = list.FindNodeChildrenRecursively_(node).Select(x => x.UID);

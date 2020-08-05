@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Autofac;
@@ -19,12 +18,10 @@ using WCloud.Framework.Startup;
 using WCloud.Member.Application;
 using WCloud.Member.Authentication;
 using WCloud.Member.Domain;
-using WCloud.MetroAd;
 
 namespace WCloud.Admin
 {
     [DependsOn(
-        typeof(MetroAdModule),
         typeof(MemberModule),
         typeof(CommonServiceModule),
         typeof(AbpLocalizationModule),

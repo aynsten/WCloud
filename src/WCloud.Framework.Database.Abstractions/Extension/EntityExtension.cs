@@ -1,9 +1,8 @@
-﻿using FluentAssertions;
-using Lib.data;
-using Lib.extension;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Lib.extension;
 using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.Abstractions.Extension
@@ -77,7 +76,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
                 return res.SetErrorMsg(msg);
             }
 
-            await repo.AddAsync(model);
+            await repo.InsertAsync(model);
 
             return res.SetSuccessData(model);
         }

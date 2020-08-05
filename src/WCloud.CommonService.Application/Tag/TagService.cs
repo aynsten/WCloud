@@ -34,7 +34,7 @@ namespace WCloud.CommonService.Application.Tag
 
         public async Task<IEnumerable<TagEntity>> QueryAll()
         {
-            var data = await this._tagRepo.GetListAsync(x => x.Id >= 0, count: 5000);
+            var data = await this._tagRepo.QueryManyAsync(x => x.Id >= 0, count: 5000);
 
             return data;
         }
@@ -51,7 +51,7 @@ namespace WCloud.CommonService.Application.Tag
 
             data.InitSelf();
 
-            await this._tagRepo.AddAsync(data);
+            await this._tagRepo.InsertAsync(data);
             return res.SetSuccessData(data);
         }
 
@@ -61,7 +61,7 @@ namespace WCloud.CommonService.Application.Tag
             data.UID.Should().NotBeNullOrEmpty("update tag uid");
             data.TagName.Should().NotBeNullOrEmpty("update tag tag name");
 
-            var model = await this._tagRepo.GetFirstAsync(x => x.UID == data.UID);
+            var model = await this._tagRepo.QueryOneAsync(x => x.UID == data.UID);
             model.Should().NotBeNull();
 
             model.SetField(new

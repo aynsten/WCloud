@@ -16,7 +16,6 @@
     <ProjectReference Include="..\WCloud.Framework.Socket\WCloud.Framework.Socket.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Storage\WCloud.Framework.Storage.csproj" />
     <ProjectReference Include="..\WCloud.Identity.Providers\WCloud.Identity.Providers.csproj" />
-    <ProjectReference Include="..\WCloud.MetroAd\WCloud.MetroAd.csproj" />
     <ProjectReference Include="..\Lib\Lib.csproj" />
   </ItemGroup>
 

@@ -1,10 +1,10 @@
-﻿using Lib.data;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Lib.data;
+using Microsoft.EntityFrameworkCore;
 using WCloud.Framework.Database.Abstractions;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
@@ -17,12 +17,12 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
         IQueryable<T> TrakingQueryable { get; }
         IQueryable<T> NoTrackingQueryable { get; }
 
-        T GetFirstAsNoTrack(Expression<Func<T, bool>> where);
+        T QueryOneAsNoTrack(Expression<Func<T, bool>> where);
 
-        Task<T> GetFirstAsNoTrackAsync(Expression<Func<T, bool>> where);
+        Task<T> QueryOneAsNoTrackAsync(Expression<Func<T, bool>> where);
 
-        int AddBulk(IEnumerable<T> models);
+        int InsertBulk(IEnumerable<T> models);
 
-        Task<int> AddBulkAsync(IEnumerable<T> models);
+        Task<int> InsertBulkAsync(IEnumerable<T> models);
     }
 }

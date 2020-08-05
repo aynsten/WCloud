@@ -74,7 +74,7 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.StoreProvider
         {
             key.Should().NotBeNullOrEmpty();
 
-            var data = await this._repo.GetFirstAsync(x => x.Key == key);
+            var data = await this._repo.QueryOneAsync(x => x.Key == key);
 
             if (data == null)
             {
@@ -116,7 +116,7 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.StoreProvider
             var entity = this.__map__(grant);
             entity.CreateTimeUtc = DateTime.UtcNow;
 
-            await this._repo.AddAsync(entity);
+            await this._repo.InsertAsync(entity);
         }
     }
 }

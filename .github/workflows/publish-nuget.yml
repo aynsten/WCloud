@@ -27,7 +27,7 @@ jobs:
       
       - name: add-nuget-source
         run: |
-          dotnet nuget add source ${nuget_server} --name GitHub --username ${user_name} --password ${github_token}
+          dotnet nuget add source ${nuget_server} --name GitHub --username ${user_name} --password ${github_token} --store-password-in-clear-text
           nuget setapikey ${github_token} -Source ${nuget_server}
     
       - name: pack-and-push-lib

@@ -1,9 +1,8 @@
-﻿using Lib.extension;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
-using System;
 using WCloud.Framework.Redis.implement;
 
 namespace WCloud.Framework.Redis

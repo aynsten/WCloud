@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using WCloud.Core.MessageBus;
 
 namespace WCloud.Framework.MessageBus.Memory
 {

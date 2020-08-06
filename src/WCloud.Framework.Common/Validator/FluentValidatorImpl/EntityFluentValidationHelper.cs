@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using WCloud.Core.Validator;
 
-namespace WCloud.Core.Validator.FluentValidatorImpl
+namespace WCloud.Framework.Common.Validator.FluentValidatorImpl
 {
     /// <summary>
     /// 使用fluence validator验证

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace WCloud.Core.Validator.FluentValidatorImpl
+namespace WCloud.Framework.Common.Validator.FluentValidatorImpl
 {
     /// <summary>
     /// https://github.com/JeremySkinner/FluentValidation/issues

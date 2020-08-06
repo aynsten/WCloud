@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WCloud.Core.Cache;
+using WCloud.Core.MessageBus;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
 using WCloud.Framework.MVC.BaseController;

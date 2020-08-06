@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluentAssertions;
-using Lib.extension;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using WCloud.Core.MessageBus;
 using WCloud.Framework.MessageBus.Memory;
 using WCloud.Framework.MessageBus.Rabbitmq_;
@@ -69,59 +67,6 @@ namespace WCloud.Framework.MessageBus
             }
 
             return services;
-        }
-
-        public static IReadOnlyCollection<ConsumerDescriptor> ResolveConsumerMapping(this IServiceProvider provider)
-        {
-            var res = provider.Resolve_<IReadOnlyCollection<ConsumerDescriptor>>();
-            return res;
-        }
-
-        public static ConsumerDescriptor ResolveMessageTypeMapping<MessageType>(this IServiceProvider provider) where MessageType : class, IMessageBody
-        {
-            var mapping = provider.ResolveConsumerMapping();
-            var res = mapping.FirstOrDefault(x => x.MessageType == typeof(MessageType));
-            res.Should().NotBeNull();
-            return res;
-        }
-
-        public static IReadOnlyCollection<ConsumerDescriptor> ResolveConsumerMapping(this IServiceCollection services)
-        {
-            var res = services.GetSingletonInstanceOrNull<IReadOnlyCollection<ConsumerDescriptor>>();
-            res.Should().NotBeNull();
-            return res;
-        }
-
-        public static IServiceProvider StartMessageBusConsumer_(this IServiceProvider provider)
-        {
-            var logger = provider.Resolve_<ILogger<IConsumerStartor>>();
-
-            var all_started = true;
-
-            var startors = provider.ResolveAll_<IConsumerStartor>();
-            foreach (var m in startors)
-            {
-                try
-                {
-                    m.StartComsume();
-                }
-                catch (Exception e)
-                {
-                    all_started = false;
-                    logger.AddErrorLog("开启消费失败", e);
-                }
-            }
-
-            if (all_started)
-            {
-                logger.LogInformation("消费启动完成");
-            }
-            else
-            {
-                logger.LogWarning("部分或全部消息消费启动失败");
-            }
-
-            return provider;
         }
     }
 }

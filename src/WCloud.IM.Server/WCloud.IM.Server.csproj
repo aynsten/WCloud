@@ -22,6 +22,9 @@
     <ProjectReference Include="..\WCloud.Framework.Jobs\WCloud.Framework.Jobs.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Socket\WCloud.Framework.Socket.csproj" />
     <ProjectReference Include="..\WCloud.Member.Authentication\WCloud.Member.Authentication.csproj" />
+    <ProjectReference Include="..\WCloud.Member.Application\WCloud.Member.Application.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Update="nlog.config">

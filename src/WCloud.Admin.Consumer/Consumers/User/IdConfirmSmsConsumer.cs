@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using WCloud.Core;
+using WCloud.Core.MessageBus;
 using WCloud.Framework.MessageBus;
 using WCloud.Member.Shared.MessageBody;
 

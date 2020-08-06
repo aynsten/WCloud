@@ -15,9 +15,7 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: publish-lib
-      env:
-        nuget-source: https://nuget.pkg.github.com/wcloud-net/index.json
       working-directory: ./src/Lib/
       run: |
         dotnet pack -c Release
-        dotnet nuget push ./bin/Release/*.nupkg -s ${nuget-source} -k ${{ secrets.GITHUB_TOKEN }}
+        dotnet nuget push ./bin/Release/*.nupkg -s https://nuget.pkg.github.com/wcloud-net/index.json -k ${{ secrets.GITHUB_TOKEN }}

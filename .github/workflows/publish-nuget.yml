@@ -18,5 +18,5 @@ jobs:
       working-directory: ./src/Lib/
       run: |
         dotnet pack -c Release
-        dotnet nuget sources add -name "github" -Source https://nuget.pkg.github.com/wcloud-net/index.json -Username hiwjcn -Password ${{ secrets.GITHUB_TOKEN }}
+        dotnet nuget add source https://nuget.pkg.github.com/wcloud-net/index.json --name github --username hiwjcn --password ${{ secrets.GITHUB_TOKEN }}
         dotnet nuget push ./bin/Release/*.nupkg -s "github" --skip-duplicate

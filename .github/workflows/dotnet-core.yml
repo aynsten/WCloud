@@ -1,0 +1,21 @@
+name: publish-nuget
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    - name: publish-lib
+      working-directory: ./src/Lib/
+      run: |
+        dotnet pack -c Release
+        dotnet nuget push ./bin/Release/*.nupkg -s ${{ github.repository }} -k ${{ secrets.GITHUB_TOKEN }}

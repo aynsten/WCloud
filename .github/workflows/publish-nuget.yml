@@ -3,10 +3,15 @@ name: publish-nuget
 on:
   workflow_dispatch:
 
+env:
+  nuget_server: https://nuget.pkg.github.com/wcloud-net/index.json
+  user_name: hiwjcn
+  github_token: ${{secrets.GITHUB_TOKEN}}
+
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -16,15 +21,12 @@ jobs:
           dotnet-version: 3.1.301
       
       - name: add-nuget-source
-        run: dotnet nuget add source https://nuget.pkg.github.com/wcloud-net/index.json 
-          --name GitHub 
-          --username hiwjcn 
-          --password ${{secrets.GITHUB_TOKEN}}
-        shell: pwsh
-        
+        run: 
+          dotnet nuget add source ${nuget_server} --name GitHub --username ${user_name} --password ${github_token}
+          nuget setapikey ${github_token} -Source ${nuget_server}
+    
       - name: pack-and-push-lib
         working-directory: ./src/Lib/
         run: |
           dotnet pack -c Release
           dotnet nuget push ./bin/Release/*.nupkg --source GitHub --skip-duplicate
-        shell: pwsh

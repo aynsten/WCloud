@@ -1,6 +1,7 @@
 ﻿using Lib.helper;
+using WCloud.Core.Validator;
 
-namespace WCloud.Core.Validator.AttrValidatorImpl
+namespace WCloud.Framework.Common.Validator.AttrValidatorImpl
 {
     /// <summary>
     /// 使用validator attribute验证

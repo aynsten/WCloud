@@ -1,5 +1,5 @@
 using FluentValidation;
-using WCloud.Core.Validator.FluentValidatorImpl;
+using WCloud.Framework.Common.Validator.FluentValidatorImpl;
 using WCloud.Member.Domain.User;
 
 namespace WCloud.Member.Domain.Validators

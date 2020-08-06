@@ -2,7 +2,7 @@
 using Lib.helper;
 using System;
 
-namespace WCloud.Core.Validator.FluentValidatorImpl
+namespace WCloud.Framework.Common.Validator.FluentValidatorImpl
 {
     /// <summary>
     /// https://fluentvalidation.net/custom-validators

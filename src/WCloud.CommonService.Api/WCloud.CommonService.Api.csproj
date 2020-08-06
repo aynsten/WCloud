@@ -20,13 +20,11 @@
     
   <ItemGroup>
     <ProjectReference Include="..\WCloud.CommonService.Application\WCloud.CommonService.Application.csproj" />
+    <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Apm\WCloud.Framework.Apm.csproj" />
     <ProjectReference Include="..\WCloud.Framework.MVC\WCloud.Framework.MVC.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Socket\WCloud.Framework.Socket.csproj" />
     <ProjectReference Include="..\WCloud.Member.Authentication\WCloud.Member.Authentication.csproj" />
-    <ProjectReference Include="..\WCloud.Member.Application\WCloud.Member.Application.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>

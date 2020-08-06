@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
 
 env:
-  nuget_server: https://nuget.pkg.github.com/wcloud-net/index.json
+  nuget_server: https://api.nuget.org/v3/index.json
   user_name: hiwjcn
-  github_token: ${{secrets.GITHUB_TOKEN}}
+  nuget_token: ${{secrets.NUGET_TOKEN}}
 
 jobs:
   build:
@@ -24,14 +24,14 @@ jobs:
         uses: NuGet/setup-nuget@v1.0.2
         with:
          nuget-version: latest
-      
+
       - name: add-nuget-source
         run: |
-          dotnet nuget add source ${nuget_server} --name GitHub --username ${user_name} --password ${github_token} --store-password-in-clear-text
-          nuget setapikey ${github_token} -Source ${nuget_server}
+          dotnet nuget add source ${nuget_server} --name nuget_org
+          nuget setapikey ${nuget_token} -Source ${nuget_server}
     
       - name: pack-and-push-lib
         working-directory: ./src/Lib/
         run: |
           dotnet pack -c Release
-          dotnet nuget push ./bin/Release/*.nupkg --source GitHub --skip-duplicate
+          dotnet nuget push ./bin/Release/*.nupkg --source nuget_org --skip-duplicate

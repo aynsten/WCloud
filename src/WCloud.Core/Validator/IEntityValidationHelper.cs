@@ -9,7 +9,7 @@ namespace WCloud.Core.Validator
         bool IsValid(T model, out string msg);
     }
 
-    internal abstract class ValidationHelperBase<T> : IEntityValidationHelper<T> where T : class
+    public abstract class ValidationHelperBase<T> : IEntityValidationHelper<T> where T : class
     {
         public abstract bool __IsValid__(T model, out string[] messages);
 

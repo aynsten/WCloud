@@ -9,6 +9,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Threading.Tasks;
+using WCloud.Core.MessageBus;
 
 namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
 {

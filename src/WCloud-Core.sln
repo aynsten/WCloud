@@ -107,17 +107,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Database.L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Elasticsearch", "WCloud.Framework.Elasticsearch\WCloud.Framework.Elasticsearch.csproj", "{E4CC6F44-FB6B-4878-96DE-902BBD5EE96F}"
 EndProject
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "WCloud.Framework.Zookeeper", "WCloud.Framework.Zookeeper\WCloud.Framework.Zookeeper.csproj", "{E610EE7D-1C4F-4A35-B152-7029738CE724}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Zookeeper", "WCloud.Framework.Zookeeper\WCloud.Framework.Zookeeper.csproj", "{E610EE7D-1C4F-4A35-B152-7029738CE724}"
 EndProject
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "WCloud.Framework.IO", "WCloud.Framework.IO\WCloud.Framework.IO.csproj", "{13D5BBC6-1F62-4E82-BB8D-CCA1254279A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.IO", "WCloud.Framework.IO\WCloud.Framework.IO.csproj", "{13D5BBC6-1F62-4E82-BB8D-CCA1254279A7}"
 EndProject
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "WCloud.Framework.Orleans", "WCloud.Framework.Orleans\WCloud.Framework.Orleans.csproj", "{A0273DCC-C8F3-4BDD-AFAB-C58A92901152}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Orleans", "WCloud.Framework.Orleans\WCloud.Framework.Orleans.csproj", "{A0273DCC-C8F3-4BDD-AFAB-C58A92901152}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "32-Frameworks.MemberShip", "32-Frameworks.MemberShip", "{A60D3A76-6B44-40F4-A4FE-5306965028DE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "33-Frameworks.CommonService", "33-Frameworks.CommonService", "{F526440A-EA68-44F3-B3DB-A371545D19CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.CommonService.Shared", "WCloud.CommonService.Shared\WCloud.CommonService.Shared.csproj", "{058B9BF6-07A0-408E-833A-50D5AEA3FB22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Common", "WCloud.Framework.Common\WCloud.Framework.Common.csproj", "{853838CB-3AD8-4051-8ADF-AD002B692725}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -297,6 +299,10 @@ Global
 		{058B9BF6-07A0-408E-833A-50D5AEA3FB22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{058B9BF6-07A0-408E-833A-50D5AEA3FB22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{058B9BF6-07A0-408E-833A-50D5AEA3FB22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{853838CB-3AD8-4051-8ADF-AD002B692725}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{853838CB-3AD8-4051-8ADF-AD002B692725}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{853838CB-3AD8-4051-8ADF-AD002B692725}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{853838CB-3AD8-4051-8ADF-AD002B692725}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -351,6 +357,7 @@ Global
 		{13D5BBC6-1F62-4E82-BB8D-CCA1254279A7} = {7E00E916-5955-4B39-BCA8-0753BC7FB296}
 		{A0273DCC-C8F3-4BDD-AFAB-C58A92901152} = {7E00E916-5955-4B39-BCA8-0753BC7FB296}
 		{058B9BF6-07A0-408E-833A-50D5AEA3FB22} = {F526440A-EA68-44F3-B3DB-A371545D19CA}
+		{853838CB-3AD8-4051-8ADF-AD002B692725} = {7E00E916-5955-4B39-BCA8-0753BC7FB296}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BCE6D6AC-1FCF-437D-87BD-EA135E67597C}

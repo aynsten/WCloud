@@ -1,13 +1,20 @@
-﻿using Lib.extension;
-using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
-using WCloud.Core.Validator.FluentValidatorImpl;
+using Lib.extension;
+using Microsoft.Extensions.DependencyInjection;
+using WCloud.Core.Validator;
+using WCloud.Framework.Common.Validator.FluentValidatorImpl;
 
-namespace WCloud.Core
+namespace WCloud.Framework.Common.Validator
 {
-    public static class InfrastructureBootstrap
+    public static class Bootstrap
     {
+        public static IServiceCollection AddFluentValidatorHelper(this IServiceCollection collection)
+        {
+            collection.AddTransient(typeof(IEntityValidationHelper<>), typeof(EntityFluentValidationHelper<>));
+            return collection;
+        }
+
         public static IServiceCollection RegEntityValidators(this IServiceCollection collection, Assembly[] search_in_assembly)
         {
             var all_types = search_in_assembly.GetAllTypes().Where(x => x.IsNormalClass()).ToArray();

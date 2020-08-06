@@ -1,12 +1,13 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Lib.core;
 using Lib.extension;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using WCloud.CommonService.Application.FileUpload;
+using WCloud.Core.MessageBus;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
 using WCloud.Framework.MVC.BaseController;

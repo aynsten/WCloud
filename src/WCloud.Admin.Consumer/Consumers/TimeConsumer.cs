@@ -1,6 +1,7 @@
-﻿using Lib.extension;
+﻿using System.Threading.Tasks;
+using Lib.extension;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
+using WCloud.Core.MessageBus;
 using WCloud.Framework.MessageBus;
 
 namespace WCloud.Admin.Consumer.Consumers

@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using WCloud.Core.MessageBus;
 
-namespace WCloud.Framework.MessageBus
+namespace WCloud.Core.MessageBus
 {
     public class ConsumerDescriptor
     {

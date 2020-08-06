@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WCloud.Core.MessageBus;
 
-namespace WCloud.Framework.MessageBus
+namespace WCloud.Core.MessageBus
 {
     public interface IMessageConsumeContext<T>
     {

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WCloud.Core.Cache;
 using WCloud.Core.Helper;
+using WCloud.Core.MessageBus;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.Database.Abstractions.Helper;
 using WCloud.Framework.MessageBus;

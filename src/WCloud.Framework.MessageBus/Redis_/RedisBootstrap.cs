@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using WCloud.Core.MessageBus;
 
 namespace WCloud.Framework.MessageBus.Redis_
 {

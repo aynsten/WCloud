@@ -1,9 +1,9 @@
-﻿using Lib.cache;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Lib.cache;
+using Microsoft.Extensions.DependencyInjection;
 using WCloud.Core.Cache;
-using WCloud.Framework.MessageBus;
+using WCloud.Core.MessageBus;
 using WCloud.Member.Shared.MessageBody;
 
 namespace WCloud.Admin.MessageConsumers

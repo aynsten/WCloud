@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Lib.core;
 
-namespace WCloud.Framework.MessageBus
+namespace WCloud.Core.MessageBus
 {
     public class RepeatConsumeException : BaseException
     {

@@ -24,7 +24,9 @@
     <ProjectReference Include="..\WCloud.Framework.Storage\WCloud.Framework.Storage.csproj" />
     <ProjectReference Include="..\WCloud.Identity.Providers\WCloud.Identity.Providers.csproj" />
     <ProjectReference Include="..\WCloud.Member.Authentication\WCloud.Member.Authentication.csproj" />
-    <ProjectReference Include="..\Lib\Lib.csproj" />
+    <ProjectReference Include="..\WCloud.Member.Application\WCloud.Member.Application.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.json">
@@ -50,7 +52,6 @@
   <ItemGroup>
     <Folder Include="Consumers\Admin\" />
     <Folder Include="Consumers\User\" />
-    <Folder Include="Consumers\MetroAd\" />
   </ItemGroup>
 
   <ItemGroup>

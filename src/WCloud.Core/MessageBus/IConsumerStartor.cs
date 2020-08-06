@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WCloud.Framework.MessageBus
+namespace WCloud.Core.MessageBus
 {
     /// <summary>
     /// 开启或者关闭消息消费

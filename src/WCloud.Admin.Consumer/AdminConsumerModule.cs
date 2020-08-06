@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
+using WCloud.Core.MessageBus;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
 using WCloud.Member.Application;
@@ -26,7 +27,6 @@ namespace WCloud.Admin.Consumer
         {
             var services = context.Services;
             var _config = services.GetConfiguration();
-            var _env = services.GetHostingEnvironment();
 
             //基础配置
             services.AddBasicServices();

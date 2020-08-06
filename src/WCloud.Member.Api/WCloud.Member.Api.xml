@@ -316,7 +316,7 @@
             <param name="real_name"></param>
             <returns></returns>
         </member>
-        <member name="M:WCloud.Member.Api.Controller.UserIdConfirmController.SendOneTimeCode(WCloud.Framework.MessageBus.IMessagePublisher)">
+        <member name="M:WCloud.Member.Api.Controller.UserIdConfirmController.SendOneTimeCode(WCloud.Core.MessageBus.IMessagePublisher)">
             <summary>
             发送实名认证验证码
             </summary>

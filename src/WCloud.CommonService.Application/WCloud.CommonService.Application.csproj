@@ -20,5 +20,6 @@
     <ProjectReference Include="..\WCloud.Framework.Storage\WCloud.Framework.Storage.csproj" />
     <ProjectReference Include="..\WCloud.CommonService.Shared\WCloud.CommonService.Shared.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Database.EntityFrameworkCore\WCloud.Framework.Database.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Common\WCloud.Framework.Common.csproj" />
   </ItemGroup>
 </Project>

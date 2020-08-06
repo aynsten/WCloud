@@ -1,4 +1,5 @@
 ﻿using System;
+using WCloud.Core.MessageBus;
 
 namespace WCloud.Framework.MessageBus.Rabbitmq_.Intergration
 {

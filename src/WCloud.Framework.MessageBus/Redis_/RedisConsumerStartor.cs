@@ -1,7 +1,7 @@
-﻿using Lib.extension;
+﻿using System;
+using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+using WCloud.Core.MessageBus;
 
 namespace WCloud.Framework.MessageBus.Redis_
 {

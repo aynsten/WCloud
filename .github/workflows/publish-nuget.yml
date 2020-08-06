@@ -21,7 +21,9 @@ jobs:
           --username hiwjcn 
           --password ${{secrets.GITHUB_TOKEN}}
         shell: pwsh
+        
       - name: pack-and-push-lib
+        working-directory: ./src/Lib/
         run: |
           dotnet pack -c Release
           dotnet nuget push ./bin/Release/*.nupkg --source GitHub --skip-duplicate

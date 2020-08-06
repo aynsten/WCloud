@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\common.props" />
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
@@ -17,9 +16,7 @@
     <Folder Include="KVStore\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WCloud.Member.Application\WCloud.Member.Application.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Storage\WCloud.Framework.Storage.csproj" />
-    <ProjectReference Include="..\WCloud.CommonService.Shared\WCloud.CommonService.Shared.csproj" />
-    <ProjectReference Include="..\WCloud.Framework.Database.EntityFrameworkCore\WCloud.Framework.Database.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\WCloud.Framework.Common\WCloud.Framework.Common.csproj" />
   </ItemGroup>
 </Project>

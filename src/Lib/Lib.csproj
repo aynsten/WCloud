@@ -6,7 +6,7 @@
     不支持.net framework了
     <TargetFrameworks>netcoreapp3.1;net461;</TargetFrameworks>
   -->
-    <PackageId>WCloud.Library</PackageId>
+    <PackageId>lib.com.nuget</PackageId>
   </PropertyGroup>
 
   <!--

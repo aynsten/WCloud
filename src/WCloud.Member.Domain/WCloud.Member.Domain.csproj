@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\common.props" />
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
@@ -8,7 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\WCloud.Framework.Database.Abstractions\WCloud.Framework.Database.Abstractions.csproj" />
     <ProjectReference Include="..\WCloud.Member.Shared\WCloud.Member.Shared.csproj" />
-    <ProjectReference Include="..\WCloud.Framework.Common\WCloud.Framework.Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,7 +8,7 @@ namespace WCloud.IM.Server.Jobs
     {
         public async Task ExecuteAsync()
         {
-            await Task.CompletedTask;
+            //
         }
     }
 }

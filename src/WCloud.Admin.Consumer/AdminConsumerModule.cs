@@ -26,6 +26,7 @@ namespace WCloud.Admin.Consumer
         {
             var services = context.Services;
             var _config = services.GetConfiguration();
+            var _env = services.GetHostingEnvironment();
 
             //基础配置
             services.AddBasicServices();

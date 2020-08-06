@@ -1,14 +1,15 @@
-﻿using System;
-using System.Reflection;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.helper;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Reflection;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
-using WCloud.Framework.Common.Validator;
+using WCloud.Core;
 using WCloud.Framework.Storage;
 
 namespace WCloud.CommonService.Application

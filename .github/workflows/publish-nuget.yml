@@ -20,6 +20,11 @@ jobs:
         with:
           dotnet-version: 3.1.301
       
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.0.2
+        with:
+         nuget-version: latest
+      
       - name: add-nuget-source
         run: 
           dotnet nuget add source ${nuget_server} --name GitHub --username ${user_name} --password ${github_token}

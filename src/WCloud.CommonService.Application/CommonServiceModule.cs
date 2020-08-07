@@ -14,7 +14,6 @@ using WCloud.Framework.Storage;
 namespace WCloud.CommonService.Application
 {
     [DependsOn(
-        typeof(Volo.Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule),
         typeof(Volo.Abp.EntityFrameworkCore.MySQL.AbpEntityFrameworkCoreMySQLModule),
         typeof(Volo.Abp.AutoMapper.AbpAutoMapperModule)
         )]

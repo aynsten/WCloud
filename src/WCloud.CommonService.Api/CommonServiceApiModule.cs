@@ -18,6 +18,8 @@ namespace WCloud.CommonService.Api
     [DependsOn(
         typeof(MemberModule),
         typeof(CommonServiceModule),
+        typeof(Volo.Abp.Autofac.AbpAutofacModule),
+        typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),
         typeof(Volo.Abp.AspNetCore.Mvc.AbpAspNetCoreMvcModule)
         )]
     public class CommonServiceApiModule : AbpModule

@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
-using Volo.Abp.Autofac;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
@@ -24,9 +23,9 @@ namespace WCloud.Admin
     [DependsOn(
         typeof(MemberModule),
         typeof(CommonServiceModule),
-        typeof(AbpLocalizationModule),
-        typeof(AbpAutofacModule),
-        typeof(AbpAspNetCoreMvcModule)
+        typeof(Volo.Abp.Autofac.AbpAutofacModule),
+        typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),
+        typeof(Volo.Abp.AspNetCore.Mvc.AbpAspNetCoreMvcModule)
         )]
     public class AdminModule : AbpModule
     {

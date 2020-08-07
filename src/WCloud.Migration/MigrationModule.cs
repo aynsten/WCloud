@@ -17,6 +17,8 @@ namespace WCloud.Migration
     [DependsOn(
         typeof(MemberModule),
         typeof(CommonServiceModule),
+        typeof(Volo.Abp.Autofac.AbpAutofacModule),
+        typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),
         typeof(Volo.Abp.AspNetCore.Mvc.AbpAspNetCoreMvcModule)
         )]
     public class MigrationModule : AbpModule

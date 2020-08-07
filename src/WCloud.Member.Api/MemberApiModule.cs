@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
@@ -23,6 +22,8 @@ namespace WCloud.Member.Api
     [DependsOn(
         typeof(MemberModule),
         typeof(CommonServiceModule),
+        typeof(Volo.Abp.Autofac.AbpAutofacModule),
+        typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),
         typeof(Volo.Abp.AspNetCore.Mvc.AbpAspNetCoreMvcModule)
         )]
     public class MemberApiModule : AbpModule

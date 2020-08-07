@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.WebSockets;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
@@ -25,6 +26,8 @@ namespace WCloud.IM.Server
     [DependsOn(
         typeof(MemberModule),
         typeof(CommonServiceModule),
+        typeof(Volo.Abp.Autofac.AbpAutofacModule),
+        typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),
         typeof(Volo.Abp.AspNetCore.Mvc.AbpAspNetCoreMvcModule)
         )]
     public class SignalModule : AbpModule
@@ -61,6 +64,12 @@ namespace WCloud.IM.Server
             });
             services.AddHangfireServer();
             services.AddTransient<xx>();
+
+
+            services.AddSwaggerDoc_(this.GetType().Assembly, "signal", new OpenApiInfo()
+            {
+                Title = "signal",
+            });
 
 #if DEBUG
             services.AddRouting().AddMvc(option => option.AddExceptionHandler()).AddJsonProvider_();
@@ -100,6 +109,12 @@ namespace WCloud.IM.Server
 #endif
 
             app.UseAuthentication();
+
+            if (_config.SwaggerEnabled() || _env.IsDevelopment())
+            {
+                app.UseSwaggerGatewayDefinitionJson();
+                app.UseSwaggerWithUI(new[] { "signal" });
+            }
 
             app.UseWebSockets();
             app.UseWebSocketEndpoint("/ws");

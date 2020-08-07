@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Lib.extension;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,9 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.Framework.Apm;
@@ -24,6 +23,8 @@ namespace WCloud.Gateway
 {
     [DependsOn(
         typeof(MemberModule),
+        typeof(Volo.Abp.Autofac.AbpAutofacModule),
+        typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),
         typeof(Volo.Abp.AspNetCore.Mvc.AbpAspNetCoreMvcModule)
         )]
     public class GatewayModule : AbpModule

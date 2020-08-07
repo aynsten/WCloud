@@ -1,5 +1,4 @@
 ﻿using IdentityServer4.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,8 +19,10 @@ using WCloud.Member.Authentication;
 namespace WCloud.Identity
 {
     [DependsOn(
-        typeof(WCloud.CommonService.Application.CommonServiceModule),
         typeof(WCloud.Member.Application.MemberModule),
+        typeof(WCloud.CommonService.Application.CommonServiceModule),
+        typeof(Volo.Abp.Autofac.AbpAutofacModule),
+        typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),
         typeof(Volo.Abp.AspNetCore.Mvc.AbpAspNetCoreMvcModule)
         )]
     public class IdentityModule : AbpModule

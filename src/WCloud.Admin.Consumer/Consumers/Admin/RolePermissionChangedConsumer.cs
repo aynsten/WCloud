@@ -47,7 +47,9 @@ namespace WCloud.Admin.MessageConsumers
                         .Select(x => new { x.Id, x.AdminUID }).ToListAsync();
 
                     if (!list.Any())
+                    {
                         break;
+                    }
 
                     foreach (var m in list)
                     {

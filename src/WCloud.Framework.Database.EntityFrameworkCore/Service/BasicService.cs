@@ -62,7 +62,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
             count.Should().BeInRange(1, 5000);
 
             var res = await this._repo.QueryManyAsync(
-                where: x => x.Id >= 0,
+                where: null,
                 order_by: orderby,
                 desc: desc,
                 count: count);
@@ -74,7 +74,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
         {
             count.Should().BeInRange(1, 5000);
 
-            var res = await this._repo.QueryManyAsync(x => x.Id >= 0, count: count);
+            var res = await this._repo.QueryManyAsync(null, count: count);
             return res;
         }
 
@@ -85,7 +85,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
 
         public virtual async Task<PagerData<T>> Query(string q, int page, int pagesize)
         {
-            var res = await this.Query(q, page, pagesize, x => x.Id, true);
+            var res = await this.Query(q, page, pagesize, x => x.CreateTimeUtc, true);
             return res;
         }
 

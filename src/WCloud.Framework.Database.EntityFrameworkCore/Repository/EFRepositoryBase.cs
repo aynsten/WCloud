@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Lib.data;
 using Lib.extension;
 using Lib.helper;
@@ -11,34 +12,26 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 {
+    /// <summary>
+    /// 通过泛型指定dbcontext
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="DbContextType"></typeparam>
+    public abstract class EFRepositoryFromNew<T, DbContextType> : EFRepositoryBase<T>
+        where T : class, IDBTable
+        where DbContextType : DbContext, new()
+    {
+        protected EFRepositoryFromNew() : base(() => new DbContextType()) { }
+    }
+
     public abstract partial class EFRepositoryBase<T> : IEFRepository<T> where T : class, IDBTable
     {
-        private DbContext __context__ { get; set; }
-
-        private readonly object _lock = new object();
-        private readonly Func<DbContext> _db_getter;
+        private readonly Lazy<DbContext> _lazy_db;
 
         /// <summary>
         /// 懒加载，只有调用才会生成dbcontext
         /// </summary>
-        public DbContext Database
-        {
-            get
-            {
-                if (this.__context__ == null)
-                {
-                    lock (this._lock)
-                    {
-                        if (this.__context__ == null)
-                        {
-                            this.__context__ = this._db_getter.Invoke();
-                        }
-                    }
-                }
-
-                return this.__context__ ?? throw new NotSupportedException("无法获取EF Context");
-            }
-        }
+        public DbContext Database => this._lazy_db.Value;
 
         public DbSet<T> Table => this.Database.Set<T>();
         public IQueryable<T> TrakingQueryable => this.Table.AsQueryableTrackingOrNot(true);
@@ -47,7 +40,8 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 
         protected EFRepositoryBase(Func<DbContext> db_context_getter)
         {
-            this._db_getter = db_context_getter ?? throw new ArgumentNullException(nameof(db_context_getter));
+            db_context_getter.Should().NotBeNull();
+            this._lazy_db = new Lazy<DbContext>(db_context_getter);
         }
 
         #region 添加
@@ -322,7 +316,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 
         public virtual void Dispose()
         {
-            this.__context__?.Dispose();
+            this.Database?.Dispose();
         }
     }
 }

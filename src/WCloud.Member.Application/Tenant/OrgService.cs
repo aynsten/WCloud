@@ -130,7 +130,7 @@ namespace WCloud.Member.Application.Service.impl
             query = query.WhereIf(isremove != null, x => x.IsDeleted == isremove);
             query = query.WhereIf(ValidateHelper.IsNotEmpty(q), x => x.OrgName.StartsWith(q));
 
-            var data = await query.ToPagedListAsync(page, pagesize, x => x.Id);
+            var data = await query.ToPagedListAsync(page, pagesize, x => x.CreateTimeUtc);
 
             return data;
         }
@@ -170,7 +170,7 @@ namespace WCloud.Member.Application.Service.impl
 
             query = query.WhereIf(ValidateHelper.IsNotEmpty(q), x => x.UserName.StartsWith(q) || x.NickName.StartsWith(q));
 
-            var paged = await query.ToPagedListAsync(page, pagesize, x => x.Id);
+            var paged = await query.ToPagedListAsync(page, pagesize, x => x.CreateTimeUtc);
 
             return paged;
         }

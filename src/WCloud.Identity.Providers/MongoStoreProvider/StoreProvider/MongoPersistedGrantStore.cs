@@ -96,8 +96,8 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.StoreProvider
                 var data = await query.Take(batch_size).ToListAsync();
                 if (!data.Any())
                     break;
-                var ids = data.Select(x => x._id).ToArray();
-                await this._repo.DeleteWhereAsync(x => ids.Contains(x._id));
+                var ids = data.Select(x => x.Id).ToArray();
+                await this._repo.DeleteWhereAsync(x => ids.Contains(x.Id));
                 if (ids.Length < batch_size)
                     return;
             }

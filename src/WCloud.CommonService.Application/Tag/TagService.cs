@@ -34,7 +34,7 @@ namespace WCloud.CommonService.Application.Tag
 
         public async Task<IEnumerable<TagEntity>> QueryAll()
         {
-            var data = await this._tagRepo.QueryManyAsync(x => x.Id >= 0, count: 5000);
+            var data = await this._tagRepo.QueryManyAsync(null, count: 5000);
 
             return data;
         }
@@ -75,7 +75,9 @@ namespace WCloud.CommonService.Application.Tag
             var res = new _<TagEntity>();
 
             if (await this._tagRepo.ExistAsync(x => x.Id != model.Id && x.TagName == model.TagName))
+            {
                 return res.SetErrorMsg("存在同名标签");
+            }
 
             await this._tagRepo.UpdateAsync(model);
             return res.SetSuccessData(model);

@@ -29,7 +29,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.AbpDatabase
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            this.AutoApplyEntityConfigurationForMySQL(modelBuilder);
+            //
         }
 
         /// <summary>

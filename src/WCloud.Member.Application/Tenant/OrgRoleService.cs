@@ -32,7 +32,7 @@ namespace WCloud.Member.Application.Service.impl
             var query = this._orgRoleRepo.NoTrackingQueryable;
             query = query.Where(x => x.OrgUID == org_uid);
 
-            var list = await query.OrderByDescending(x => x.Id).Take(5000).ToListAsync();
+            var list = await query.OrderByDescending(x => x.CreateTimeUtc).Take(5000).ToListAsync();
 
             return list;
         }

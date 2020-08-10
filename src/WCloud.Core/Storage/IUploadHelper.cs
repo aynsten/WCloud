@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace WCloud.Framework.Storage
+namespace WCloud.Core.Storage
 {
     public interface IUploadHelper
     {

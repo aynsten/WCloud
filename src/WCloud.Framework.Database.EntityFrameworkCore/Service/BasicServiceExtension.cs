@@ -1,10 +1,11 @@
-﻿using System;
+﻿using System.Threading.Tasks;
+using WCloud.Framework.Database.Abstractions.Entity;
+using WCloud.Framework.Database.Abstractions.Service;
+
 namespace WCloud.Framework.Database.EntityFrameworkCore.Service
 {
-    public class BasicServiceExtension
+    public static class BasicServiceExtension
     {
-        public BasicServiceExtension()
-        {
-        }
+        //
     }
 }

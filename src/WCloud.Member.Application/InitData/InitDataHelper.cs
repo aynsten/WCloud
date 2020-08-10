@@ -42,7 +42,7 @@ namespace WCloud.Member.Application.InitData
                         UserName = admin_username,
                         NickName = admin_username,
                         PassWord = "123"
-                    }.InitSelf("admin");
+                    }.InitSelf();
 
                     var res = await this._login.AddAccount(model, specific_uid: admin_uid);
                     res.ThrowIfNotSuccess();
@@ -65,7 +65,7 @@ namespace WCloud.Member.Application.InitData
                 RoleDescription = "具有所有权限的超级管理员"
             };
 
-            admin_role.AsFirstLevel().InitSelf("role");
+            admin_role.AsFirstLevel().InitSelf();
             admin_role.UID = admin_role_uid;
             admin_role.PermissionJson = this._permission.AllPermissions().ToJson();
 
@@ -86,7 +86,7 @@ namespace WCloud.Member.Application.InitData
             {
                 AdminUID = admin_uid,
                 RoleUID = admin_role_uid,
-            }.InitSelf("ur");
+            }.InitSelf();
 
             set.Add(map);
 

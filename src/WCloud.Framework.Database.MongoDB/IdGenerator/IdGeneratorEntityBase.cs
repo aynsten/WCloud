@@ -1,10 +1,10 @@
 ﻿using System;
+
 namespace WCloud.Framework.Database.MongoDB.IdGenerator
 {
-    public class IdGeneratorEntityBase
+    public class IdGeneratorEntityBase : MongoEntityBase
     {
-        public IdGeneratorEntityBase()
-        {
-        }
+        public string Category { get; set; }
+        public int MaxID { get; set; }
     }
 }

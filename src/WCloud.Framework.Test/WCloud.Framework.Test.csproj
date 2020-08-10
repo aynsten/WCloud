@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WCloud.Framework.Database.EntityFrameworkCore\WCloud.Framework.Database.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Database.EntityFrameworkCore.MySQL\WCloud.Framework.Database.EntityFrameworkCore.MySQL.csproj" />
   </ItemGroup>
 
 </Project>

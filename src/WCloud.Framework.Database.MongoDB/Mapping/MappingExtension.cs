@@ -5,7 +5,6 @@ using System.Reflection;
 using FluentAssertions;
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace WCloud.Framework.Database.MongoDB.Mapping
 {

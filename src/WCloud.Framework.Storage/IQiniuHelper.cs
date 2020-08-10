@@ -1,14 +1,15 @@
-﻿using Qiniu.RS.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Qiniu.RS.Model;
+using WCloud.Core.Storage;
 
 namespace WCloud.Framework.Storage.Qiniu_
 {
     /// <summary>
     /// https://github.com/FoundatioFx/Foundatio
     /// </summary>
-    public interface IQiniuHelper:IUploadHelper
+    public interface IQiniuHelper : IUploadHelper
     {
         QiniuOption Option { get; }
 

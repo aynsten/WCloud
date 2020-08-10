@@ -1,12 +1,12 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Lib.extension;
 using Lib.helper;
 using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
-using System.Threading.Tasks;
+using WCloud.Core.Storage;
 using WCloud.Framework.Database.Abstractions.Extension;
-using WCloud.Framework.Storage;
 
 namespace WCloud.CommonService.Application.FileUpload
 {

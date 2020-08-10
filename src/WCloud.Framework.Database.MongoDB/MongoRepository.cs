@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Lib.helper;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using WCloud.Framework.Database.MongoDB.Mapping;
 
@@ -66,7 +65,7 @@ namespace WCloud.Framework.Database.MongoDB
         {
             model.Should().NotBeNull();
 
-            var filter = Builders<T>.Filter.Where(x => x._id == model._id);
+            var filter = Builders<T>.Filter.Where(x => x.Id == model.Id);
             return (int)this._collection.DeleteMany(filter).DeletedCount;
         }
 
@@ -74,7 +73,7 @@ namespace WCloud.Framework.Database.MongoDB
         {
             model.Should().NotBeNull();
 
-            var filter = Builders<T>.Filter.Where(x => x._id == model._id);
+            var filter = Builders<T>.Filter.Where(x => x.Id == model.Id);
             return (int)(await this._collection.DeleteManyAsync(filter)).DeletedCount;
         }
 
@@ -159,7 +158,7 @@ namespace WCloud.Framework.Database.MongoDB
             model.Should().NotBeNull();
 
             var set = this._collection;
-            return (int)set.ReplaceOne(x => x._id == model._id, model).ModifiedCount;
+            return (int)set.ReplaceOne(x => x.Id == model.Id, model).ModifiedCount;
         }
 
         public async Task<int> UpdateAsync(T model)
@@ -167,23 +166,21 @@ namespace WCloud.Framework.Database.MongoDB
             model.Should().NotBeNull();
 
             var set = this._collection;
-            return (int)(await set.ReplaceOneAsync(x => x._id == model._id, model)).ModifiedCount;
+            return (int)(await set.ReplaceOneAsync(x => x.Id == model.Id, model)).ModifiedCount;
         }
 
         public T GetByKeys(string key)
         {
             key.Should().NotBeNull();
 
-            var id = ObjectId.Parse(key);
-            return this._collection.Find(x => x._id == id).FirstOrDefault();
+            return this._collection.Find(x => x.Id == key).FirstOrDefault();
         }
 
         public async Task<T> GetByKeysAsync(string key)
         {
             key.Should().NotBeNull();
 
-            var id = ObjectId.Parse(key);
-            return await this._collection.Find(x => x._id == id).FirstOrDefaultAsync();
+            return await this._collection.Find(x => x.Id == key).FirstOrDefaultAsync();
         }
 
         public virtual void Dispose() { }

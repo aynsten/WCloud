@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
 namespace WCloud.Framework.Database.MongoDB

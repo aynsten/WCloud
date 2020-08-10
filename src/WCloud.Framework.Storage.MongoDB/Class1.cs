@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WCloud.Framework.Database.EntityFrameworkCore.MySQL
+namespace WCloud.Framework.Storage.MongoDB
 {
     public class Class1
     {

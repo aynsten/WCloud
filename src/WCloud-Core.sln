@@ -121,8 +121,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.CommonService.Shared
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Common", "WCloud.Framework.Common\WCloud.Framework.Common.csproj", "{853838CB-3AD8-4051-8ADF-AD002B692725}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Database.EntityFrameworkCore.MySQL", "WCloud.Framework.Database.EntityFrameworkCore.MySQL\WCloud.Framework.Database.EntityFrameworkCore.MySQL.csproj", "{3F423B51-04AD-4C84-A6DA-1F65338ADAE6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -305,10 +303,6 @@ Global
 		{853838CB-3AD8-4051-8ADF-AD002B692725}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{853838CB-3AD8-4051-8ADF-AD002B692725}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{853838CB-3AD8-4051-8ADF-AD002B692725}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F423B51-04AD-4C84-A6DA-1F65338ADAE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F423B51-04AD-4C84-A6DA-1F65338ADAE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F423B51-04AD-4C84-A6DA-1F65338ADAE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F423B51-04AD-4C84-A6DA-1F65338ADAE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -364,7 +358,6 @@ Global
 		{A0273DCC-C8F3-4BDD-AFAB-C58A92901152} = {7E00E916-5955-4B39-BCA8-0753BC7FB296}
 		{058B9BF6-07A0-408E-833A-50D5AEA3FB22} = {F526440A-EA68-44F3-B3DB-A371545D19CA}
 		{853838CB-3AD8-4051-8ADF-AD002B692725} = {7E00E916-5955-4B39-BCA8-0753BC7FB296}
-		{3F423B51-04AD-4C84-A6DA-1F65338ADAE6} = {A05088B3-9251-4DC7-A848-5A63C9CBE542}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BCE6D6AC-1FCF-437D-87BD-EA135E67597C}

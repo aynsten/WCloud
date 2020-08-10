@@ -32,7 +32,6 @@
     <ProjectReference Include="..\WCloud.CommonService.Application\WCloud.CommonService.Application.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Logging\WCloud.Framework.Logging.csproj" />
     <ProjectReference Include="..\WCloud.Member.Application\WCloud.Member.Application.csproj" />
-    <ProjectReference Include="..\WCloud.Framework.Aop\WCloud.Framework.Aop.csproj" />
   </ItemGroup>
 
 </Project>

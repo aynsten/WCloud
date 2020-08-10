@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WCloud.Core.Storage;
 using WCloud.Framework.Storage.Qiniu_;
 
 namespace WCloud.Framework.Storage

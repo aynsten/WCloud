@@ -1,5 +1,4 @@
-﻿#if DEBUG
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -16,7 +15,7 @@ using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.MongoDB
 {
-    class Mongoxx<T> where T : MongoEntityBase
+    public class Mongoxx<T> where T : MongoEntityBase
     {
         private readonly IMongoClient _client;
         private readonly IMongoDatabase _db;
@@ -61,7 +60,7 @@ namespace WCloud.Framework.Database.MongoDB
                 new MapReduceOptions<T, _>() { });
 
             //geo index
-            var index = Builders<T>.IndexKeys.Geo2D(x => x.Id).Geo2DSphere(x => x.Id);
+            var index = Builders<T>.IndexKeys.Geo2D(x => x._id).Geo2DSphere(x => x._id);
             set.Indexes.CreateOne(new CreateIndexModel<T>(index, new CreateIndexOptions()
             {
                 Name = "p"
@@ -70,8 +69,8 @@ namespace WCloud.Framework.Database.MongoDB
             set.Indexes.DropAll();
 
             //agg
-            var filter = Builders<T>.Filter.Where(x => x.Id == null);
-            var group = Builders<T>.Projection.Exclude(x => x.Id).Include(x => x.Id);
+            var filter = Builders<T>.Filter.Where(x => x._id == null);
+            var group = Builders<T>.Projection.Exclude(x => x._id).Include(x => x._id);
             var agg = set.Aggregate().Match(filter).Group(group).SortByCount(x => x.AsObjectId).ToList();
         }
 
@@ -87,17 +86,25 @@ namespace WCloud.Framework.Database.MongoDB
             condition &= Builders<T>.Filter.GeoWithin(field, new GeoJsonPolygon<GeoJson2DCoordinates>(null));
         }
     }
-
-    class xx : MongoEntityBase { }
+    public class xx : EntityBase { }
 
     [ConnectionStringName("xx")]
-    class MongoDbContextTest : AbpMongoDbContext
+    public class MongoDbContextTest : AbpMongoDbContext
     {
         public IMongoCollection<xx> xx => this.Collection<xx>();
 
         protected override void CreateModel(IMongoModelBuilder modelBuilder)
         {
             base.CreateModel(modelBuilder);
+        }
+
+        void test()
+        {
+            var update = new UpdateDefinitionBuilder<xx>();
+            update.Inc(x => x.Id, 1);
+
+
+            this.xx.UpdateOne(x => true, null);
         }
     }
 
@@ -121,5 +128,3 @@ namespace WCloud.Framework.Database.MongoDB
         }
     }
 }
-
-#endif

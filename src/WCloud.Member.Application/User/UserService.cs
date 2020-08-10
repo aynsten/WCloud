@@ -181,7 +181,7 @@ namespace WCloud.Member.Application.Service.impl
                 }
             }
 
-            var data = await query.ToPagedListAsync(page, pagesize, x => x.CreateTimeUtc, desc: false);
+            var data = await query.ToPagedListAsync(page, pagesize, x => x.Id, desc: false);
 
             return data;
         }

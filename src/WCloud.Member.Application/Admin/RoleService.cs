@@ -35,7 +35,7 @@ namespace WCloud.Member.Application.Service.impl
 
             query = query.WhereIf(ValidateHelper.IsNotEmpty(parent), x => x.ParentUID == parent);
 
-            var list = await query.OrderByDescending(x => x.CreateTimeUtc).Take(5000).ToListAsync();
+            var list = await query.OrderByDescending(x => x.Id).Take(5000).ToListAsync();
 
             return list;
         }

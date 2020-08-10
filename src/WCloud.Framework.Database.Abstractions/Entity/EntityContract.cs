@@ -30,11 +30,4 @@ namespace WCloud.Framework.Database.Abstractions.Entity
     {
         DateTime? UpdateTimeUtc { get; set; }
     }
-    /// <summary>
-    /// 自增id
-    /// </summary>
-    public interface IncID
-    {
-        int IncID { get; set; }
-    }
 }

@@ -27,7 +27,7 @@ namespace WCloud.Framework.Database.Abstractions.Entity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public override int Id { get; protected set; } = default;
+        public override int Id { get; protected set; }
 
         public virtual string UID { get; set; }
 

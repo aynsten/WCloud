@@ -32,7 +32,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var res = await this._userRepo.Database.Set<UserPhoneEntity>().AsNoTracking()
                 .Where(x => x.UserUID == user_uid)
-                .OrderByDescending(x => x.Id)
+                .OrderByDescending(x => x.CreateTimeUtc)
                 .ToArrayAsync();
 
             return res;
@@ -93,7 +93,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var map = await db.Set<ExternalLoginMapEntity>().AsNoTracking()
                 .Where(x => x.ProviderKey == provider && x.OpenID == openid)
-                .OrderByDescending(x => x.Id).Take(1).FirstOrDefaultAsync();
+                .OrderByDescending(x => x.CreateTimeUtc).Take(1).FirstOrDefaultAsync();
 
             return map;
         }
@@ -141,7 +141,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var map = await db.Set<ExternalLoginMapEntity>().AsNoTracking()
                 .Where(x => x.ProviderKey == provider && x.UserID == user_uid)
-                .OrderByDescending(x => x.Id)
+                .OrderByDescending(x => x.CreateTimeUtc)
                 .Take(1).FirstOrDefaultAsync();
 
             return map;

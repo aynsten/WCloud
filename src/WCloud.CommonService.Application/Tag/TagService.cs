@@ -75,7 +75,9 @@ namespace WCloud.CommonService.Application.Tag
             var res = new _<TagEntity>();
 
             if (await this._tagRepo.ExistAsync(x => x.Id != model.Id && x.TagName == model.TagName))
+            {
                 return res.SetErrorMsg("存在同名标签");
+            }
 
             await this._tagRepo.UpdateAsync(model);
             return res.SetSuccessData(model);

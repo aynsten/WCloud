@@ -20,7 +20,7 @@ namespace WCloud.CommonService.Application.KVStore
         {
             key.Should().NotBeNullOrEmpty("kv get value");
 
-            var res = await this._repo.Table.AsNoTracking().OrderByDescending(x => x.Id).FirstOrDefaultAsync(x => x.Key == key);
+            var res = await this._repo.Table.AsNoTracking().OrderByDescending(x => x.CreateTimeUtc).FirstOrDefaultAsync(x => x.Key == key);
 
             return res?.Value;
         }

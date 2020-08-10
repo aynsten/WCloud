@@ -73,7 +73,7 @@ namespace WCloud.Member.Application.Service.impl
             query = query.WhereIf(ValidateHelper.IsNotEmpty(name), x => x.NickName == name);
             query = query.WhereIf(ValidateHelper.IsNotEmpty(keyword), x => x.NickName.StartsWith(keyword));
 
-            var data = await query.ToPagedListAsync(page, pagesize, x => x.Id, desc: false);
+            var data = await query.ToPagedListAsync(page, pagesize, x => x.CreateTimeUtc, desc: false);
 
             return data;
         }

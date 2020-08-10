@@ -88,7 +88,7 @@ namespace WCloud.Framework.Database.MongoDB
         }
     }
 
-    class xx : EntityBase { }
+    class xx : MongoEntityBase { }
 
     [ConnectionStringName("xx")]
     class MongoDbContextTest : AbpMongoDbContext
@@ -98,15 +98,6 @@ namespace WCloud.Framework.Database.MongoDB
         protected override void CreateModel(IMongoModelBuilder modelBuilder)
         {
             base.CreateModel(modelBuilder);
-        }
-
-        void test()
-        {
-            var update = new UpdateDefinitionBuilder<xx>();
-            update.Inc(x => x.Id, 1);
-
-
-            this.xx.UpdateOne(x => true, null);
         }
     }
 

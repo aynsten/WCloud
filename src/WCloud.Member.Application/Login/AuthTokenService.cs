@@ -36,7 +36,7 @@ namespace WCloud.Member.Application.Service.impl
         protected virtual TokenModel Parse(AuthTokenEntity token) => new TokenModel()
         {
             UserUID = token.UserUID,
-            AccessToken = token.Id,
+            AccessToken = token.UID,
 
             ExtData = token.ExtData,
 
@@ -81,14 +81,14 @@ namespace WCloud.Member.Application.Service.impl
             access_token.Should().NotBeNullOrEmpty("get user id by token,token");
 
             var now = DateTime.UtcNow;
-            var token = await this._tokenRepo.QueryOneAsync(x => x.Id == access_token);
+            var token = await this._tokenRepo.QueryOneAsync(x => x.UID == access_token);
 
             if (token == null || token.ExpiryTimeUtc < now)
                 return null;
 
             //自动刷新过期时间
             if (this.NeedRefresh(token, now))
-                await this.RefreshToken(token.Id);
+                await this.RefreshToken(token.UID);
 
             var token_data = this.Parse(token);
 
@@ -119,7 +119,7 @@ namespace WCloud.Member.Application.Service.impl
             while (true)
             {
                 var list = await this._tokenRepo.QueryManyAsync(x => x.UserUID == user_uid, count: batch_count);
-                var token_uids = list.Select(x => x.Id).Distinct().ToArray();
+                var token_uids = list.Select(x => x.UID).Distinct().ToArray();
                 if (!token_uids.Any())
                     return;
 
@@ -135,7 +135,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var token_query = db.Set<AuthTokenEntity>();
 
-            token_query.RemoveRange(token_query.Where(x => token_uids.Contains(x.Id)));
+            token_query.RemoveRange(token_query.Where(x => token_uids.Contains(x.UID)));
 
             await db.SaveChangesAsync();
 
@@ -150,7 +150,7 @@ namespace WCloud.Member.Application.Service.impl
             access_token.Should().NotBeNullOrEmpty("refresh token,token");
 
             var now = DateTime.UtcNow;
-            var token = await this._tokenRepo.QueryOneAsync(x => x.Id == access_token);
+            var token = await this._tokenRepo.QueryOneAsync(x => x.UID == access_token);
             if (token == null || token.ExpiryTimeUtc < now)
                 return;
 

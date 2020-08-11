@@ -56,7 +56,7 @@ namespace WCloud.Member.Application.InitData
                 var org_set = db.Set<OrgEntity>();
                 var org_member_set = db.Set<OrgMemberEntity>();
                 //如果组织为空就创建假数据
-                if (!org_set.Any(x => x.Id == default_org_uid))
+                if (!org_set.Any(x => x.UID == default_org_uid))
                 {
                     //创建组织
                     var org = new OrgEntity()
@@ -65,7 +65,7 @@ namespace WCloud.Member.Application.InitData
                         UserUID = admin_uid,
                     }.InitSelf();
 
-                    org.SetId(default_org_uid);
+                    org.UID = default_org_uid;
 
                     org_set.Add(org);
                     //新建默认租户
@@ -95,7 +95,7 @@ namespace WCloud.Member.Application.InitData
                 return new OrgMemberEntity()
                 {
                     OrgUID = default_org_uid,
-                    UserUID = m.Id,
+                    UserUID = m.UID,
                     MemberApproved = 1,
                     IsOwner = 0
                 }.InitSelf("m");

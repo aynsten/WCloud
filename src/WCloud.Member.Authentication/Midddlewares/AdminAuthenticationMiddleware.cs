@@ -96,7 +96,7 @@ namespace WCloud.Member.Authentication.Midddlewares
 
                 var user_model = data.User;
 
-                user.UserID = user_model.Id;
+                user.UserID = user_model.UID;
                 user.NickName = user_model.NickName;
                 user.UserName = user_model.NickName;
                 user.UserImg = user_model.UserImg;

@@ -260,7 +260,7 @@ namespace WCloud.Framework.Elasticsearch
                 var attr_query = new QueryContainer();
                 foreach (var attr in attr_list)
                 {
-                    attr_query = attr_query || new TermQuery() { Field = $"ProductAttributes.{attr.Id}", Value = attr.value };
+                    attr_query = attr_query || new TermQuery() { Field = $"ProductAttributes.{attr.UID}", Value = attr.value };
                 }
                 qc = qc && new NestedQuery()
                 {
@@ -403,7 +403,7 @@ namespace WCloud.Framework.Elasticsearch
             //nested agg
             var path = string.Empty;
             sd = sd.Aggregations(x => x
-            .Nested("attr_nested", _ => _.Path(path).Aggregations(a => a.Terms("attr", f => f.Field($"{path}.Id").Size(1000)))));
+            .Nested("attr_nested", _ => _.Path(path).Aggregations(a => a.Terms("attr", f => f.Field($"{path}.UID").Size(1000)))));
         }
 
         /// <summary>
@@ -538,7 +538,7 @@ namespace WCloud.Framework.Elasticsearch
 
     class ___AttrParam
     {
-        public virtual string Id { get; set; }
+        public virtual string UID { get; set; }
 
         public virtual string value { get; set; }
     }

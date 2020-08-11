@@ -21,7 +21,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
             var tracker = base.__TrackEntity__(model);
 
             tracker.Property(x => x.Id).IsModified = false;
-            tracker.Property(x => x.Id).IsModified = false;
+            tracker.Property(x => x.UID).IsModified = false;
             tracker.Property(x => x.CreateTimeUtc).IsModified = false;
 
             return tracker;

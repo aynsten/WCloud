@@ -131,6 +131,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.CommonService.Shared
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Storage.MongoDB", "WCloud.Framework.Storage.MongoDB\WCloud.Framework.Storage.MongoDB.csproj", "{1E41765E-726C-47D4-97F5-BB5454E61A6D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Member.Initialization", "WCloud.Member.Initialization\WCloud.Member.Initialization.csproj", "{EF1DC6FB-67DE-4516-9ED2-BF8864970FB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -325,6 +327,10 @@ Global
 		{1E41765E-726C-47D4-97F5-BB5454E61A6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E41765E-726C-47D4-97F5-BB5454E61A6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E41765E-726C-47D4-97F5-BB5454E61A6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF1DC6FB-67DE-4516-9ED2-BF8864970FB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF1DC6FB-67DE-4516-9ED2-BF8864970FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF1DC6FB-67DE-4516-9ED2-BF8864970FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF1DC6FB-67DE-4516-9ED2-BF8864970FB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -384,6 +390,7 @@ Global
 		{B7CBA6F8-757E-4A79-94E9-5ACCC3D65179} = {A60D3A76-6B44-40F4-A4FE-5306965028DE}
 		{5B6A027A-7292-4D5A-ABF1-ED4DCF17E013} = {F526440A-EA68-44F3-B3DB-A371545D19CA}
 		{1E41765E-726C-47D4-97F5-BB5454E61A6D} = {F8C64B2F-6C65-4F54-BA05-C1D514FD04AA}
+		{EF1DC6FB-67DE-4516-9ED2-BF8864970FB3} = {A60D3A76-6B44-40F4-A4FE-5306965028DE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BCE6D6AC-1FCF-437D-87BD-EA135E67597C}

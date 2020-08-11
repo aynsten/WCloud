@@ -57,7 +57,9 @@ namespace WCloud.Member.Authentication.Midddlewares
             var my_orgs = await org_service.GetMyOrgMap(subject_id);
 
             var selected_org_uid = org_selector.GetSelectedOrgUID();
-            var selected_org = my_orgs.OrderByDescending(x => x.OrgUID == selected_org_uid ? 1 : 0).FirstOrDefault();
+            var selected_org = my_orgs
+                .OrderByDescending(x => x.OrgUID == selected_org_uid ? 1 : 0)
+                .ThenByDescending(x => x.CreateTimeUtc).FirstOrDefault();
             res.OrgMember = selected_org;
 
             return res;
@@ -94,7 +96,8 @@ namespace WCloud.Member.Authentication.Midddlewares
                     expire: TimeSpan.FromMinutes(10),
                     cache_when: x => x != null && x.User != null);
 
-                data.Should().NotBeNull(nameof(LoginDataWrapper));
+                if (data == null)
+                    throw new MsgException("缓存读取登录信息不存在");
                 data.User.Should().NotBeNull(nameof(UserEntity));
 
                 var user_model = data.User;

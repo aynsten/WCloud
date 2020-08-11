@@ -11,6 +11,10 @@ using WCloud.Core.Validator;
 
 namespace WCloud.Core
 {
+    /// <summary>
+    /// 在业务代码中使用，不要在底层基础框架中使用，不然容易导致循环依赖
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IWCloudContext<T> : IDisposable
     {
         IServiceProvider Provider { get; }

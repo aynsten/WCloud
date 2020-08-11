@@ -1,24 +1,14 @@
-﻿using System;
-using Lib.extension;
-using FluentAssertions;
-using System.Linq;
+﻿using MongoDB.Bson.Serialization;
 
 namespace WCloud.Framework.Database.MongoDB.Mapping
 {
-    public class EntityMapping
+    public interface IMongoEntityMapping
     {
-        public Type EntityType { get; }
-        public string CollectionName { get; }
+        public abstract string CollectionName { get; }
+    }
 
-        public EntityMapping(Type entity_type)
-        {
-            entity_type.Should().NotBeNull();
-            this.EntityType = entity_type;
-
-            var config = this.EntityType.GetCustomAttributes_<MongoEntityAttribute>().FirstOrDefault();
-            config.Should().NotBeNull();
-            this.CollectionName = config.CollectionName;
-        }
-
+    public interface IMongoEntityMapping<T> : IMongoEntityMapping
+    {
+        public abstract void ConfigMap(BsonClassMap<T> config);
     }
 }

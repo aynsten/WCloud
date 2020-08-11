@@ -119,7 +119,7 @@ namespace WCloud.Member.Api.Controller
                 return GetJsonRes("旧密码不匹配");
             }
 
-            await this._login.SetPassword(admin.UID, pwd);
+            await this._login.SetPassword(admin.Id, pwd);
 
             return SuccessJson();
         }

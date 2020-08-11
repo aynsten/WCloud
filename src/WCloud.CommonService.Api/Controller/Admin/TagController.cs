@@ -33,7 +33,7 @@ namespace WCloud.CommonService.Api.Controller
 
             var res = data.OrderByDescending(x => x.ReferenceCount).Select(x => new
             {
-                x.UID,
+                x.Id,
                 x.TagName,
                 x.Desc,
                 x.Icon,
@@ -55,7 +55,7 @@ namespace WCloud.CommonService.Api.Controller
         {
             var model = this.JsonToEntity_<TagEntity>(data);
 
-            if (ValidateHelper.IsNotEmpty(model.UID))
+            if (ValidateHelper.IsNotEmpty(model.Id))
             {
                 var res = await this._tagService.UpdateTag(model);
                 res.ThrowIfNotSuccess();

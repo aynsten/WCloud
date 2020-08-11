@@ -8,7 +8,6 @@ namespace System.Linq
 {
     public static class RepoExtension
     {
-
         /// <summary>
         /// 获取list
         /// </summary>

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Lib.extension;
+using Lib.helper;
 using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.Abstractions.Extension
@@ -12,20 +12,53 @@ namespace WCloud.Framework.Database.Abstractions.Extension
         /// <summary>
         /// 初始化后返回自己
         /// </summary>
-        public static T InitSelf<T>(this T model, string flag = null)
+        public static T InitEntity<T>(this T model, DateTime? utc_time = null)
             where T : EntityBase
         {
-            model.Init(flag);
+            var time = utc_time ?? DateTime.UtcNow;
+
+            var uid = Com.GetUUID();
+            model.SetId(uid);
+
+            model.CreateTimeUtc = time;
+            return model;
+        }
+
+        public static T InitTimeEntity<T>(this T model) where T : TimeEntityBase
+        {
+            model.InitEntity();
+            model.TimeYear = model.CreateTimeUtc.Year;
+            model.TimeMonth = model.CreateTimeUtc.Month;
+            model.TimeDay = model.CreateTimeUtc.Day;
+            model.TimeHour = model.CreateTimeUtc.Hour;
             return model;
         }
 
         /// <summary>
-        /// 更新信息后返回自己
+        /// 中国是东八区
         /// </summary>
-        public static T UpdateSelf<T>(this T model)
+        const int BeijingTimezoneOffset = +8;
+
+        public static DateTime? UpdateTimeBeijingTimezone(this IUpdateTime model)
+        {
+            var res = model.UpdateTimeUtc?.AddHours(BeijingTimezoneOffset);
+            return res;
+        }
+
+        public static DateTime CreateTimeBeijingTimezone(this EntityBase model)
+        {
+            var res = model.CreateTimeUtc.AddHours(BeijingTimezoneOffset);
+            return res;
+        }
+
+        /// <summary>
+        /// 更新时间等信息
+        /// </summary>
+        public static T SetUpdateTime<T>(this T model, DateTime? utc_time = null)
             where T : IUpdateTime
         {
-            model.Update();
+            var time = utc_time ?? DateTime.UtcNow;
+            model.UpdateTimeUtc = time;
             return model;
         }
 
@@ -41,6 +74,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
                 var val = m.GetValue(data);
                 var prop = props.FirstOrDefault(x => x.Name == m.Name);
                 prop.Should().NotBeNull();
+                prop.CanWrite.Should().BeTrue();
 
                 prop.SetValue(model, val);
             }
@@ -59,26 +93,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
                 uid.Should().NotBeNullOrEmpty("批量删除数据：uid为空");
             }
 
-            await repo.DeleteWhereAsync(x => uids.Contains(x.UID));
-        }
-
-        /// <summary>
-        /// init=>check=>save
-        /// </summary>
-        public static async Task<_<T>> AddEntity_<T>(this IRepository<T> repo, T model) where T : EntityBase
-        {
-            var res = new _<T>();
-
-            model.InitSelf();
-
-            if (!model.IsValid(out var msg))
-            {
-                return res.SetErrorMsg(msg);
-            }
-
-            await repo.InsertAsync(model);
-
-            return res.SetSuccessData(model);
+            await repo.DeleteWhereAsync(x => uids.Contains(x.Id));
         }
     }
 }

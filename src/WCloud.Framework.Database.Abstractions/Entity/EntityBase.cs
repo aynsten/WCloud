@@ -1,52 +1,42 @@
-﻿using Lib.data;
-using Lib.helper;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Lib.data;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 
 namespace WCloud.Framework.Database.Abstractions.Entity
 {
-    public interface IDtoBase : IEntityDto { }
+    public interface IDtoBase : IEntityDto<string>, IEntityDto, ICreateTime { }
 
-    public interface IDto : IEntityDto<int>
+    public abstract class DtoBase : IDtoBase
     {
-        //
-    }
-
-    public abstract class DtoBase : IDto, IDtoBase
-    {
-        public int Id { get; set; }
+        public string Id { get; set; }
+        public DateTime CreateTimeUtc { get; set; }
     }
 
     /// <summary>
     /// 实体基类
     /// </summary>
-    public abstract class EntityBase : Entity<int>, IDBTable
+    public abstract class EntityBase : Entity<string>, IDBTable, ICreateTime
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public override int Id { get; protected set; }
+        protected EntityBase() { }
+        protected EntityBase(string id) : base(id) { }
 
-        public virtual string UID { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public override string Id { get; protected set; }
+
+        public virtual void SetId(string _id)
+        {
+            this.Id = _id;
+        }
 
         public virtual DateTime CreateTimeUtc { get; set; }
 
-        /// <summary>
-        /// 第一次写库初始化
-        /// </summary>
-        [Obsolete]
-        public virtual void Init(string flag = null, DateTime? utc_time = null)
-        {
-            var time = utc_time ?? DateTime.UtcNow;
-
-            var uid = Com.GetUUID();
-            this.UID = ValidateHelper.IsEmpty(flag) ? uid : $"{flag}-{uid}";
-
-            this.CreateTimeUtc = time;
-        }
-
+        #region
+        /*
+         
         public override bool Equals(object obj)
         {
             var other = obj as EntityBase;
@@ -65,18 +55,18 @@ namespace WCloud.Framework.Database.Abstractions.Entity
                 return false;
             }
 
-            return this.UID == other.UID && (this.UID != default);
+            return this.Id == other.Id && (this.Id != default);
         }
 
         public override int GetHashCode()
         {
-            if (this.UID == null)
+            if (this.Id == null)
             {
                 return default;
             }
             else
             {
-                return this.UID.GetHashCode();
+                return this.Id.GetHashCode();
             }
         }
 
@@ -96,5 +86,7 @@ namespace WCloud.Framework.Database.Abstractions.Entity
         {
             return !(x == y);
         }
+         */
+        #endregion
     }
 }

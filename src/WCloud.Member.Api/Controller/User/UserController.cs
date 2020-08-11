@@ -30,7 +30,7 @@ namespace WCloud.Member.Api.Controller
 
             var loginuser = await this.GetLoginUserAsync();
 
-            model.UID = loginuser.UserID;
+            model.SetId(loginuser.UserID);
 
             var res = await this.userService.UpdateUser(model);
 

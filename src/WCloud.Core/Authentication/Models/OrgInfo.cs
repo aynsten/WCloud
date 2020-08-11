@@ -17,7 +17,7 @@ namespace WCloud.Core.Authentication.Model
     /// </summary>
     public class OrgInfo
     {
-        public string UID { get; set; }
+        public string Id { get; set; }
 
         public OrgExclusiveDatabase Database { get; set; }
 

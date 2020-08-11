@@ -1,20 +1,22 @@
-﻿using FluentAssertions;
-using IdentityModel;
-using IdentityModel.Client;
-using Lib.extension;
-using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FluentAssertions;
+using IdentityModel;
+using IdentityModel.Client;
+using Lib.extension;
+using Lib.helper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using WCloud.Core.Authentication.Model;
 using WCloud.Member.Application.Service;
 using WCloud.Member.Authentication.Filters;
@@ -24,6 +26,18 @@ namespace WCloud.Member.Authentication
 {
     public static class AuthExtensions
     {
+
+        public static bool __login_required__(this HttpContext context)
+        {
+            var endpoint = context.Features.Get<IEndpointFeature>()?.Endpoint;
+            if (endpoint == null)
+                return false;
+            var allow_anonymous = endpoint.Metadata.GetMetadata<AllowAnonymousAttribute>();
+            if (allow_anonymous != null)
+                return false;
+            return true;
+        }
+
         public static async Task<DiscoveryDocumentResponse> __disco__(this HttpClient httpClient, IConfiguration config)
         {
             var identity_server = config["identity_server"];
@@ -128,7 +142,7 @@ namespace WCloud.Member.Authentication
         {
             var list = new List<Claim>();
 
-            list.Add(new Claim(JwtClaimTypes.Subject, model.UID));
+            list.Add(new Claim(JwtClaimTypes.Subject, model.Id));
 
             if (ValidateHelper.IsNotEmpty(model.UserName))
             {

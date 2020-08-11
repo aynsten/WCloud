@@ -39,13 +39,13 @@ namespace WCloud.Member.Application.Service.impl
             data.Should().NotBeNull();
             if (data.Any())
             {
-                var uids = data.Select(x => x.UID).ToArray();
+                var uids = data.Select(x => x.Id).ToArray();
 
                 var phones = await this._userRepo.Database.Set<UserPhoneEntity>().AsNoTracking().Where(x => uids.Contains(x.UserUID)).ToArrayAsync();
 
                 foreach (var m in data)
                 {
-                    m.UserPhone = phones.FirstOrDefault(x => x.UserUID == m.UID);
+                    m.UserPhone = phones.FirstOrDefault(x => x.UserUID == m.Id);
                 }
             }
             return data;
@@ -54,12 +54,12 @@ namespace WCloud.Member.Application.Service.impl
         public virtual async Task<_<UserEntity>> UpdateUser(UserEntity model)
         {
             model.Should().NotBeNull();
-            model.UID.Should().NotBeNullOrEmpty();
+            model.Id.Should().NotBeNullOrEmpty();
 
             var data = new _<UserEntity>();
 
-            var user = await this._userRepo.QueryOneAsync(x => x.UID == model.UID);
-            user.Should().NotBeNull($"用户不存在:{model.UID}");
+            var user = await this._userRepo.QueryOneAsync(x => x.Id == model.Id);
+            user.Should().NotBeNull($"用户不存在:{model.Id}");
 
             user.SetField(new
             {
@@ -68,7 +68,7 @@ namespace WCloud.Member.Application.Service.impl
                 model.NickName
             });
 
-            user.Update();
+            user.SetUpdateTime();
 
             if (!user.IsValid(out var msg))
             {
@@ -89,14 +89,14 @@ namespace WCloud.Member.Application.Service.impl
 
             var data = new _<UserEntity>();
 
-            var user = await this._userRepo.QueryOneAsync(x => x.UID == user_uid);
+            var user = await this._userRepo.QueryOneAsync(x => x.Id == user_uid);
             user.Should().NotBeNull($"用户不存在:{user_uid}");
 
             user.IdCard = idcard;
             user.RealName = real_name;
             user.IdCardConfirmed = 1;
 
-            user.Update();
+            user.SetUpdateTime();
 
             await this._userRepo.UpdateAsync(user);
             data.SetSuccessData(user);
@@ -109,12 +109,12 @@ namespace WCloud.Member.Application.Service.impl
 
             var data = new _<UserEntity>();
 
-            var user = await this._userRepo.QueryOneAsync(x => x.UID == user_uid);
+            var user = await this._userRepo.QueryOneAsync(x => x.Id == user_uid);
             user.Should().NotBeNull($"用户不存在:{user_uid}");
 
             user.UserImg = avatar_url;
 
-            user.Update();
+            user.SetUpdateTime();
 
             await this._userRepo.UpdateAsync(user);
             data.SetSuccessData(user);
@@ -125,7 +125,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             uid.Should().NotBeNullOrEmpty();
 
-            var res = await this._userRepo.QueryOneAsync(x => x.UID == uid);
+            var res = await this._userRepo.QueryOneAsync(x => x.Id == uid);
             return res;
         }
 
@@ -134,7 +134,7 @@ namespace WCloud.Member.Application.Service.impl
             var uids_ = await db.Set<UserPhoneEntity>().AsNoTracking()
                 .Where(x => x.Phone == keyword).Select(x => x.UserUID).Take(1).ToArrayAsync();
 
-            query = query.Where(x => x.UserName == keyword || x.NickName == keyword || uids_.Contains(x.UID));
+            query = query.Where(x => x.UserName == keyword || x.NickName == keyword || uids_.Contains(x.Id));
 
             return query;
         }

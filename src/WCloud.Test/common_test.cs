@@ -1,9 +1,3 @@
-using FluentAssertions;
-using Lib.extension;
-using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,7 +5,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using WCloud.Member.Application.Entity;
+using FluentAssertions;
+using Lib.extension;
+using Lib.helper;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using WCloud.Member.Domain.User;
 
 namespace WCloud.Test
@@ -102,10 +101,10 @@ namespace WCloud.Test
 
             object.Equals(user, new UserEntity()).Should().BeFalse();
 
-            user.UID = "1";
-            object.Equals(user, new UserEntity() { UID = "1" }).Should().BeTrue();
+            user.SetId("1");
+            object.Equals(user, new UserEntity("1")).Should().BeTrue();
 
-            (user == new UserEntity() { UID = "1" }).Should().BeTrue();
+            (user == new UserEntity("1")).Should().BeTrue();
 
             (user is null).Should().BeFalse();
         }
@@ -414,8 +413,7 @@ Shouldly.ShouldAssertException: new /*---啦啦啦，抓的stack---*/common_test
             public User MockData()
             {
                 var f = new Bogus.Faker();
-                this.IID = f.UniqueIndex;
-                this.UID = f.Person.Random.Uuid().ToString();
+                this.Id = f.Person.Random.Uuid().ToString();
                 this.Name = f.Name.FullName();
                 this.Age = f.Random.Int(10, 50);
                 this.Address = f.Address.FullAddress();
@@ -424,9 +422,7 @@ Shouldly.ShouldAssertException: new /*---啦啦啦，抓的stack---*/common_test
                 return this;
             }
 
-            public virtual long IID { get; set; }
-
-            public virtual string UID { get; set; }
+            public virtual string Id { get; set; }
 
             public virtual string Name { get; set; }
 

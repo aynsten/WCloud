@@ -87,7 +87,7 @@ namespace WCloud.Member.Authentication.CustomAuth
             var key = this._keyManager.AuthToken(token);
             var data = await this._cache.GetOrSetAsync_(key, __load_user__, TimeSpan.FromMinutes(500));
 
-            if (data == null || ValidateHelper.IsEmpty(data.UID))
+            if (data == null || ValidateHelper.IsEmpty(data.Id))
                 throw new MsgException("fail to load user");
 
             return data;

@@ -112,7 +112,7 @@ namespace WCloud.Framework.MVC.BaseController
 
             var save_callback = this.AfterSave ?? (x => Task.CompletedTask);
 
-            if (ValidateHelper.IsNotEmpty(model.UID))
+            if (ValidateHelper.IsNotEmpty(model.Id))
             {
                 model = await this.PrepareUpdateData(model);
 

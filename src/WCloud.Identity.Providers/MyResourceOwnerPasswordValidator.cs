@@ -35,7 +35,7 @@ namespace WCloud.Identity.Providers
                 }
 
                 var model = res.Data;
-                var subject = model.UID;
+                var subject = model.Id;
 
                 var identity = new ClaimsIdentity(model.ToClaims());
                 identity.SetAccountType("user").SetCreateTimeUtc(DateTime.UtcNow);

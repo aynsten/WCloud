@@ -119,9 +119,9 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
         public virtual async Task Update(T data)
         {
             data.Should().NotBeNull();
-            data.UID.Should().NotBeNullOrEmpty();
+            data.Id.Should().NotBeNullOrEmpty();
 
-            var model = await this._repo.QueryOneAsync(x => x.UID == data.UID);
+            var model = await this._repo.QueryOneAsync(x => x.Id == data.Id);
             model.Should().NotBeNull();
 
             var update_fields = this.UpdateField(data);
@@ -141,7 +141,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
         {
             uid.Should().NotBeNullOrEmpty();
 
-            var res = await this._repo.QueryOneAsNoTrackAsync(x => x.UID == uid);
+            var res = await this._repo.QueryOneAsNoTrackAsync(x => x.Id == uid);
 
             return res;
         }

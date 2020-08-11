@@ -18,7 +18,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 
             var db = repo.Database;
 
-            var data = await db.Set<T>().Where(x => uids.Contains(x.UID)).ToArrayAsync();
+            var data = await db.Set<T>().Where(x => uids.Contains(x.Id)).ToArrayAsync();
 
             if (data.Any())
             {
@@ -39,7 +39,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 
             var data = await db.Set<T>().IgnoreQueryFilters()
                 .Where(x => x.IsDeleted > 0)
-                .Where(x => uids.Contains(x.UID)).ToArrayAsync();
+                .Where(x => uids.Contains(x.Id)).ToArrayAsync();
 
             if (data.Any())
             {

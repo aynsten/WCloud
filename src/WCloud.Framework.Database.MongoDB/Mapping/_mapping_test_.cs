@@ -10,7 +10,7 @@ namespace WCloud.Framework.Database.MongoDB.Mapping
             BsonClassMap.RegisterClassMap<MongoEntityBase>(x =>
             {
                 x.MapIdField(d => d.Id);
-                x.MapField(x => x.UID).SetElementName("");
+                x.MapField(x => x.Id).SetElementName("");
                 x.SetDiscriminator("x");
             });
         }

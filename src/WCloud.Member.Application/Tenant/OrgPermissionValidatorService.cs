@@ -85,7 +85,7 @@ namespace WCloud.Member.Application.PermissionValidator
                 var roles = from user_role in user_role_map.Where(x => x.OrgUID == org_uid && x.UserUID == subject_id)
 
                             join role_permission in role_query
-                            on user_role.RoleUID equals role_permission.UID
+                            on user_role.RoleUID equals role_permission.Id
 
                             select role_permission;
 

@@ -44,7 +44,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var res = new _<OrgEntity>();
 
-            model.Init("org");
+            model.InitEntity();
             if (!model.IsValid(out var msg))
             {
                 res.SetErrorMsg(msg);
@@ -76,22 +76,22 @@ namespace WCloud.Member.Application.Service.impl
         {
             uid.Should().NotBeNullOrEmpty();
 
-            var org = await this._orgRepo.QueryOneAsync(x => x.UID == uid);
+            var org = await this._orgRepo.QueryOneAsync(x => x.Id == uid);
             org.Should().NotBeNull($"客户不存在:{uid}");
 
             org.IsDeleted = (!active).ToBoolInt();
-            org.Update();
+            org.SetUpdateTime();
 
             await this._orgRepo.UpdateAsync(org);
         }
         public virtual async Task<_<OrgEntity>> UpdateOrg(OrgEntity model)
         {
             model.Should().NotBeNull();
-            model.UID.Should().NotBeNullOrEmpty();
+            model.Id.Should().NotBeNullOrEmpty();
 
             var res = new _<OrgEntity>();
 
-            var entity = await this._orgRepo.QueryOneAsync(x => x.UID == model.UID);
+            var entity = await this._orgRepo.QueryOneAsync(x => x.Id == model.Id);
 
             entity.Should().NotBeNull("组织不存在");
 
@@ -100,7 +100,7 @@ namespace WCloud.Member.Application.Service.impl
             entity.OrgWebSite = model.OrgWebSite;
             entity.Phone = model.Phone;
 
-            entity.Update();
+            entity.SetUpdateTime();
             if (!entity.IsValid(out var msg))
             {
                 res.SetErrorMsg(msg);
@@ -117,7 +117,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             org_uid.Should().NotBeNullOrEmpty();
 
-            var res = await this._orgRepo.QueryOneAsync(x => x.UID == org_uid);
+            var res = await this._orgRepo.QueryOneAsync(x => x.Id == org_uid);
             return res;
         }
 
@@ -148,7 +148,7 @@ namespace WCloud.Member.Application.Service.impl
             org_uids.Should().NotBeNull();
             org_uids.Should().NotBeNullOrEmpty();
 
-            var res = await this._orgRepo.QueryManyAsync(x => org_uids.Contains(x.UID));
+            var res = await this._orgRepo.QueryManyAsync(x => org_uids.Contains(x.Id));
             return res;
         }
 
@@ -165,7 +165,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var query = from map in map_query.Where(x => x.OrgUID == org_uid)
                         join user in user_query.Where(x => x.IsDeleted == 1)
-                        on map.UserUID equals user.UID
+                        on map.UserUID equals user.Id
                         select user;
 
             query = query.WhereIf(ValidateHelper.IsNotEmpty(q), x => x.UserName.StartsWith(q) || x.NickName.StartsWith(q));
@@ -181,7 +181,7 @@ namespace WCloud.Member.Application.Service.impl
             model.OrgUID.Should().NotBeNullOrEmpty();
             model.UserUID.Should().NotBeNullOrEmpty();
 
-            var org = await this._orgRepo.QueryOneAsNoTrackAsync(x => x.UID == model.OrgUID);
+            var org = await this._orgRepo.QueryOneAsNoTrackAsync(x => x.Id == model.OrgUID);
             org.Should().NotBeNull();
 
             if (org.MemeberCount >= 3000)
@@ -191,14 +191,14 @@ namespace WCloud.Member.Application.Service.impl
 
             await this._orgMemberRepo.DeleteWhereAsync(x => x.UserUID == model.UserUID && x.OrgUID == model.OrgUID);
 
-            var res = await this._orgMemberRepo.AddEntity_(model);
+            var res = await this._orgMemberRepo.InsertAsync(model);
 
             {
                 //更新数量
                 await this.UpdateOrgMemberCount(model.OrgUID);
             }
 
-            return res;
+            return new _<OrgMemberEntity>().SetSuccessData(model);
         }
 
         public virtual async Task<_<OrgMemberEntity>> RemoveOwner(string org_uid, string user_uid)
@@ -235,11 +235,11 @@ namespace WCloud.Member.Application.Service.impl
             user_in_org.Should().Be(true);
 
             var db = this._orgMemberRepo.Database;
-            var user = await db.Set<UserEntity>().IgnoreQueryFilters().FirstOrDefaultAsync(x => x.UID == user_uid);
+            var user = await db.Set<UserEntity>().IgnoreQueryFilters().FirstOrDefaultAsync(x => x.Id == user_uid);
             user.Should().NotBeNull();
 
             user.IsDeleted = active ? 0 : 1;
-            user.Update();
+            user.SetUpdateTime();
 
             await db.SaveChangesAsync();
 
@@ -268,7 +268,7 @@ namespace WCloud.Member.Application.Service.impl
             var query = from map in map_query.Where(x => x.OrgUID == org_uid)
                         orderby map.CreateTimeUtc ascending
                         join user in user_query
-                        on map.UserUID equals user.UID
+                        on map.UserUID equals user.Id
                         select user;
 
             var list = await query.Take(3000).ToListAsync();
@@ -287,10 +287,10 @@ namespace WCloud.Member.Application.Service.impl
             var query = from role in role_query.Where(x => x.OrgUID == org_uid && x.RoleUID == role_uid)
 
                         join user in user_query
-                        on role.UserUID equals user.UID
+                        on role.UserUID equals user.Id
 
                         join member in member_query.Where(x => x.OrgUID == org_uid)
-                        on user.UID equals member.UserUID
+                        on user.Id equals member.UserUID
 
                         select user;
 
@@ -307,7 +307,7 @@ namespace WCloud.Member.Application.Service.impl
             if (ValidateHelper.IsNotEmpty(list))
             {
                 var db = this._orgRepo.Database;
-                var uids = list.Select(x => x.UID).ToArray();
+                var uids = list.Select(x => x.Id).ToArray();
 
                 var map_query = db.Set<OrgMemberEntity>().AsNoTrackingQueryable();
                 var role_query = db.Set<OrgMemberRoleEntity>().AsNoTrackingQueryable();
@@ -324,7 +324,7 @@ namespace WCloud.Member.Application.Service.impl
                 var roles = MemberRoleHelper.GetRoles();
                 foreach (var m in list)
                 {
-                    var map = org_map.FirstOrDefault(x => x.UserUID == m.UID);
+                    var map = org_map.FirstOrDefault(x => x.UserUID == m.Id);
                     if (map != null)
                     {
                         //mapping
@@ -333,7 +333,7 @@ namespace WCloud.Member.Application.Service.impl
                         //m.OrgFlagName = string.Join(",", MemberRoleHelper.ParseRoleNames(map.Flag, roles).Take(3).ToList());
                     }
                     //角色
-                    m.OrgRoleUIDs = role_map.Where(x => x.UserUID == m.UID).Select(x => x.RoleUID).ToArray();
+                    m.OrgRoleUIDs = role_map.Where(x => x.UserUID == m.Id).Select(x => x.RoleUID).ToArray();
                 }
             }
 
@@ -346,7 +346,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var db = this._orgRepo.Database;
 
-            var org = await db.Set<OrgEntity>().FirstOrDefaultAsync(x => x.UID == org_uid);
+            var org = await db.Set<OrgEntity>().FirstOrDefaultAsync(x => x.Id == org_uid);
             org.Should().NotBeNull();
 
             var map_query = db.Set<OrgMemberEntity>().AsNoTrackingQueryable();
@@ -354,12 +354,12 @@ namespace WCloud.Member.Application.Service.impl
 
             var query = from map in map_query.Where(x => x.OrgUID == org_uid)
                         join user in user_query
-                        on map.UserUID equals user.UID
+                        on map.UserUID equals user.Id
                         select user.Id;
 
             org.MemeberCount = await query.CountAsync();
 
-            org.Update();
+            org.SetUpdateTime();
 
             await db.SaveChangesAsync();
         }
@@ -371,16 +371,16 @@ namespace WCloud.Member.Application.Service.impl
 
             var res = new _<OrgEntity>();
 
-            var org = await this._orgRepo.QueryOneAsync(x => x.UID == org_uid);
+            var org = await this._orgRepo.QueryOneAsync(x => x.Id == org_uid);
             org.Should().NotBeNull();
 
-            if (!await this._orgRepo.ExistAsync(x => x.OrgName == name && x.UID != org.UID))
+            if (!await this._orgRepo.ExistAsync(x => x.OrgName == name && x.Id != org.Id))
             {
                 return res.SetErrorMsg("名称已经存在");
             }
 
             org.OrgName = name;
-            org.Update();
+            org.SetUpdateTime();
 
             await this._orgRepo.UpdateAsync(org);
 
@@ -400,7 +400,7 @@ namespace WCloud.Member.Application.Service.impl
             //删除旧的角色
             await this._orgMemberRoleRepo.DeleteWhereAsync(x => x.OrgUID == org_uid && x.UserUID == user_uid);
 
-            await this._orgMemberRoleRepo.InsertBulkAsync(model.Select(x => x.InitSelf()));
+            await this._orgMemberRoleRepo.InsertBulkAsync(model.Select(x => x.InitEntity()));
         }
 
         public async Task<IEnumerable<OrgEntity>> LoadOwners(IEnumerable<OrgEntity> list)
@@ -409,7 +409,7 @@ namespace WCloud.Member.Application.Service.impl
 
             if (ValidateHelper.IsNotEmpty(list))
             {
-                var org_uids = list.Select(x => x.UID).ToArray();
+                var org_uids = list.Select(x => x.Id).ToArray();
 
                 var db = this._orgRepo.Database;
 
@@ -424,19 +424,19 @@ namespace WCloud.Member.Application.Service.impl
 
                 if (user_uids.Any())
                 {
-                    var users = await user_query.Where(x => user_uids.Contains(x.UID)).ToArrayAsync();
+                    var users = await user_query.Where(x => user_uids.Contains(x.Id)).ToArrayAsync();
 
                     foreach (var m in list)
                     {
-                        var uids = maps.Where(x => x.OrgUID == m.UID).Select(x => x.UserUID).ToArray();
-                        m.Owners = users.Where(x => uids.Contains(x.UID)).ToList();
+                        var uids = maps.Where(x => x.OrgUID == m.Id).Select(x => x.UserUID).ToArray();
+                        m.Owners = users.Where(x => uids.Contains(x.Id)).ToList();
                     }
                 }
 
                 /*
-                var query = from map in map_query.Where(x => org_uids.Contains(x.UID) && x.IsOwner > 0)
+                var query = from map in map_query.Where(x => org_uids.Contains(x.Id) && x.IsOwner > 0)
                             join user in user_query
-                            on map.UserUID equals user.UID
+                            on map.UserUID equals user.Id
                             select new
                             {
                                 map.OrgUID,

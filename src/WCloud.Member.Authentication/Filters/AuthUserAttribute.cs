@@ -1,10 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using WCloud.Core;
-using WCloud.Core.Authentication.Model;
 using WCloud.Framework.MVC.Attribute_;
-using WCloud.Member.Authentication.UserContext;
 
 namespace WCloud.Member.Authentication.Filters
 {
@@ -12,9 +10,9 @@ namespace WCloud.Member.Authentication.Filters
     {
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var loginContext = context.HttpContext.RequestServices.Resolve_<ILoginContext<WCloudUserInfo>>();
+            var loginContext = context.HttpContext.RequestServices.Resolve_<IWCloudContext<AuthUserAttribute>>();
 
-            var loginuser = await loginContext.GetLoginContextAsync();
+            var loginuser = loginContext.CurrentUserInfo;
 
             if (loginuser == null)
             {

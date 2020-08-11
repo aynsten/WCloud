@@ -17,5 +17,6 @@
 
   <ItemGroup>
     <Folder Include="Storage\" />
+    <Folder Include="Mapper\" />
   </ItemGroup>
 </Project>

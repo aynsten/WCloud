@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
+using WCloud.Core;
 using WCloud.Core.MessageBus;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
@@ -15,6 +16,7 @@ using WCloud.Member.DataAccess.EF;
 namespace WCloud.Admin.Consumer
 {
     [DependsOn(
+        typeof(CoreModule),
         typeof(MemberModule),
         typeof(CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),

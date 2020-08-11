@@ -89,7 +89,7 @@ namespace WCloud.Member.Application.PermissionValidator
                 var roles = user_role_query.Where(x => x.AdminUID == subject_id).Select(x => x.RoleUID);
 
                 var res = await role_query
-                    .Where(x => roles.Contains(x.UID))
+                    .Where(x => roles.Contains(x.Id))
                     .ToArrayAsync();
 
                 return res.SelectMany(x => this.permissionSerializer.Deserialize(x.PermissionJson)).Distinct().ToArray();

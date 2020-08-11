@@ -12,6 +12,7 @@ using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Volo.Abp;
 using Volo.Abp.Modularity;
+using WCloud.Core;
 using WCloud.Framework.Apm;
 using WCloud.Framework.MVC;
 using WCloud.Framework.Startup;
@@ -22,6 +23,7 @@ using WCloud.Member.Authentication;
 namespace WCloud.Gateway
 {
     [DependsOn(
+        typeof(CoreModule),
         typeof(MemberModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),
         typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),

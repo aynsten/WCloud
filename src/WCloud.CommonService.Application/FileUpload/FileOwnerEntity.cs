@@ -6,9 +6,9 @@ using WCloud.Framework.Database.EntityFrameworkCore;
 
 namespace WCloud.CommonService.Application.FileUpload
 {
-    public class FileOwnerEntityDto : IDto
+    public class FileOwnerEntityDto : DtoBase
     {
-        public int Id { get; set; }
+
     }
 
     [Table("tb_file_owner")]

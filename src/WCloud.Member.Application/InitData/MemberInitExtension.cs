@@ -56,16 +56,16 @@ namespace WCloud.Member.Application.InitData
                 var org_set = db.Set<OrgEntity>();
                 var org_member_set = db.Set<OrgMemberEntity>();
                 //如果组织为空就创建假数据
-                if (!org_set.Any(x => x.UID == default_org_uid))
+                if (!org_set.Any(x => x.Id == default_org_uid))
                 {
                     //创建组织
                     var org = new OrgEntity()
                     {
                         OrgName = "体验水司",
                         UserUID = admin_uid,
-                    }.InitSelf();
+                    }.InitEntity();
 
-                    org.UID = default_org_uid;
+                    org.SetId(default_org_uid);
 
                     org_set.Add(org);
                     //新建默认租户
@@ -80,7 +80,7 @@ namespace WCloud.Member.Application.InitData
                         UserUID = admin_uid,
                         MemberApproved = 1,
                         Flag = (int)MemberRoleEnum.管理员
-                    }.InitSelf("auto-mb");
+                    }.InitEntity();
                     org_member_set.Add(map);
                     db.SaveChanges();
                 }
@@ -95,10 +95,10 @@ namespace WCloud.Member.Application.InitData
                 return new OrgMemberEntity()
                 {
                     OrgUID = default_org_uid,
-                    UserUID = m.UID,
+                    UserUID = m.Id,
                     MemberApproved = 1,
                     IsOwner = 0
-                }.InitSelf("m");
+                }.InitEntity();
             }
 
             using (var s = app.CreateScope())
@@ -113,7 +113,7 @@ namespace WCloud.Member.Application.InitData
                         NickName = faker.Name.FullName(),
                         UserSex = (int)faker.Person.Gender,
                         PassWord = password,
-                    }.InitSelf("user");
+                    }.InitEntity();
                 }
 
                 var db = s.ServiceProvider.Resolve_<IMSRepository<UserEntity>>().Database;

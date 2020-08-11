@@ -6,7 +6,18 @@ using WCloud.Framework.Database.EntityFrameworkCore;
 
 namespace WCloud.CommonService.Application.Message
 {
-    public class UserMessageEntityDto : UserMessageEntity, IDtoBase { }
+    public class UserMessageEntityDto : DtoBase
+    {
+        public virtual string FromUID { get; set; } = "system";
+
+        public virtual string UserUID { get; set; }
+
+        public virtual string Message { get; set; }
+
+        public virtual int AlreadyRead { get; set; }
+
+        public virtual DateTime? ReadTimeUtc { get; set; }
+    }
 
     [Table("tb_user_message")]
     public class UserMessageEntity : EntityBase, ICommonServiceEntity

@@ -19,6 +19,7 @@ using WCloud.Member.Authentication;
 namespace WCloud.Identity
 {
     [DependsOn(
+        typeof(CoreModule),
         typeof(WCloud.Member.Application.MemberModule),
         typeof(WCloud.CommonService.Application.CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),

@@ -5,7 +5,20 @@ using WCloud.Framework.Database.EntityFrameworkCore;
 
 namespace WCloud.CommonService.Application.Tag
 {
-    public class TagEntityDto : TagEntity, IDtoBase { }
+    public class TagEntityDto : DtoBase
+    {
+        public string TagName { get; set; }
+
+        public string Desc { get; set; } = string.Empty;
+
+        public string Icon { get; set; }
+
+        public string Image { get; set; }
+
+        public int ReferenceCount { get; set; }
+
+        public string Group { get; set; }
+    }
 
     [Table("tb_tag")]
     public class TagEntity : EntityBase, ICommonServiceEntity

@@ -33,12 +33,12 @@ namespace WCloud.Member.Application.Service.impl
         public virtual async Task UpdateUser(AdminEntity model)
         {
             model.Should().NotBeNull("admin service model");
-            model.UID.Should().NotBeNullOrEmpty("admin service model uid");
+            model.Id.Should().NotBeNullOrEmpty("admin service model uid");
 
             var data = new _<AdminEntity>();
 
-            var user = await this._adminRepo.QueryOneAsync(x => x.UID == model.UID);
-            user.Should().NotBeNull($"admin不存在:{model.UID}");
+            var user = await this._adminRepo.QueryOneAsync(x => x.Id == model.Id);
+            user.Should().NotBeNull($"admin不存在:{model.Id}");
 
             user.SetField(new
             {
@@ -49,7 +49,7 @@ namespace WCloud.Member.Application.Service.impl
                 model.ContactEmail
             });
 
-            user.Update();
+            user.SetUpdateTime();
 
             await this._adminRepo.UpdateAsync(user);
         }
@@ -58,8 +58,17 @@ namespace WCloud.Member.Application.Service.impl
         {
             uid.Should().NotBeNullOrEmpty("admin service getuserbyuid");
 
-            var res = await this._adminRepo.QueryOneAsync(x => x.UID == uid);
+            var res = await this._adminRepo.QueryOneAsync(x => x.Id == uid);
             return res;
+        }
+
+        public async Task<AdminDto> GetAdminById(string uid)
+        {
+            uid.Should().NotBeNullOrEmpty("admin service getuserbyuid");
+
+            var res = await this._adminRepo.QueryOneAsync(x => x.Id == uid);
+
+            throw new NotImplementedException();
         }
 
         public async Task<PagerData<AdminEntity>> QueryUserList(string name = null, string email = null, string keyword = null, int? isremove = null, int page = 1, int pagesize = 20)
@@ -92,19 +101,19 @@ namespace WCloud.Member.Application.Service.impl
 
             if (list.Any())
             {
-                var uids = list.Select(x => x.UID).ToList();
+                var uids = list.Select(x => x.Id).ToList();
                 var maps = await this._adminRoleRepo.Database.Set<AdminRoleEntity>().AsNoTrackingQueryable()
                     .Where(x => uids.Contains(x.AdminUID)).Select(x => new { x.AdminUID, x.RoleUID }).ToArrayAsync();
 
                 if (maps.Any())
                 {
                     var role_uids = maps.Select(x => x.RoleUID).ToList();
-                    var roles = await this._roleRepo.QueryManyAsync(x => role_uids.Contains(x.UID));
+                    var roles = await this._roleRepo.QueryManyAsync(x => role_uids.Contains(x.Id));
 
                     foreach (var m in list)
                     {
-                        var user_uids = maps.Where(x => x.AdminUID == m.UID).Select(x => x.RoleUID).ToList();
-                        m.Roles = roles.Where(x => user_uids.Contains(x.UID)).ToArray();
+                        var user_uids = maps.Where(x => x.AdminUID == m.Id).Select(x => x.RoleUID).ToList();
+                        m.Roles = roles.Where(x => user_uids.Contains(x.Id)).ToArray();
                     }
                 }
             }
@@ -122,7 +131,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var res = new _<AdminEntity>();
 
-            model.InitSelf();
+            model.InitEntity();
             if (await this._adminRepo.ExistAsync(x => x.UserName == model.UserName))
             {
                 return res.SetErrorMsg("用户名已存在");
@@ -149,7 +158,7 @@ namespace WCloud.Member.Application.Service.impl
 
                 var query = from user in user_query
                             join map in role_map_query.Where(x => role_uid.Contains(x.RoleUID))
-                            on user.UID equals map.AdminUID
+                            on user.Id equals map.AdminUID
                             select user;
 
                 user_query = query;

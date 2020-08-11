@@ -26,6 +26,10 @@ namespace WCloud.Framework.Database.Abstractions.Entity
         /// </summary>
         public DateTime RowVersion { get; set; }
     }
+    public interface ICreateTime
+    {
+        DateTime CreateTimeUtc { get; set; }
+    }
     public interface IUpdateTime
     {
         DateTime? UpdateTimeUtc { get; set; }
@@ -33,7 +37,7 @@ namespace WCloud.Framework.Database.Abstractions.Entity
     /// <summary>
     /// 自增id
     /// </summary>
-    public interface IncID
+    public interface IIncID
     {
         int IncID { get; set; }
     }

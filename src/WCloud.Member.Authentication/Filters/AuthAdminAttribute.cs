@@ -1,17 +1,15 @@
-﻿using Lib.extension;
-using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc.Filters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lib.extension;
+using Lib.helper;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 using WCloud.Core;
-using WCloud.Core.Authentication.Model;
 using WCloud.Framework.MVC.Attribute_;
 using WCloud.Framework.MVC.Extension;
 using WCloud.Member.Application.PermissionValidator;
-using WCloud.Member.Authentication.UserContext;
 
 namespace WCloud.Member.Authentication.Filters
 {
@@ -61,11 +59,11 @@ namespace WCloud.Member.Authentication.Filters
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var loginContext = context.HttpContext.RequestServices.Resolve_<ILoginContext<WCloudAdminInfo>>();
-            var loginuser = await loginContext.GetLoginContextAsync();
+            var loginContext = context.HttpContext.RequestServices.Resolve_<IWCloudContext<AuthAdminAttribute>>();
+            var loginuser = loginContext.CurrentAdminInfo;
 
             //检查登录
-            if (loginuser == null)
+            if (!loginuser.IsAuthed())
             {
                 throw new NoLoginException();
             }

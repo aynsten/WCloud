@@ -83,7 +83,7 @@ namespace IdentityServer4.Quickstart.UI
             if (user == null)
                 return Content("用户不存在或者被禁用");
 
-            var identity = new IdentityServer4.IdentityServerUser(user.UID)
+            var identity = new IdentityServer4.IdentityServerUser(user.Id)
             {
                 DisplayName = user.UserName
             };

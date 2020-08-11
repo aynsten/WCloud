@@ -1,11 +1,10 @@
-﻿using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System.Threading.Tasks;
+using Lib.helper;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using WCloud.Core;
 using WCloud.Core.Authentication.Model;
 using WCloud.Member.Application.PermissionValidator;
-using WCloud.Member.Authentication.UserContext;
 
 namespace WCloud.Member.Authentication.ControllerExtensions
 {
@@ -15,7 +14,7 @@ namespace WCloud.Member.Authentication.ControllerExtensions
     {
         static async Task __validate_login_context__(ControllerBase controller, WCloudAdminInfo loginuser, string[] permissions)
         {
-            if (loginuser == null)
+            if (!loginuser.IsAuthed())
                 //没有登录
                 throw new NoLoginException();
 
@@ -29,8 +28,8 @@ namespace WCloud.Member.Authentication.ControllerExtensions
 
         public static async Task<WCloudAdminInfo> GetLoginAdminAsync<T>(this T controller, string[] permissions = null) where T : ControllerBase, IAdminController
         {
-            var user_context = controller.HttpContext.RequestServices.Resolve_<ILoginContext<WCloudAdminInfo>>();
-            var loginuser = await user_context.GetLoginContextAsync();
+            var user_context = controller.HttpContext.RequestServices.Resolve_<IWCloudContext<T>>();
+            var loginuser = user_context.CurrentAdminInfo;
 
             await __validate_login_context__(controller, loginuser, permissions);
 

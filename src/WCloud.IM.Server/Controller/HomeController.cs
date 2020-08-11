@@ -10,6 +10,7 @@ using System;
 using System.IO;
 using WCloud.Framework.MVC.BaseController;
 using WCloud.Member.Authentication.ControllerExtensions;
+using WCloud.Member.Authentication;
 
 namespace WCloud.IM.Server.Controllers
 {
@@ -27,7 +28,11 @@ namespace WCloud.IM.Server.Controllers
             this._logger = logger;
         }
 
-        public IActionResult Index() => Content("ok");
+        public IActionResult Index()
+        {
+            var x = this.HttpContext.__login_required__();
+            return Content("ok");
+        }
 
 #if DEBUG
         public IActionResult log()

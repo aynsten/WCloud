@@ -33,7 +33,7 @@ namespace WCloud.Framework.Database.Abstractions.Entity
     /// <summary>
     /// 自增id
     /// </summary>
-    public interface IIncID
+    public interface IncID
     {
         int IncID { get; set; }
     }

@@ -8,7 +8,7 @@ namespace WCloud.CommonService.Application.FileUpload
 {
     public class FileOwnerEntityDto : IDto
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 
     [Table("tb_file_owner")]

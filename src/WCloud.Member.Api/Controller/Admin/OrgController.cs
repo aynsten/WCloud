@@ -69,7 +69,7 @@ namespace WCloud.Member.Api.Controller
                 totalPage = pager.PageCount,//Math.Ceiling((double)pager.ItemCount / pager.PageSize),
                 data = pager.DataList.Select(x => new
                 {
-                    x.Id,
+                    x.UID,
                     x.OrgName,
                     x.OrgDescription,
                     x.OrgWebSite,
@@ -79,7 +79,7 @@ namespace WCloud.Member.Api.Controller
                     x.CreateTimeUtc,
                     Owner = x.Owners.Select(m => new
                     {
-                        m.Id,
+                        m.UID,
                         m.UserName,
                         m.NickName,
                         m.UserImg
@@ -105,7 +105,7 @@ namespace WCloud.Member.Api.Controller
 
             model.UserUID = loginuser.UserID;
 
-            if (ValidateHelper.IsNotEmpty(model.Id))
+            if (ValidateHelper.IsNotEmpty(model.UID))
             {
                 var res = await this._orgService.UpdateOrg(model);
 
@@ -175,7 +175,7 @@ namespace WCloud.Member.Api.Controller
             var map_orgmember = new OrgMemberEntity()
             {
                 OrgUID = org_uid,
-                UserUID = user.Id,
+                UserUID = user.UID,
                 IsOwner = 1,
                 MemberApproved = 1,
             };

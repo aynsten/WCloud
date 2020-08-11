@@ -58,10 +58,10 @@ namespace WCloud.CommonService.Application.Tag
         public async Task<_<TagEntity>> UpdateTag(TagEntity data)
         {
             data.Should().NotBeNull("update tag data");
-            data.Id.Should().NotBeNullOrEmpty("update tag uid");
+            data.UID.Should().NotBeNullOrEmpty("update tag uid");
             data.TagName.Should().NotBeNullOrEmpty("update tag tag name");
 
-            var model = await this._tagRepo.QueryOneAsync(x => x.Id == data.Id);
+            var model = await this._tagRepo.QueryOneAsync(x => x.UID == data.UID);
             model.Should().NotBeNull();
 
             model.SetField(new
@@ -117,7 +117,7 @@ namespace WCloud.CommonService.Application.Tag
         {
             model.Should().NotBeNull("save tags model");
 
-            await this.SaveTags<T>(model.Id, tags_uid);
+            await this.SaveTags<T>(model.UID, tags_uid);
         }
 
         public async Task SaveTags<T>(string subject_id, IEnumerable<string> tags_uid)

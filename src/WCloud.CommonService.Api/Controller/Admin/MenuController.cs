@@ -50,7 +50,7 @@ namespace WCloud.CommonService.Api.Controller
             var model = this.JsonToEntity_<MenuEntity>(data);
             var admin = await this.GetLoginAdminAsync();
 
-            if (ValidateHelper.IsEmpty(model.Id))
+            if (ValidateHelper.IsEmpty(model.UID))
             {
                 var res = await this.menuService.AddMenu(model);
                 res.ThrowIfNotSuccess();

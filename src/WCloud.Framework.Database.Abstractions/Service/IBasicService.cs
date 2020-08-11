@@ -18,6 +18,10 @@ namespace WCloud.Framework.Database.Abstractions.Service
 
         Task<IEnumerable<T>> QueryTop<SortField>(int count, Expression<Func<T, SortField>> orderby, bool desc);
 
+        Task<IEnumerable<T>> QueryByMaxID(int max_id, int count);
+
+        Task<IEnumerable<T>> QueryByMinID(int? min_id, int count);
+
         Task<PagerData<T>> Query(string q, int page, int pagesize);
         
         Task<PagerData<T>> Query<SortField>(string q, int page, int pagesize,

@@ -119,9 +119,9 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
         public virtual async Task Update(T data)
         {
             data.Should().NotBeNull();
-            data.Id.Should().NotBeNullOrEmpty();
+            data.UID.Should().NotBeNullOrEmpty();
 
-            var model = await this._repo.QueryOneAsync(x => x.Id == data.Id);
+            var model = await this._repo.QueryOneAsync(x => x.UID == data.UID);
             model.Should().NotBeNull();
 
             var update_fields = this.UpdateField(data);
@@ -141,7 +141,38 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
         {
             uid.Should().NotBeNullOrEmpty();
 
-            var res = await this._repo.QueryOneAsNoTrackAsync(x => x.Id == uid);
+            var res = await this._repo.QueryOneAsNoTrackAsync(x => x.UID == uid);
+
+            return res;
+        }
+
+        public virtual async Task<IEnumerable<T>> QueryByMaxID(int max_id, int count)
+        {
+            count.Should().BeInRange(1, 5000);
+
+            var query = this._repo.NoTrackingQueryable;
+
+            query = query.Where(x => x.Id > max_id).OrderBy(x => x.Id).Take(count);
+
+            var res = await query.ToArrayAsync();
+
+            return res;
+        }
+
+        public virtual async Task<IEnumerable<T>> QueryByMinID(int? min_id, int count)
+        {
+            count.Should().BeInRange(1, 5000);
+
+            var query = this._repo.NoTrackingQueryable;
+
+            if (min_id != null)
+            {
+                query = query.Where(x => x.Id < min_id.Value);
+            }
+
+            query = query.OrderByDescending(x => x.Id).Take(count);
+
+            var res = await query.ToArrayAsync();
 
             return res;
         }

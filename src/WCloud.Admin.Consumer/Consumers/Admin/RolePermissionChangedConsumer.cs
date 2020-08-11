@@ -36,16 +36,15 @@ namespace WCloud.Admin.MessageConsumers
                 var repo = provider.Resolve_<IMSRepository<AdminRoleEntity>>();
                 var query = repo.NoTrackingQueryable;
 
-                var page = 1;
-                var page_size = 500;
-
+                var max_id = -1L;
+                var batch_size = 500;
                 while (true)
                 {
                     var list = await query
                         .Where(x => x.RoleUID == role_id)
-                        .OrderBy(x => x.CreateTimeUtc)
-                        .QueryPage(page, page_size)
-                        .ToArrayAsync();
+                        .Where(x => x.Id > max_id)
+                        .OrderBy(x => x.Id).Take(batch_size)
+                        .Select(x => new { x.Id, x.AdminUID }).ToListAsync();
 
                     if (!list.Any())
                     {
@@ -58,7 +57,7 @@ namespace WCloud.Admin.MessageConsumers
                         await cache.RemoveAsync(key);
                     }
 
-                    ++page;
+                    max_id = list.Max(x => x.Id);
                 }
             }
             catch (Exception e)

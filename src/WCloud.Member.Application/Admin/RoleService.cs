@@ -59,12 +59,12 @@ namespace WCloud.Member.Application.Service.impl
         public virtual async Task<_<RoleEntity>> UpdateRole(RoleEntity model)
         {
             model.Should().NotBeNull("update role model");
-            model.Id.Should().NotBeNullOrEmpty("update role uid");
+            model.UID.Should().NotBeNullOrEmpty("update role uid");
 
             var data = new _<RoleEntity>();
 
-            var role = await this._roleRepo.QueryOneAsync(x => x.Id == model.Id);
-            role.Should().NotBeNull($"角色不存在：{model.Id}");
+            var role = await this._roleRepo.QueryOneAsync(x => x.UID == model.UID);
+            role.Should().NotBeNull($"角色不存在：{model.UID}");
 
             role.NodeName = model.NodeName;
             role.RoleDescription = model.RoleDescription;
@@ -100,7 +100,7 @@ namespace WCloud.Member.Application.Service.impl
             role_uid.Should().NotBeNullOrEmpty("set role permission role uid");
             permissions.Should().NotBeNull("set role permission permissions");
 
-            var model = await this._roleRepo.QueryOneAsync(x => x.Id == role_uid);
+            var model = await this._roleRepo.QueryOneAsync(x => x.UID == role_uid);
             model.Should().NotBeNull("set role permission");
 
             if (!this.permissionSerializer.Deserialize(model.PermissionJson).AllEqual(permissions))

@@ -119,7 +119,7 @@ namespace WCloud.Member.Application.Service.impl
             var old = await table.Where(x =>
             x.ProviderKey == model.ProviderKey &&
             x.UserID == model.UserID &&
-            x.Id != model.Id).ToArrayAsync();
+            x.UID != model.UID).ToArrayAsync();
 
             if (old.Any())
             {

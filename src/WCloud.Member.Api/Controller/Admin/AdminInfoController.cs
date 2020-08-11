@@ -44,7 +44,7 @@ namespace WCloud.Member.Api.Controller
         {
             return new
             {
-                data.Id,
+                data.UID,
                 data.UserName,
                 data.NickName,
                 data.UserImg,
@@ -114,14 +114,14 @@ namespace WCloud.Member.Api.Controller
                 data.ItemCount,
                 Data = data.DataList.Select(x => new
                 {
-                    x.Id,
+                    x.UID,
                     x.UserName,
                     x.NickName,
                     x.UserImg,
                     x.IsDeleted,
                     Roles = x.Roles.Select(m => new
                     {
-                        m.Id,
+                        m.UID,
                         m.NodeName
                     })
                 })
@@ -138,7 +138,7 @@ namespace WCloud.Member.Api.Controller
         /// <returns></returns>
         [HttpPost, ApiRoute, AuthAdmin(Permission = per)]
         public async Task<IActionResult> AddAdmin(
-            [FromServices]IEntityValidationHelper validator, [FromForm] string data)
+            [FromServices]IEntityValidationHelper<AdminEntity> validator, [FromForm] string data)
         {
             var model = this.JsonToEntity_<AdminEntity>(data);
             model.PassWord = "123";
@@ -205,11 +205,11 @@ namespace WCloud.Member.Api.Controller
 
             var loginuser = await this.GetLoginAdminAsync();
 
-            model.SetId(loginuser.UserID);
+            model.UID = loginuser.UserID;
 
             await this._adminService.UpdateUser(model);
 
-            var key = this._keyManager.AdminInfo(model.Id);
+            var key = this._keyManager.AdminInfo(model.UID);
             await this._cache.RemoveAsync(key);
 
             return SuccessJson();

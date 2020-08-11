@@ -110,7 +110,7 @@ namespace WCloud.Member.Authentication.Midddlewares
 
                 var user_model = data.User;
 
-                user.UserID = user_model.Id;
+                user.UserID = user_model.UID;
                 user.NickName = user_model.NickName;
                 user.UserName = user_model.NickName;
                 user.UserImg = user_model.UserImg;
@@ -119,7 +119,7 @@ namespace WCloud.Member.Authentication.Midddlewares
                 if (selected_org != null)
                 {
                     user.Org ??= new OrgInfo();
-                    user.Org.Id = selected_org.OrgUID;
+                    user.Org.UID = selected_org.OrgUID;
                     user.Org.IsOwner = selected_org.IsOwner > 0;
                 }
             }

@@ -7,7 +7,7 @@ namespace WCloud.Member.Domain.Admin
 {
     public class AdminDto : IDto
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 
     [Table("tb_admin")]

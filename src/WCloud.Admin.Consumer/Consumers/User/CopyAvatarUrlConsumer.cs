@@ -39,7 +39,7 @@ namespace WCloud.Admin.Consumer.Consumers
                 var repo = provider.Resolve_<IMSRepository<UserEntity>>();
                 var db = repo.Database;
 
-                var user = await db.Set<UserEntity>().FirstOrDefaultAsync(x => x.Id == user_uid);
+                var user = await db.Set<UserEntity>().FirstOrDefaultAsync(x => x.UID == user_uid);
                 user.Should().NotBeNull();
 
                 var client = provider.Resolve_<IHttpClientFactory>().CreateClient("copy_avatar_client");

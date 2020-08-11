@@ -2,18 +2,18 @@
 
 namespace WCloud.Core.Validator
 {
-    public interface IEntityValidationHelper
+    public interface IEntityValidationHelper<T> where T : class
     {
-        bool __IsValid__<T>(T model, out string[] messages);
+        bool __IsValid__(T model, out string[] messages);
 
-        bool IsValid<T>(T model, out string msg);
+        bool IsValid(T model, out string msg);
     }
 
-    public abstract class ValidationHelperBase : IEntityValidationHelper
+    public abstract class ValidationHelperBase<T> : IEntityValidationHelper<T> where T : class
     {
-        public abstract bool __IsValid__<T>(T model, out string[] messages);
+        public abstract bool __IsValid__(T model, out string[] messages);
 
-        public bool IsValid<T>(T model, out string msg)
+        public bool IsValid(T model, out string msg)
         {
             var res = this.__IsValid__(model, out string[] messages);
 

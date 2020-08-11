@@ -56,7 +56,7 @@ namespace WCloud.Member.Authentication.ControllerExtensions
 
             if (loginuser.Org == null)
                 throw new NotInCurrentOrgException();
-            if (ValidateHelper.IsEmpty(loginuser.Org.Id))
+            if (ValidateHelper.IsEmpty(loginuser.Org.UID))
                 throw new NoOrgException();
 
             if (flag != null)
@@ -69,7 +69,7 @@ namespace WCloud.Member.Authentication.ControllerExtensions
             if (ValidateHelper.IsNotEmpty(permissions))
             {
                 var validator = controller.HttpContext.RequestServices.Resolve_<IOrgPermissionValidatorService>();
-                if (!await validator.HasAllOrgPermission(loginuser.Org.Id, loginuser.UserID, permissions))
+                if (!await validator.HasAllOrgPermission(loginuser.Org.UID, loginuser.UserID, permissions))
                     throw new NoPermissionInOrgException();
             }
 

@@ -10,31 +10,26 @@ namespace WCloud.Framework.Database.Abstractions.Entity
 {
     public interface IDtoBase : IEntityDto { }
 
-    public interface IDto : IEntityDto<string>
+    public interface IDto : IEntityDto<int>
     {
         //
     }
 
     public abstract class DtoBase : IDto, IDtoBase
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 
     /// <summary>
     /// 实体基类
     /// </summary>
-    public abstract class EntityBase : Entity<string>, IDBTable
+    public abstract class EntityBase : Entity<int>, IDBTable
     {
-        protected EntityBase() { }
-        protected EntityBase(string id) : base(id) { }
-
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public override string Id { get; protected set; }
-        public virtual void SetId(string _id)
-        {
-            this.Id = _id;
-        }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public override int Id { get; protected set; }
+
+        public virtual string UID { get; set; }
 
         public virtual DateTime CreateTimeUtc { get; set; }
 
@@ -47,7 +42,7 @@ namespace WCloud.Framework.Database.Abstractions.Entity
             var time = utc_time ?? DateTime.UtcNow;
 
             var uid = Com.GetUUID();
-            this.Id = ValidateHelper.IsEmpty(flag) ? uid : $"{flag}-{uid}";
+            this.UID = ValidateHelper.IsEmpty(flag) ? uid : $"{flag}-{uid}";
 
             this.CreateTimeUtc = time;
         }
@@ -70,18 +65,18 @@ namespace WCloud.Framework.Database.Abstractions.Entity
                 return false;
             }
 
-            return this.Id == other.Id && (this.Id != default);
+            return this.UID == other.UID && (this.UID != default);
         }
 
         public override int GetHashCode()
         {
-            if (this.Id == null)
+            if (this.UID == null)
             {
                 return default;
             }
             else
             {
-                return this.Id.GetHashCode();
+                return this.UID.GetHashCode();
             }
         }
 

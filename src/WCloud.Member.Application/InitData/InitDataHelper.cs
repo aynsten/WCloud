@@ -33,7 +33,7 @@ namespace WCloud.Member.Application.InitData
         {
             var db = this._repo.Database;
             var user_set = db.Set<AdminEntity>();
-            if (!user_set.AsNoTrackingQueryable().Any(x => x.Id == admin_uid))
+            if (!user_set.AsNoTrackingQueryable().Any(x => x.UID == admin_uid))
             {
                 Task.Run(async () =>
                 {
@@ -42,7 +42,7 @@ namespace WCloud.Member.Application.InitData
                         UserName = admin_username,
                         NickName = admin_username,
                         PassWord = "123"
-                    }.InitEntity();
+                    }.InitSelf();
 
                     var res = await this._login.AddAccount(model, specific_uid: admin_uid);
                     res.ThrowIfNotSuccess();
@@ -56,7 +56,7 @@ namespace WCloud.Member.Application.InitData
 
             var role_set = db.Set<RoleEntity>();
 
-            role_set.RemoveRange(role_set.Where(x => x.Id == admin_role_uid));
+            role_set.RemoveRange(role_set.Where(x => x.UID == admin_role_uid));
             db.SaveChanges();
 
             var admin_role = new RoleEntity()
@@ -65,8 +65,8 @@ namespace WCloud.Member.Application.InitData
                 RoleDescription = "具有所有权限的超级管理员"
             };
 
-            admin_role.AsFirstLevel().InitEntity();
-            admin_role.SetId(admin_role_uid);
+            admin_role.AsFirstLevel().InitSelf();
+            admin_role.UID = admin_role_uid;
             admin_role.PermissionJson = this._permission.AllPermissions().ToJson();
 
             role_set.Add(admin_role);
@@ -86,7 +86,7 @@ namespace WCloud.Member.Application.InitData
             {
                 AdminUID = admin_uid,
                 RoleUID = admin_role_uid,
-            }.InitEntity();
+            }.InitSelf();
 
             set.Add(map);
 

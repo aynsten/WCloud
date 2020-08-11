@@ -48,15 +48,15 @@ namespace WCloud.Member.Application.Service.impl
                 return new _<OrgRoleEntity>().SetErrorMsg("角色名重复");
             }
 
-            var res = await this._orgRoleRepo.InsertAsync(orgrole);
-            return new _<OrgRoleEntity>().SetSuccessData(orgrole);
+            var res = await this._orgRoleRepo.AddEntity_(orgrole);
+            return res;
         }
 
         public virtual async Task DeleteOrgRole(string role_uid)
         {
             role_uid.Should().NotBeNullOrEmpty("delete org role role uid");
 
-            await this._orgRoleRepo.DeleteWhereAsync(x => x.Id == role_uid);
+            await this._orgRoleRepo.DeleteWhereAsync(x => x.UID == role_uid);
         }
 
         public virtual async Task SaveOrgRolePermission(string org_uid, string org_role_uid, string[] permissions)
@@ -65,7 +65,7 @@ namespace WCloud.Member.Application.Service.impl
             org_role_uid.Should().NotBeNullOrEmpty("save org role permission org_role_uid");
             permissions.Should().NotBeNull("save org role permission permissions");
 
-            var model = await this._orgRoleRepo.QueryOneAsync(x => x.Id == org_role_uid && x.OrgUID == org_uid);
+            var model = await this._orgRoleRepo.QueryOneAsync(x => x.UID == org_role_uid && x.OrgUID == org_uid);
             model.Should().NotBeNull("org role");
 
             if (!this.permissionSerializer.Deserialize(model.PermissionJson).AllEqual(permissions))

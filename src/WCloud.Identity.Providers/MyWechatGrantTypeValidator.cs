@@ -76,7 +76,7 @@ namespace WCloud.Identity.Providers
 
                 list.Add(user.ToJson());
 
-                var subject = user.Id;
+                var subject = user.UID;
 
                 var identity = new ClaimsIdentity(user.ToClaims()).SetAccountType("user").SetCreateTimeUtc(DateTime.UtcNow);
 
@@ -143,13 +143,13 @@ namespace WCloud.Identity.Providers
                 var res = await this._login.AddAccount(user);
                 res.ThrowIfNotSuccess();
 
-                await this._publisher.PublishAsync(new CopyAvatarMessage() { UserUID = res.Data.Id, AvatarUrl = avatar_url });
+                await this._publisher.PublishAsync(new CopyAvatarMessage() { UserUID = res.Data.UID, AvatarUrl = avatar_url });
 
                 var map_res = await this._login.SaveExternalProviderMapping(new ExternalLoginMapEntity()
                 {
                     OpenID = openid,
                     ProviderKey = this.userWxLoginService.LoginProvider,
-                    UserID = res.Data.Id
+                    UserID = res.Data.UID
                 });
                 map_res.ThrowIfNotSuccess();
 

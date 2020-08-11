@@ -13,8 +13,6 @@ namespace WCloud.Member.Domain.User
     public class UserEntity : EntityBase, IMemberShipDBTable,
         ILogicalDeletion, IUpdateTime, ILoginEntity
     {
-        public UserEntity() { }
-        public UserEntity(string id) : base(id) { }
         /// <summary>
         /// 用于登陆，唯一标志
         /// </summary>

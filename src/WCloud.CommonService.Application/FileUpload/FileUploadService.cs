@@ -125,13 +125,13 @@ namespace WCloud.CommonService.Application.FileUpload
                 else
                 {
                     this._logger.LogWarning($"文件{previous_uploaded.ToJson()}已经在服务器存在，但是不存在于七牛，将删除记录并重新上传");
-                    await this._uploadRepo.DeleteByIds(new string[] { previous_uploaded.Id });
+                    await this._uploadRepo.DeleteByIds(new string[] { previous_uploaded.UID });
                 }
             }
             //上传到七牛
             await this.__upload_to_qiniu__(model, bs);
             //保存到数据库
-            model.InitEntity();
+            model.InitSelf();
             await this._uploadRepo.InsertAsync(model);
 
             return res.SetSuccessData(model);

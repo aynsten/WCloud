@@ -5,9 +5,9 @@ using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Member.Domain.Admin
 {
-    public class AdminDto : DtoBase
+    public class AdminDto : IDto
     {
-
+        public int Id { get; set; }
     }
 
     [Table("tb_admin")]

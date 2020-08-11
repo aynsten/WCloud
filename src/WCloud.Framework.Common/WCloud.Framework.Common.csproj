@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Folder Include="Validator\" />
+    <Folder Include="Validator\AttrValidatorImpl\" />
     <Folder Include="Validator\FluentValidatorImpl\" />
   </ItemGroup>
   <ItemGroup>

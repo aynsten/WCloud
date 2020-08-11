@@ -33,7 +33,7 @@ namespace WCloud.Member.Application.Service.impl
             if (await this._deptRepo.ExistAsync(x => x.NodeName == model.NodeName))
                 return res.SetErrorMsg("部门名称已经存在");
 
-            model.InitEntity();
+            model.InitSelf();
 
             await this._deptRepo.InsertAsync(model);
 
@@ -67,15 +67,15 @@ namespace WCloud.Member.Application.Service.impl
         public async Task<_<DepartmentEntity>> Update(DepartmentEntity model)
         {
             model.Should().NotBeNull("dept update model");
-            model.Id.Should().NotBeNullOrEmpty("dept update uid");
+            model.UID.Should().NotBeNullOrEmpty("dept update uid");
             model.NodeName.Should().NotBeNullOrEmpty("dept update dept name");
 
             var res = new _<DepartmentEntity>();
 
-            var data = await this._deptRepo.QueryOneAsync(x => x.Id == model.Id);
+            var data = await this._deptRepo.QueryOneAsync(x => x.UID == model.UID);
             data.Should().NotBeNull();
 
-            if (await this._deptRepo.ExistAsync(x => x.NodeName == model.NodeName && x.Id != model.Id))
+            if (await this._deptRepo.ExistAsync(x => x.NodeName == model.NodeName && x.UID != model.UID))
                 return res.SetErrorMsg("部门名称已经存在");
 
             data.NodeName = model.NodeName;

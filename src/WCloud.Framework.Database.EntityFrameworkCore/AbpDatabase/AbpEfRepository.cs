@@ -9,7 +9,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.AbpDatabase
     /// abp的仓储
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IAbpEfRepository<T> : IEfCoreRepository<T, string>
+    public interface IAbpEfRepository<T> : IEfCoreRepository<T, int>
         where T : EntityBase
     {
         //
@@ -20,7 +20,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.AbpDatabase
     /// </summary>
     /// <typeparam name="DbContextImpl"></typeparam>
     /// <typeparam name="T"></typeparam>
-    public abstract class AbpEfRepositoryBase<DbContextImpl, T> : EfCoreRepository<DbContextImpl, T, string>, IAbpEfRepository<T>
+    public abstract class AbpEfRepositoryBase<DbContextImpl, T> : EfCoreRepository<DbContextImpl, T, int>, IAbpEfRepository<T>
         where T : EntityBase
         where DbContextImpl : AbpDbContext<DbContextImpl>
     {

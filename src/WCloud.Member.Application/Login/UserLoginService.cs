@@ -42,7 +42,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             model.Should().NotBeNull("add validation code model");
 
-            model.InitEntity();
+            model.InitSelf();
 
             var db = this._userRepo.Database;
 
@@ -106,7 +106,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var res = new _<ExternalLoginMapEntity>();
 
-            model.InitEntity();
+            model.InitSelf();
             if (!model.IsValid(out var msg))
             {
                 return res.SetErrorMsg(msg);
@@ -119,7 +119,7 @@ namespace WCloud.Member.Application.Service.impl
             var old = await table.Where(x =>
             x.ProviderKey == model.ProviderKey &&
             x.UserID == model.UserID &&
-            x.Id != model.Id).ToArrayAsync();
+            x.UID != model.UID).ToArrayAsync();
 
             if (old.Any())
             {
@@ -200,7 +200,7 @@ namespace WCloud.Member.Application.Service.impl
                 Phone = phone
             };
 
-            map.InitEntity();
+            map.InitSelf();
 
             set.Add(map);
 

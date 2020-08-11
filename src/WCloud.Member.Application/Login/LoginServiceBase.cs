@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.core;
 using Lib.extension;
 using Lib.helper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.Database.EntityFrameworkCore.Repository;
@@ -84,7 +84,7 @@ namespace WCloud.Member.Application.Login
 
             var data = new _<T>();
 
-            model.InitEntity();
+            model.InitSelf();
             if (ValidateHelper.IsNotEmpty(model.PassWord))
             {
                 model.PassWord = this._passHelper.Encrypt(model.PassWord);
@@ -101,7 +101,7 @@ namespace WCloud.Member.Application.Login
 
             if (ValidateHelper.IsNotEmpty(specific_uid))
             {
-                model.SetId(specific_uid);
+                model.UID = specific_uid;
             }
 
             await this._userRepo.InsertAsync(model);
@@ -114,11 +114,11 @@ namespace WCloud.Member.Application.Login
             uid.Should().NotBeNullOrEmpty();
             pwd.Should().NotBeNullOrEmpty();
 
-            var user = await this._userRepo.QueryOneAsync(x => x.Id == uid);
+            var user = await this._userRepo.QueryOneAsync(x => x.UID == uid);
             user.Should().NotBeNull("用户不存在，无法修改密码");
 
             user.PassWord = this._passHelper.Encrypt(pwd);
-            user.SetUpdateTime();
+            user.Update();
             user.LastPasswordUpdateTimeUtc = user.UpdateTimeUtc;
 
             await this._userRepo.UpdateAsync(user);
@@ -144,7 +144,7 @@ namespace WCloud.Member.Application.Login
         {
             uid.Should().NotBeNullOrEmpty();
 
-            var res = await this._userRepo.QueryOneAsNoTrackAsync(x => x.Id == uid);
+            var res = await this._userRepo.QueryOneAsNoTrackAsync(x => x.UID == uid);
             return res;
         }
 
@@ -184,7 +184,7 @@ namespace WCloud.Member.Application.Login
 
             var set = db.Set<T>();
 
-            var user = await set.FirstOrDefaultAsync(x => x.Id == uid);
+            var user = await set.FirstOrDefaultAsync(x => x.UID == uid);
 
             user.Should().NotBeNull();
 

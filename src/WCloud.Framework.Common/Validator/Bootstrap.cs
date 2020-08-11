@@ -11,7 +11,7 @@ namespace WCloud.Framework.Common.Validator
     {
         public static IServiceCollection AddFluentValidatorHelper(this IServiceCollection collection)
         {
-            collection.AddTransient<IEntityValidationHelper, EntityFluentValidationHelper>();
+            collection.AddTransient(typeof(IEntityValidationHelper<>), typeof(EntityFluentValidationHelper<>));
             return collection;
         }
 
@@ -22,8 +22,7 @@ namespace WCloud.Framework.Common.Validator
             foreach (var type in all_types)
             {
                 var validators = type.GetAllInterfaces_()
-                    .Where(x => x.IsGenericType_(typeof(FluentValidation.IValidator<>)))
-                    .ToArray();
+                    .Where(x => x.IsGenericType_(typeof(IEntityFluentValidator<>))).ToArray();
 
                 //这里事实上只有一个
                 foreach (var m in validators)

@@ -26,7 +26,7 @@ namespace WCloud.Member.Api.Controller
         {
             return new
             {
-                x.Id,
+                x.UID,
                 x.NodeName,
                 x.Description,
                 x.ParentUID,
@@ -58,7 +58,7 @@ namespace WCloud.Member.Api.Controller
         {
             var model = this.JsonToEntity_<DepartmentEntity>(data);
 
-            if (ValidateHelper.IsNotEmpty(model.Id))
+            if (ValidateHelper.IsNotEmpty(model.UID))
             {
                 model.AsFirstLevelIfParentIsNotValid();
                 var res = await this._deptService.Update(model);

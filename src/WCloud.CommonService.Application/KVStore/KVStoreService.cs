@@ -62,7 +62,7 @@ namespace WCloud.CommonService.Application.KVStore
                 Key = key,
                 Value = data.ToJson()
             };
-            entity.InitEntity();
+            entity.InitSelf();
 
             set.Add(entity);
 

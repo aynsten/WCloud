@@ -30,9 +30,9 @@ namespace WCloud.Framework.Database.Abstractions.Extension
                 {
                     break;
                 }
-                list.AddOnceOrThrow(data.Id);
+                list.AddOnceOrThrow(data.UID);
 
-                var children = data_source.Where(x => x.ParentUID == data.Id).ToArray();
+                var children = data_source.Where(x => x.ParentUID == data.UID).ToArray();
                 foreach (var child in children)
                 {
                     stack.Push(child);
@@ -59,9 +59,9 @@ namespace WCloud.Framework.Database.Abstractions.Extension
                 {
                     break;
                 }
-                list.AddOnceOrThrow(data.Id);
+                list.AddOnceOrThrow(data.UID);
 
-                var children = data_source.Where(x => x.ParentUID == data.Id).ToArray();
+                var children = data_source.Where(x => x.ParentUID == data.UID).ToArray();
                 foreach (var child in children)
                 {
                     stack.Enqueue(child);
@@ -84,9 +84,9 @@ namespace WCloud.Framework.Database.Abstractions.Extension
             {
                 foreach (var m in nodes)
                 {
-                    repeat_check.AddOnceOrThrow(m.Id, error_msg: "树存在无限递归");
+                    repeat_check.AddOnceOrThrow(m.UID, error_msg: "树存在无限递归");
 
-                    var children = data_source.Where(x => x.ParentUID == m.Id).ToArray();
+                    var children = data_source.Where(x => x.ParentUID == m.UID).ToArray();
                     __find_children__(ref children);
 
                     callback.Invoke(m, children);
@@ -108,17 +108,17 @@ namespace WCloud.Framework.Database.Abstractions.Extension
         public static T[] FindNodePath<T>(this IEnumerable<T> list, T node) where T : TreeEntityBase
         {
             node.Should().NotBeNull();
-            node.Id.Should().NotBeNullOrEmpty();
+            node.UID.Should().NotBeNullOrEmpty();
 
             var path = new List<T>();
             var visit_path = new List<string>();
 
-            var current_uid = node.Id;
+            var current_uid = node.UID;
 
             while (true)
             {
                 visit_path.AddOnceOrThrow(current_uid);
-                var current_node = list.FirstOrDefault(x => x.Id == current_uid);
+                var current_node = list.FirstOrDefault(x => x.UID == current_uid);
                 if (current_node == null)
                     break;
                 path.Insert(0, current_node);
@@ -137,7 +137,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
 
             foreach (var node in list.OrderByDescending(x => x.Level))
             {
-                if (error_list.Contains(node.Id))
+                if (error_list.Contains(node.UID))
                 {
                     //防止中间节点被重复计算
                     //node1->node2->node3->node4->node5
@@ -147,11 +147,11 @@ namespace WCloud.Framework.Database.Abstractions.Extension
                 var node_path = data_source.FindNodePath(node);
                 if (node_path.Select(x => x.ParentUID).FirstOrDefault() != TreeEntityBase.FIRST_PARENT_UID)
                 {
-                    error_list.AddRange(node_path.Select(x => x.Id));
+                    error_list.AddRange(node_path.Select(x => x.UID));
                 }
             }
 
-            return list.Where(x => error_list.Distinct().Contains(x.Id)).ToList();
+            return list.Where(x => error_list.Distinct().Contains(x.UID)).ToList();
         }
 
         #endregion
@@ -159,7 +159,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
         public static async Task<_<T>> AddTreeNode<T>(this IRepository<T> repo, T model, string model_flag = null) where T : TreeEntityBase
         {
             var res = new _<T>();
-            model.InitEntity();
+            model.InitSelf();
 
             if (model.IsFirstLevel())
             {
@@ -167,7 +167,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
             }
             else
             {
-                var parent = await repo.QueryOneAsync(x => x.Id == model.ParentUID);
+                var parent = await repo.QueryOneAsync(x => x.UID == model.ParentUID);
                 parent.Should().NotBeNull("父节点为空");
                 model.Level = parent.Level + 1;
             }
@@ -184,16 +184,16 @@ namespace WCloud.Framework.Database.Abstractions.Extension
 
         public static async Task DeleteTreeNodeRecursively<T>(this IRepository<T> repo, string node_uid) where T : TreeEntityBase
         {
-            var node = await repo.QueryOneAsync(x => x.Id == node_uid);
+            var node = await repo.QueryOneAsync(x => x.UID == node_uid);
             node.Should().NotBeNull();
 
             var list = await repo.QueryManyAsync(x => x.GroupKey == node.GroupKey);
             list.Count.Should().BeLessOrEqualTo(5000);
 
-            var dead_nodes = list.FindNodeChildrenRecursively_(node).Select(x => x.Id);
+            var dead_nodes = list.FindNodeChildrenRecursively_(node).Select(x => x.UID);
 
             if (dead_nodes.Any())
-                await repo.DeleteWhereAsync(x => dead_nodes.Contains(x.Id));
+                await repo.DeleteWhereAsync(x => dead_nodes.Contains(x.UID));
         }
 
         public static async Task<bool> DeleteSingleNodeWhenNoChildren_<T>(this IRepository<T> repo, string node_uid) where T : TreeEntityBase
@@ -203,7 +203,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
                 return false;
             }
 
-            var count = await repo.DeleteWhereAsync(x => x.Id == node_uid);
+            var count = await repo.DeleteWhereAsync(x => x.UID == node_uid);
 
             return count > 0;
         }
@@ -243,7 +243,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
 
         public static IEnumerable<T> GetChildrenOf<T>(this IEnumerable<T> list, T node) where T : TreeEntityBase
         {
-            var children = list.Where(x => x.ParentUID == node.Id && x.Level == node.Level + 1).ToArray();
+            var children = list.Where(x => x.ParentUID == node.UID && x.Level == node.Level + 1).ToArray();
             return children;
         }
     }

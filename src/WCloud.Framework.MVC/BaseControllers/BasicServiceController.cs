@@ -1,11 +1,11 @@
-﻿using FluentAssertions;
-using Lib.core;
-using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Lib.core;
+using Lib.helper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.Abstractions.Service;
 
@@ -77,32 +77,6 @@ namespace WCloud.Framework.MVC.BaseController
         public virtual async Task<IActionResult> QueryAll()
         {
             var data = await this._service.QueryTop(5000);
-
-            var res = data.Select(this.__parse__);
-
-            return SuccessJson(res);
-        }
-
-        [HttpPost, ApiRoute]
-        public virtual async Task<IActionResult> QueryByMaxID([FromForm]int? max_id, [FromForm]int? count)
-        {
-            var size = count ?? this.PageSize;
-            size.Should().BeLessOrEqualTo(5000);
-
-            var data = await this._service.QueryByMaxID(max_id ?? 0, size);
-
-            var res = data.Select(this.__parse__);
-
-            return SuccessJson(res);
-        }
-
-        [HttpPost, ApiRoute]
-        public virtual async Task<IActionResult> QueryByMinID([FromForm]int? min_id, [FromForm]int? count)
-        {
-            var size = count ?? this.PageSize;
-            size.Should().BeLessOrEqualTo(5000);
-
-            var data = await this._service.QueryByMinID(min_id, size);
 
             var res = data.Select(this.__parse__);
 

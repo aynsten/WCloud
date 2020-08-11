@@ -11,6 +11,7 @@ namespace WCloud.Framework.Database.MongoDB.Mapping
             {
                 x.MapIdField(d => d.Id);
                 x.MapField(x => x.UID).SetElementName("");
+                x.SetDiscriminator("x");
             });
         }
     }

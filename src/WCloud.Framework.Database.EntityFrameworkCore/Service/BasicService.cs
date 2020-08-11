@@ -145,36 +145,5 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
 
             return res;
         }
-
-        public virtual async Task<IEnumerable<T>> QueryByMaxID(int max_id, int count)
-        {
-            count.Should().BeInRange(1, 5000);
-
-            var query = this._repo.NoTrackingQueryable;
-
-            query = query.Where(x => x.Id > max_id).OrderBy(x => x.Id).Take(count);
-
-            var res = await query.ToArrayAsync();
-
-            return res;
-        }
-
-        public virtual async Task<IEnumerable<T>> QueryByMinID(int? min_id, int count)
-        {
-            count.Should().BeInRange(1, 5000);
-
-            var query = this._repo.NoTrackingQueryable;
-
-            if (min_id != null)
-            {
-                query = query.Where(x => x.Id < min_id.Value);
-            }
-
-            query = query.OrderByDescending(x => x.Id).Take(count);
-
-            var res = await query.ToArrayAsync();
-
-            return res;
-        }
     }
 }

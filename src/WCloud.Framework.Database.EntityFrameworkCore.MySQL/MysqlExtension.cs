@@ -1,9 +1,9 @@
-﻿using Lib.extension;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
+﻿using System;
 using System.Data;
 using System.Linq;
+using Lib.extension;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore
@@ -14,11 +14,8 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
         {
             //--
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).IsRequired().ValueGeneratedOnAdd().UseMySqlIdentityColumn();
-
-            //--
-            builder.HasIndex(x => x.UID).IsUnique();
-            builder.Property(x => x.UID).IsRequired().HasMaxLength(100).ValueGeneratedNever();
+            //builder.HasIndex(x => x.Id).IsUnique();
+            builder.Property(x => x.Id).IsRequired().ValueGeneratedNever();
 
             //--
             //builder.Property(x => x.CreateTimeUtc).HasDefaultValueSql("CURRENT_TIMESTAMP");

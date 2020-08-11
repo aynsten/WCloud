@@ -1,10 +1,20 @@
 ﻿using System;
+using MongoDB.Bson.Serialization;
 using WCloud.Framework.Database.MongoDB;
 using WCloud.Framework.Database.MongoDB.Mapping;
 
 namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
 {
-    [MongoEntity("ids_grants")]
+    public class MongoPersistedGrantEntityMapping : IMongoEntityMapping<MongoPersistedGrantEntity>
+    {
+        public string CollectionName => "ids_grants";
+
+        public void ConfigMap(BsonClassMap<MongoPersistedGrantEntity> config)
+        {
+            config.BasicConfig();
+        }
+    }
+
     public class MongoPersistedGrantEntity : MongoEntityBase
     {
         /// <summary>

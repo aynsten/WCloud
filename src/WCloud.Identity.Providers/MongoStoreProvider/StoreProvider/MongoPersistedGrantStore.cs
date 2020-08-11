@@ -8,8 +8,7 @@ using IdentityServer4.Stores;
 using Lib.helper;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using Volo.Abp.ObjectMapping;
-using WCloud.Framework.Database.Abstractions.Extension;
+using WCloud.Core;
 using WCloud.Framework.Database.MongoDB;
 using WCloud.Identity.Providers.MongoStoreProvider.Entity;
 
@@ -17,31 +16,28 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.StoreProvider
 {
     public class MongoPersistedGrantStore : IPersistedGrantStore
     {
-        private readonly ILogger _logger;
+        private readonly IWCloudContext<MongoPersistedGrantStore> wcloud_context;
         private readonly IIdsRepository<MongoPersistedGrantEntity> _repo;
-        private readonly IObjectMapper mapper;
 
         public MongoPersistedGrantStore(
-            ILogger<MongoPersistedGrantStore> logger,
-            IIdsRepository<MongoPersistedGrantEntity> _repo,
-            IObjectMapper mapper)
+            IWCloudContext<MongoPersistedGrantStore> wcloud_context,
+            IIdsRepository<MongoPersistedGrantEntity> _repo)
         {
-            this._logger = logger;
+            this.wcloud_context = wcloud_context;
             this._repo = _repo;
-            this.mapper = mapper;
         }
 
         PersistedGrant __map__(MongoPersistedGrantEntity data)
         {
             data.Should().NotBeNull();
-            var res = this.mapper.Map<MongoPersistedGrantEntity, PersistedGrant>(data);
+            var res = this.wcloud_context.ObjectMapper.Map<MongoPersistedGrantEntity, PersistedGrant>(data);
             return res;
         }
 
         MongoPersistedGrantEntity __map__(PersistedGrant data)
         {
             data.Should().NotBeNull();
-            var res = this.mapper.Map<PersistedGrant, MongoPersistedGrantEntity>(data);
+            var res = this.wcloud_context.ObjectMapper.Map<PersistedGrant, MongoPersistedGrantEntity>(data);
             return res;
         }
 
@@ -78,7 +74,7 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.StoreProvider
 
             if (data == null)
             {
-                this._logger.LogInformation($"grant dose not exists:{key}");
+                this.wcloud_context.Logger.LogInformation($"grant dose not exists:{key}");
                 return null;
             }
 

@@ -53,7 +53,7 @@ namespace WCloud.Member.Api.Controller
         {
             return new
             {
-                x.UID,
+                x.Id,
                 x.NodeName,
                 x.RoleDescription,
                 x.ParentUID,
@@ -138,7 +138,7 @@ namespace WCloud.Member.Api.Controller
 
             var loginadmin = await this.GetLoginAdminAsync();
 
-            if (ValidateHelper.IsNotEmpty(model.UID))
+            if (ValidateHelper.IsNotEmpty(model.Id))
             {
                 var res = await this._roleService.UpdateRole(model);
                 res.ThrowIfNotSuccess();

@@ -83,7 +83,7 @@ namespace WCloud.Identity.MemberShipControllers
 
             var user = res.Data;
 
-            var identity = new IdentityServer4.IdentityServerUser(user.UID)
+            var identity = new IdentityServer4.IdentityServerUser(user.Id)
             {
                 DisplayName = user.UserName
             };

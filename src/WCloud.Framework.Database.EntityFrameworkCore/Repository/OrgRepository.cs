@@ -33,7 +33,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
         public string OrgUID { get; private set; }
         public OrgRepository(IServiceProvider provider, WCloudUserInfo user) : base(provider)
         {
-            this.OrgUID = user.Org?.UID;
+            this.OrgUID = user.Org?.Id;
             if (ValidateHelper.IsEmpty(this.OrgUID))
                 throw new ArgumentException("租户仓储无法获取当前租户上下文");
         }

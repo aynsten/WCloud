@@ -11,8 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
-    <ProjectReference Include="..\WCloud.Framework.Aop\WCloud.Framework.Aop.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Database.Abstractions\WCloud.Framework.Database.Abstractions.csproj" />
   </ItemGroup>
 

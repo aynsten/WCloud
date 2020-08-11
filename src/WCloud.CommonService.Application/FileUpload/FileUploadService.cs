@@ -1,12 +1,12 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Lib.extension;
 using Lib.helper;
 using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
-using System.Threading.Tasks;
+using WCloud.Core.Storage;
 using WCloud.Framework.Database.Abstractions.Extension;
-using WCloud.Framework.Storage;
 
 namespace WCloud.CommonService.Application.FileUpload
 {
@@ -125,7 +125,7 @@ namespace WCloud.CommonService.Application.FileUpload
                 else
                 {
                     this._logger.LogWarning($"文件{previous_uploaded.ToJson()}已经在服务器存在，但是不存在于七牛，将删除记录并重新上传");
-                    await this._uploadRepo.DeleteByIds(new string[] { previous_uploaded.UID });
+                    await this._uploadRepo.DeleteByIds(new string[] { previous_uploaded.Id });
                 }
             }
             //上传到七牛

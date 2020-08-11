@@ -32,7 +32,7 @@ namespace WCloud.Member.Application.Service.impl
             var query = this._orgRoleRepo.NoTrackingQueryable;
             query = query.Where(x => x.OrgUID == org_uid);
 
-            var list = await query.OrderByDescending(x => x.Id).Take(5000).ToListAsync();
+            var list = await query.OrderByDescending(x => x.CreateTimeUtc).Take(5000).ToListAsync();
 
             return list;
         }
@@ -56,7 +56,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             role_uid.Should().NotBeNullOrEmpty("delete org role role uid");
 
-            await this._orgRoleRepo.DeleteWhereAsync(x => x.UID == role_uid);
+            await this._orgRoleRepo.DeleteWhereAsync(x => x.Id == role_uid);
         }
 
         public virtual async Task SaveOrgRolePermission(string org_uid, string org_role_uid, string[] permissions)
@@ -65,7 +65,7 @@ namespace WCloud.Member.Application.Service.impl
             org_role_uid.Should().NotBeNullOrEmpty("save org role permission org_role_uid");
             permissions.Should().NotBeNull("save org role permission permissions");
 
-            var model = await this._orgRoleRepo.QueryOneAsync(x => x.UID == org_role_uid && x.OrgUID == org_uid);
+            var model = await this._orgRoleRepo.QueryOneAsync(x => x.Id == org_role_uid && x.OrgUID == org_uid);
             model.Should().NotBeNull("org role");
 
             if (!this.permissionSerializer.Deserialize(model.PermissionJson).AllEqual(permissions))

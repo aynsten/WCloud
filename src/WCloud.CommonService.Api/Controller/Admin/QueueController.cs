@@ -17,7 +17,7 @@ namespace WCloud.CommonService.Api.Controller
         {
             return new
             {
-                x.UID,
+                x.Id,
                 x.JobKey,
                 x.Desc,
                 x.Exchange,

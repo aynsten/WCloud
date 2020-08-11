@@ -34,7 +34,7 @@ namespace WCloud.CommonService.Application.Tag
 
         public async Task<IEnumerable<TagEntity>> QueryAll()
         {
-            var data = await this._tagRepo.QueryManyAsync(x => x.Id >= 0, count: 5000);
+            var data = await this._tagRepo.QueryManyAsync(null, count: 5000);
 
             return data;
         }
@@ -58,10 +58,10 @@ namespace WCloud.CommonService.Application.Tag
         public async Task<_<TagEntity>> UpdateTag(TagEntity data)
         {
             data.Should().NotBeNull("update tag data");
-            data.UID.Should().NotBeNullOrEmpty("update tag uid");
+            data.Id.Should().NotBeNullOrEmpty("update tag uid");
             data.TagName.Should().NotBeNullOrEmpty("update tag tag name");
 
-            var model = await this._tagRepo.QueryOneAsync(x => x.UID == data.UID);
+            var model = await this._tagRepo.QueryOneAsync(x => x.Id == data.Id);
             model.Should().NotBeNull();
 
             model.SetField(new
@@ -75,7 +75,9 @@ namespace WCloud.CommonService.Application.Tag
             var res = new _<TagEntity>();
 
             if (await this._tagRepo.ExistAsync(x => x.Id != model.Id && x.TagName == model.TagName))
+            {
                 return res.SetErrorMsg("存在同名标签");
+            }
 
             await this._tagRepo.UpdateAsync(model);
             return res.SetSuccessData(model);
@@ -115,7 +117,7 @@ namespace WCloud.CommonService.Application.Tag
         {
             model.Should().NotBeNull("save tags model");
 
-            await this.SaveTags<T>(model.UID, tags_uid);
+            await this.SaveTags<T>(model.Id, tags_uid);
         }
 
         public async Task SaveTags<T>(string subject_id, IEnumerable<string> tags_uid)

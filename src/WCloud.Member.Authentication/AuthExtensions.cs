@@ -128,7 +128,7 @@ namespace WCloud.Member.Authentication
         {
             var list = new List<Claim>();
 
-            list.Add(new Claim(JwtClaimTypes.Subject, model.UID));
+            list.Add(new Claim(JwtClaimTypes.Subject, model.Id));
 
             if (ValidateHelper.IsNotEmpty(model.UserName))
             {

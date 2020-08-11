@@ -1,19 +1,9 @@
-﻿using System;
-using Lib.data;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.MongoDB
 {
-    public abstract class MongoEntityBase : IDBTable
+    public abstract class MongoEntityBase : EntityBase
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public virtual string Id { get; set; }
 
-        [BsonElement(nameof(UID))]
-        public virtual string UID { get; set; }
-
-        public virtual DateTime CreateTimeUtc { get; set; }
     }
 }

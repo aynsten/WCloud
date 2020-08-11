@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WCloud.Framework.Common
+namespace WCloud.Member.DataAccess.MongoDB
 {
     public class Class1
     {

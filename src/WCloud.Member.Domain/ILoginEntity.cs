@@ -5,7 +5,7 @@ namespace WCloud.Member.Domain
 {
     public interface ILoginEntity : ILogicalDeletion, IUpdateTime
     {
-        string UID { get; set; }
+        string Id { get; }
         string UserName { get; set; }
         string PassWord { get; set; }
         DateTime? LastPasswordUpdateTimeUtc { get; set; }

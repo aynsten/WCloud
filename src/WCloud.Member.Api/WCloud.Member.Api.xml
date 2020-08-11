@@ -64,7 +64,7 @@
             用户列表
             </summary>
         </member>
-        <member name="M:WCloud.Member.Api.Controller.AdminInfoController.AddAdmin(WCloud.Core.Validator.IEntityValidationHelper{WCloud.Member.Domain.Admin.AdminEntity},System.String)">
+        <member name="M:WCloud.Member.Api.Controller.AdminInfoController.AddAdmin(WCloud.Core.Validator.IEntityValidationHelper,System.String)">
             <summary>
             添加管理员
             </summary>

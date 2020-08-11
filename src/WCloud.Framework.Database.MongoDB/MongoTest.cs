@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if DEBUG
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -15,7 +16,7 @@ using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.MongoDB
 {
-    public class Mongoxx<T> where T : MongoEntityBase
+    class Mongoxx<T> where T : MongoEntityBase
     {
         private readonly IMongoClient _client;
         private readonly IMongoDatabase _db;
@@ -86,25 +87,17 @@ namespace WCloud.Framework.Database.MongoDB
             condition &= Builders<T>.Filter.GeoWithin(field, new GeoJsonPolygon<GeoJson2DCoordinates>(null));
         }
     }
-    public class xx : EntityBase { }
+
+    class xx : MongoEntityBase { }
 
     [ConnectionStringName("xx")]
-    public class MongoDbContextTest : AbpMongoDbContext
+    class MongoDbContextTest : AbpMongoDbContext
     {
         public IMongoCollection<xx> xx => this.Collection<xx>();
 
         protected override void CreateModel(IMongoModelBuilder modelBuilder)
         {
             base.CreateModel(modelBuilder);
-        }
-
-        void test()
-        {
-            var update = new UpdateDefinitionBuilder<xx>();
-            update.Inc(x => x.Id, 1);
-
-
-            this.xx.UpdateOne(x => true, null);
         }
     }
 
@@ -128,3 +121,5 @@ namespace WCloud.Framework.Database.MongoDB
         }
     }
 }
+
+#endif

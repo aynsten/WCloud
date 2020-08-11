@@ -59,7 +59,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
                 uid.Should().NotBeNullOrEmpty("批量删除数据：uid为空");
             }
 
-            await repo.DeleteWhereAsync(x => uids.Contains(x.UID));
+            await repo.DeleteWhereAsync(x => uids.Contains(x.Id));
         }
 
         /// <summary>

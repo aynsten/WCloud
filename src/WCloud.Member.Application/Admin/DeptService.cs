@@ -48,11 +48,6 @@ namespace WCloud.Member.Application.Service.impl
             return res;
         }
 
-        public Task<List<UserEntity>> LoadDept(List<UserEntity> list)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<DepartmentEntity>> Query(string group = null)
         {
             var query = this._deptRepo.NoTrackingQueryable;

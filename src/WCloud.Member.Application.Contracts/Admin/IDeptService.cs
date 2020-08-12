@@ -16,7 +16,5 @@ namespace WCloud.Member.Application.Service
         Task<_<DepartmentEntity>> Update(DepartmentEntity model);
 
         Task<bool> DeleteWhenNoChildren(string uid);
-
-        Task<List<UserEntity>> LoadDept(List<UserEntity> list);
     }
 }

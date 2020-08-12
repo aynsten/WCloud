@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using FluentAssertions;
+using Lib.data;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Lib.data;
 using WCloud.Framework.Database.Abstractions;
+using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace System.Linq
 {
@@ -24,6 +26,20 @@ namespace System.Linq
         {
             var res = await repo.QueryManyAsync<object>(where: where, count: count);
             return res.ToList();
+        }
+
+        /// <summary>
+        /// check input=>delete by uids
+        /// </summary>
+        public static async Task DeleteByIds<T>(this IRepository<T> repo, string[] uids) where T : EntityBase
+        {
+            uids.Should().NotBeNullOrEmpty();
+            foreach (var uid in uids)
+            {
+                uid.Should().NotBeNullOrEmpty("批量删除数据：uid为空");
+            }
+
+            await repo.DeleteWhereAsync(x => uids.Contains(x.Id));
         }
     }
 }

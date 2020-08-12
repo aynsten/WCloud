@@ -132,11 +132,11 @@ namespace WCloud.Member.Application.Login
 
             if (active)
             {
-                await this._userRepo.RecoverByUIDs(uids);
+                await this._userRepo.RecoverByIdAsync(uids);
             }
             else
             {
-                await this._userRepo.RemoveByUIDs(uids);
+                await this._userRepo.RemoveByIdAsync(uids);
             }
         }
 

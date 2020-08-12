@@ -5,6 +5,7 @@ using FluentAssertions;
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization;
+using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.MongoDB.Mapping
 {
@@ -71,7 +72,7 @@ namespace WCloud.Framework.Database.MongoDB.Mapping
         }
 
         public static void BasicConfig<T>(this BsonClassMap<T> config)
-            where T : MongoEntityBase
+            where T : EntityBase
         {
             config.MapIdProperty(x => x.Id);
         }

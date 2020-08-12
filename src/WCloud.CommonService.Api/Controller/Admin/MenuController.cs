@@ -2,7 +2,7 @@
 using Lib.helper;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using WCloud.Framework.Database.Abstractions.Helper;
+using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.MVC;
 using WCloud.Framework.MVC.BaseController;
 using WCloud.Member.Application.Entity;
@@ -34,7 +34,7 @@ namespace WCloud.CommonService.Api.Controller
 
             var data = await this.menuService.QueryMenuList(group);
 
-            var res = TreeHelper.BuildAntTreeStructure(data, x => x.NodeName);
+            var res = data.BuildAntTreeStructure(x => x.NodeName);
 
             return SuccessJson(res);
         }

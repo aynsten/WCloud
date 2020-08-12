@@ -1,6 +1,6 @@
-﻿using System;
-using MongoDB.Bson.Serialization;
-using WCloud.Framework.Database.MongoDB;
+﻿using MongoDB.Bson.Serialization;
+using System;
+using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.MongoDB.Mapping;
 
 namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
@@ -15,7 +15,7 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
         }
     }
 
-    public class MongoPersistedGrantEntity : MongoEntityBase
+    public class MongoPersistedGrantEntity : EntityBase
     {
         /// <summary>
         /// Gets or sets the key.

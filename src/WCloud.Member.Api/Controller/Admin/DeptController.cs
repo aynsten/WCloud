@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WCloud.Framework.Database.Abstractions.Extension;
-using WCloud.Framework.Database.Abstractions.Helper;
 using WCloud.Framework.MVC;
 using WCloud.Framework.MVC.BaseController;
 using WCloud.Member.Application.Service;
@@ -43,7 +42,7 @@ namespace WCloud.Member.Api.Controller
         {
             var data = await this._deptService.Query();
 
-            var res = TreeHelper.BuildAntTreeStructure(data, x => x.NodeName, x => this.Parse(x));
+            var res = data.BuildAntTreeStructure(x => x.NodeName, x => this.Parse(x));
 
             return SuccessJson(res);
         }
@@ -54,7 +53,7 @@ namespace WCloud.Member.Api.Controller
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPost, ApiRoute]
-        public async Task<IActionResult> Save([FromForm]string data)
+        public async Task<IActionResult> Save([FromForm] string data)
         {
             var model = this.JsonToEntity_<DepartmentEntity>(data);
 

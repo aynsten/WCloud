@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using WCloud.Framework.Database.Abstractions;
+using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.MongoDB
 {
-    public interface IMongoRepository<T> : ILinqRepository<T>, IRepository<T> where T : MongoEntityBase
+    public interface IMongoRepository<T> : ILinqRepository<T>, IRepository<T> where T : EntityBase
     {
         IMongoCollection<T> Collection { get; }
 

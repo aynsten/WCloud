@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.Database.EntityFrameworkCore;
 using WCloud.Member.DataAccess.EF;

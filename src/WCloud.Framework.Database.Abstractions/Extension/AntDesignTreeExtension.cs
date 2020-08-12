@@ -5,13 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WCloud.Framework.Database.Abstractions.Entity;
-using WCloud.Framework.Database.Abstractions.Extension;
 
-namespace WCloud.Framework.Database.Abstractions.Helper
+namespace WCloud.Framework.Database.Abstractions.Extension
 {
-    public static class TreeHelper
+    public static class AntDesignTreeExtension
     {
-        public static IEnumerable<object> BuildAntTreeStructure<T>(IEnumerable<T> list,
+        public static IEnumerable<object> BuildAntTreeStructure<T>(this IEnumerable<T> list,
             Func<T, string> title_selector,
             Func<T, object> raw_data = null)
             where T : TreeEntityBase

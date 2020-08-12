@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.helper;
+using System;
+using System.Linq;
 using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.Abstractions.Extension
@@ -80,20 +79,6 @@ namespace WCloud.Framework.Database.Abstractions.Extension
             }
 
             return model;
-        }
-
-        /// <summary>
-        /// check input=>delete by uids
-        /// </summary>
-        public static async Task DeleteByIds<T>(this IRepository<T> repo, string[] uids) where T : EntityBase
-        {
-            uids.Should().NotBeNullOrEmpty();
-            foreach (var uid in uids)
-            {
-                uid.Should().NotBeNullOrEmpty("批量删除数据：uid为空");
-            }
-
-            await repo.DeleteWhereAsync(x => uids.Contains(x.Id));
         }
     }
 }

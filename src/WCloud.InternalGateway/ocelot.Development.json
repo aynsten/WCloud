@@ -1,0 +1,16 @@
+﻿{
+  "ReRoutes": [
+    {
+      "DownstreamPathTemplate": "/internal-api/member/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 15002
+        }
+      ],
+      "UpstreamPathTemplate": "/internal-api/member/{url}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    }
+  ]
+}

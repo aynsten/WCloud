@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.Database.EntityFrameworkCore;
+using WCloud.Member.Application;
 using WCloud.Member.Application.Service;
 using WCloud.Member.DataAccess.EF;
 using WCloud.Member.Domain.Admin;
 
-namespace WCloud.Member.Application.InitData
+namespace WCloud.Member.Initialization
 {
     public class InitDataHelper : IInitDataHelper
     {
@@ -42,7 +43,7 @@ namespace WCloud.Member.Application.InitData
                         UserName = admin_username,
                         NickName = admin_username,
                         PassWord = "123"
-                    }.InitSelf();
+                    }.InitEntity();
 
                     var res = await this._login.AddAccount(model, specific_uid: admin_uid);
                     res.ThrowIfNotSuccess();
@@ -65,7 +66,7 @@ namespace WCloud.Member.Application.InitData
                 RoleDescription = "具有所有权限的超级管理员"
             };
 
-            admin_role.AsFirstLevel().InitSelf();
+            admin_role.AsFirstLevel().InitEntity();
             admin_role.SetId(admin_role_uid);
             admin_role.PermissionJson = this._permission.AllPermissions().ToJson();
 
@@ -86,7 +87,7 @@ namespace WCloud.Member.Application.InitData
             {
                 AdminUID = admin_uid,
                 RoleUID = admin_role_uid,
-            }.InitSelf();
+            }.InitEntity();
 
             set.Add(map);
 

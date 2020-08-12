@@ -1,17 +1,15 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Lib.cache;
 using Lib.core;
 using Lib.extension;
 using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using WCloud.Core.Authentication.Model;
 using WCloud.Core.Cache;
 using WCloud.Framework.Middleware;
@@ -59,21 +57,12 @@ namespace WCloud.Member.Authentication.Midddlewares
             var my_orgs = await org_service.GetMyOrgMap(subject_id);
 
             var selected_org_uid = org_selector.GetSelectedOrgUID();
-            var selected_org = my_orgs.OrderByDescending(x => x.OrgUID == selected_org_uid ? 1 : 0).FirstOrDefault();
+            var selected_org = my_orgs
+                .OrderByDescending(x => x.OrgUID == selected_org_uid ? 1 : 0)
+                .ThenByDescending(x => x.CreateTimeUtc).FirstOrDefault();
             res.OrgMember = selected_org;
 
             return res;
-        }
-
-        bool __login_required__(HttpContext context)
-        {
-            var endpoint = context.Features.Get<IEndpointFeature>()?.Endpoint;
-            if (endpoint == null)
-                return false;
-            var allow_anonymous = endpoint.Metadata.GetMetadata<AllowAnonymousAttribute>();
-            if (allow_anonymous != null)
-                return false;
-            return true;
         }
 
         public override async Task Invoke(HttpContext context)
@@ -82,6 +71,8 @@ namespace WCloud.Member.Authentication.Midddlewares
             var logger = provider.Resolve_<ILogger<UserAuthenticationMiddleware>>();
             try
             {
+                if (!context.__login_required__())
+                    throw new MsgException("不需要登陆");
                 var claims = context.User?.Claims ?? new Claim[] { };
                 var subject_id = claims.GetSubjectID();
                 var login_type = claims.GetAccountType();
@@ -105,7 +96,8 @@ namespace WCloud.Member.Authentication.Midddlewares
                     expire: TimeSpan.FromMinutes(10),
                     cache_when: x => x != null && x.User != null);
 
-                data.Should().NotBeNull(nameof(LoginDataWrapper));
+                if (data == null)
+                    throw new MsgException("缓存读取登录信息不存在");
                 data.User.Should().NotBeNull(nameof(UserEntity));
 
                 var user_model = data.User;

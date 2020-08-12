@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WCloud.Member.Application.InitData
+﻿namespace WCloud.Member.Initialization
 {
     public interface IInitDataHelper
     {

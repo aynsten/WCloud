@@ -8,8 +8,6 @@ using WCloud.Core.Cache;
 using WCloud.Core.Helper;
 using WCloud.Core.MessageBus;
 using WCloud.Framework.Database.Abstractions.Extension;
-using WCloud.Framework.Database.Abstractions.Helper;
-using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
 using WCloud.Framework.MVC.BaseController;
 using WCloud.Member.Application.Service;
@@ -92,7 +90,7 @@ namespace WCloud.Member.Api.Controller
         {
             var list = await this._roleService.QueryRoleList();
 
-            var res = TreeHelper.BuildAntTreeStructure(list, x => x.NodeName, x => this.ParseRole(x));
+            var res = list.BuildAntTreeStructure(x => x.NodeName, x => this.ParseRole(x));
 
             return SuccessJson(res);
         }
@@ -117,7 +115,7 @@ namespace WCloud.Member.Api.Controller
         /// <param name="uid"></param>
         /// <returns></returns>
         [HttpPost, ApiRoute, AuthAdmin(Permission = per)]
-        public async Task<IActionResult> Delete([FromForm]string uid)
+        public async Task<IActionResult> Delete([FromForm] string uid)
         {
             var loginadmin = await this.GetLoginAdminAsync();
 
@@ -132,7 +130,7 @@ namespace WCloud.Member.Api.Controller
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPost, ApiRoute, AuthAdmin(Permission = per)]
-        public async Task<IActionResult> Save([FromForm]string data)
+        public async Task<IActionResult> Save([FromForm] string data)
         {
             var model = this.JsonToEntity_<RoleEntity>(data);
 
@@ -160,7 +158,7 @@ namespace WCloud.Member.Api.Controller
         /// <param name="role"></param>
         /// <returns></returns>
         [HttpPost, ApiRoute, AuthAdmin(Permission = per)]
-        public async Task<IActionResult> SetUserRole([FromForm]string user_uid, [FromForm]string role)
+        public async Task<IActionResult> SetUserRole([FromForm] string user_uid, [FromForm] string role)
         {
             user_uid.Should().NotBeNullOrEmpty();
             var roles = this.JsonToEntity_<string[]>(role);
@@ -190,7 +188,7 @@ namespace WCloud.Member.Api.Controller
         /// <param name="permission"></param>
         /// <returns></returns>
         [HttpPost, ApiRoute, AuthAdmin(Permission = per)]
-        public async Task<IActionResult> SetRolePermission([FromForm]string role_uid, [FromForm]string permission)
+        public async Task<IActionResult> SetRolePermission([FromForm] string role_uid, [FromForm] string permission)
         {
             role_uid.Should().NotBeNullOrEmpty();
 

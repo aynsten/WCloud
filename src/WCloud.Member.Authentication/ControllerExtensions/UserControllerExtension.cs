@@ -1,13 +1,12 @@
-﻿using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Lib.helper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using WCloud.Core;
 using WCloud.Core.Authentication.Model;
 using WCloud.Member.Application.PermissionValidator;
 using WCloud.Member.Authentication.OrgSelector;
-using WCloud.Member.Authentication.UserContext;
 
 namespace WCloud.Member.Authentication.ControllerExtensions
 {
@@ -38,14 +37,14 @@ namespace WCloud.Member.Authentication.ControllerExtensions
         /// <returns></returns>
         public static async Task<WCloudUserInfo> GetLoginUserAsync<T>(this T controller) where T : ControllerBase, IUserController
         {
-            var user_context = controller.HttpContext.RequestServices.Resolve_<ILoginContext<WCloudUserInfo>>();
-            var loginuser = await user_context.GetLoginContextAsync();
+            var user_context = controller.HttpContext.RequestServices.Resolve_<IWCloudContext<T>>();
+            var loginuser = user_context.CurrentUserInfo;
 
-            if (loginuser == null)
+            if (!loginuser.IsAuthed())
                 //没有登录
                 throw new NoLoginException();
 
-            return loginuser;
+            return await Task.FromResult(loginuser);
         }
 
         public static async Task<WCloudUserInfo> ValidOrgMember<T>(this T controller, int? flag = null, string[] permissions = null) where T : ControllerBase, IUserController

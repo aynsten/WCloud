@@ -7,4 +7,9 @@
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver.GridFS" Version="2.11.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Database.MongoDB\WCloud.Framework.Database.MongoDB.csproj" />
+  </ItemGroup>
 </Project>

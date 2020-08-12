@@ -33,7 +33,7 @@ namespace WCloud.Member.Application.Service.impl
             if (await this._deptRepo.ExistAsync(x => x.NodeName == model.NodeName))
                 return res.SetErrorMsg("部门名称已经存在");
 
-            model.InitSelf();
+            model.InitEntity();
 
             await this._deptRepo.InsertAsync(model);
 
@@ -46,11 +46,6 @@ namespace WCloud.Member.Application.Service.impl
 
             var res = await this._deptRepo.DeleteSingleNodeWhenNoChildren_(uid);
             return res;
-        }
-
-        public Task<List<UserEntity>> LoadDept(List<UserEntity> list)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<List<DepartmentEntity>> Query(string group = null)

@@ -89,7 +89,7 @@ namespace WCloud.Member.Application.Service.impl
             await this._userRoleRepo.DeleteWhereAsync(x => x.AdminUID == user_uid);
             if (roles.Any())
             {
-                roles = roles.Select(x => x.InitSelf()).ToList();
+                roles = roles.Select(x => x.InitEntity()).ToList();
 
                 await this._userRoleRepo.InsertBulkAsync(roles);
             }

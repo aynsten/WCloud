@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Lib.extension;
@@ -131,7 +132,7 @@ namespace WCloud.CommonService.Application.FileUpload
             //上传到七牛
             await this.__upload_to_qiniu__(model, bs);
             //保存到数据库
-            model.InitSelf();
+            model.InitEntity();
             await this._uploadRepo.InsertAsync(model);
 
             return res.SetSuccessData(model);

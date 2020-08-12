@@ -1,17 +1,14 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Lib.cache;
 using Lib.core;
 using Lib.extension;
 using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using WCloud.Core.Authentication.Model;
 using WCloud.Core.Cache;
 using WCloud.Framework.Middleware;
@@ -50,24 +47,13 @@ namespace WCloud.Member.Authentication.Midddlewares
             return res;
         }
 
-        bool __login_required__(HttpContext context)
-        {
-            var endpoint = context.Features.Get<IEndpointFeature>()?.Endpoint;
-            if (endpoint == null)
-                return false;
-            var allow_anonymous = endpoint.Metadata.GetMetadata<AllowAnonymousAttribute>();
-            if (allow_anonymous != null)
-                return false;
-            return true;
-        }
-
         public override async Task Invoke(HttpContext context)
         {
             var provider = context.RequestServices;
             var logger = provider.Resolve_<ILogger<AdminAuthenticationMiddleware>>();
             try
             {
-                if (!this.__login_required__(context))
+                if (!context.__login_required__())
                     throw new MsgException("不需要登陆");
                 var claims = context.User?.Claims ?? new Claim[] { };
                 var subject_id = claims.GetSubjectID();
@@ -92,7 +78,8 @@ namespace WCloud.Member.Authentication.Midddlewares
                     expire: TimeSpan.FromMinutes(10),
                     cache_when: x => x != null && x.User != null);
 
-                data.Should().NotBeNull(nameof(LoginDataWrapper));
+                if (data == null)
+                    throw new MsgException("缓存读取登录信息不存在");
 
                 var user_model = data.User;
 

@@ -2,10 +2,9 @@
 
 namespace WCloud.Member.Domain.Permission
 {
-    public class PermissionEntityDto : IDto
+    public class PermissionEntityDto : DtoBase
     {
-        //
-        public string Id { get; set; }
+
     }
 
     public enum PermissionSide : int

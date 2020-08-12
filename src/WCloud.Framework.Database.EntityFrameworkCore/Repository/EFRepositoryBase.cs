@@ -1,17 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.data;
 using Lib.extension;
 using Lib.helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 {
+    public class EFRepository<T, DbContextType> : EFRepositoryBase<T>
+        where T : class, IDBTable
+        where DbContextType : DbContext
+    {
+        public EFRepository(IServiceProvider provider) : base(() => provider.Resolve_<DbContextType>())
+        {
+            //
+        }
+    }
+
     /// <summary>
     /// 通过泛型指定dbcontext
     /// </summary>
@@ -61,12 +72,9 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 
         void __add_bulk__(DbContext context, IEnumerable<T> models)
         {
-            if (context == null)
-                throw new ArgumentNullException(nameof(context));
-            if (ValidateHelper.IsEmpty(models))
-                throw new ArgumentNullException(nameof(models));
-            if (models.Any(x => x == null))
-                throw new ArgumentNullException("model存在null值");
+            context.Should().NotBeNull();
+            models.Should().NotBeNull();
+            models.Any(x => x == null).Should().BeFalse();
 
             //保证当前上下文干净，避免保存了额外的数据
             context.ThrowIfHasChanges();

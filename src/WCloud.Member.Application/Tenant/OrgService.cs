@@ -44,7 +44,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var res = new _<OrgEntity>();
 
-            model.Init("org");
+            model.InitEntity();
             if (!model.IsValid(out var msg))
             {
                 res.SetErrorMsg(msg);
@@ -80,7 +80,7 @@ namespace WCloud.Member.Application.Service.impl
             org.Should().NotBeNull($"客户不存在:{uid}");
 
             org.IsDeleted = (!active).ToBoolInt();
-            org.Update();
+            org.SetUpdateTime();
 
             await this._orgRepo.UpdateAsync(org);
         }
@@ -100,7 +100,7 @@ namespace WCloud.Member.Application.Service.impl
             entity.OrgWebSite = model.OrgWebSite;
             entity.Phone = model.Phone;
 
-            entity.Update();
+            entity.SetUpdateTime();
             if (!entity.IsValid(out var msg))
             {
                 res.SetErrorMsg(msg);
@@ -191,14 +191,14 @@ namespace WCloud.Member.Application.Service.impl
 
             await this._orgMemberRepo.DeleteWhereAsync(x => x.UserUID == model.UserUID && x.OrgUID == model.OrgUID);
 
-            var res = await this._orgMemberRepo.AddEntity_(model);
+            var res = await this._orgMemberRepo.InsertAsync(model);
 
             {
                 //更新数量
                 await this.UpdateOrgMemberCount(model.OrgUID);
             }
 
-            return res;
+            return new _<OrgMemberEntity>().SetSuccessData(model);
         }
 
         public virtual async Task<_<OrgMemberEntity>> RemoveOwner(string org_uid, string user_uid)
@@ -239,7 +239,7 @@ namespace WCloud.Member.Application.Service.impl
             user.Should().NotBeNull();
 
             user.IsDeleted = active ? 0 : 1;
-            user.Update();
+            user.SetUpdateTime();
 
             await db.SaveChangesAsync();
 
@@ -359,7 +359,7 @@ namespace WCloud.Member.Application.Service.impl
 
             org.MemeberCount = await query.CountAsync();
 
-            org.Update();
+            org.SetUpdateTime();
 
             await db.SaveChangesAsync();
         }
@@ -380,7 +380,7 @@ namespace WCloud.Member.Application.Service.impl
             }
 
             org.OrgName = name;
-            org.Update();
+            org.SetUpdateTime();
 
             await this._orgRepo.UpdateAsync(org);
 
@@ -400,7 +400,7 @@ namespace WCloud.Member.Application.Service.impl
             //删除旧的角色
             await this._orgMemberRoleRepo.DeleteWhereAsync(x => x.OrgUID == org_uid && x.UserUID == user_uid);
 
-            await this._orgMemberRoleRepo.InsertBulkAsync(model.Select(x => x.InitSelf()));
+            await this._orgMemberRoleRepo.InsertBulkAsync(model.Select(x => x.InitEntity()));
         }
 
         public async Task<IEnumerable<OrgEntity>> LoadOwners(IEnumerable<OrgEntity> list)

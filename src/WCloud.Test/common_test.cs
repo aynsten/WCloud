@@ -1,3 +1,9 @@
+using FluentAssertions;
+using Lib.extension;
+using Lib.helper;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -5,12 +11,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using FluentAssertions;
-using Lib.extension;
-using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
 using WCloud.Member.Domain.User;
 
 namespace WCloud.Test
@@ -307,10 +307,6 @@ Shouldly.ShouldAssertException: new /*---啦啦啦，抓的stack---*/common_test
         [TestMethod]
         public void InnerExceptionTest()
         {
-            var user = new User().MockData();
-            object d = user;
-            d.Should().Be(user);
-
             var e = new ArgumentNullException("a", new NotSupportedException("b", new TimeoutException("c")));
             var msg = string.Join(",", e.GetInnerExceptionAsList());
             msg.Should().Be("a,b,c");
@@ -396,12 +392,11 @@ Shouldly.ShouldAssertException: new /*---啦啦啦，抓的stack---*/common_test
         {
             var collection = new ServiceCollection();
 
-            collection.AddSingleton<User>(new User().MockData());
-            collection.AddSingleton<User>(new User().MockData());
-            collection.AddSingleton<User>(new User().MockData());
+            collection.AddSingleton<User>(new User() { Name = "1" });
+            collection.AddSingleton<User>(new User() { Name = "2" });
+            collection.AddSingleton<User>(new User() { Name = "3" });
 
             collection.AddSingleton<Group, Group>();
-
 
             var provider = collection.BuildServiceProvider();
 
@@ -410,27 +405,9 @@ Shouldly.ShouldAssertException: new /*---啦啦啦，抓的stack---*/common_test
 
         public class User
         {
-            public User MockData()
-            {
-                var f = new Bogus.Faker();
-                this.Id = f.Person.Random.Uuid().ToString();
-                this.Name = f.Name.FullName();
-                this.Age = f.Random.Int(10, 50);
-                this.Address = f.Address.FullAddress();
-                this.CreateTime = f.Date.Past();
-
-                return this;
-            }
-
-            public virtual string Id { get; set; }
-
-            public virtual string Name { get; set; }
-
-            public virtual int? Age { get; set; }
-
-            public virtual string Address { get; set; }
-
-            public virtual DateTime CreateTime { get; set; }
+            public string Name { get; set; }
+            public int Age { get; set; }
+            public string Address { get; set; }
         }
 
         public class Group
@@ -439,13 +416,6 @@ Shouldly.ShouldAssertException: new /*---啦啦啦，抓的stack---*/common_test
             {
                 var data = provider.GetServices<User>().ToList();
             }
-        }
-
-        [TestMethod]
-        public void data_mock_test()
-        {
-            var user = new User().MockData();
-            //print user
         }
     }
 }

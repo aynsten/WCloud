@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -41,7 +41,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
         {
             data.Should().NotBeNull();
 
-            var model = data.InitSelf();
+            var model = data.InitEntity();
 
             this.ValidModel(model);
 

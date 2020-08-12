@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.Database.EntityFrameworkCore;
 using WCloud.Member.DataAccess.EF;
@@ -49,7 +48,7 @@ namespace WCloud.Member.Application.Service.impl
                 model.ContactEmail
             });
 
-            user.Update();
+            user.SetUpdateTime();
 
             await this._adminRepo.UpdateAsync(user);
         }
@@ -131,7 +130,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var res = new _<AdminEntity>();
 
-            model.InitSelf();
+            model.InitEntity();
             if (await this._adminRepo.ExistAsync(x => x.UserName == model.UserName))
             {
                 return res.SetErrorMsg("用户名已存在");

@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Lib.data;
 using Lib.extension;
 using Lib.helper;
 using System;
@@ -71,7 +70,6 @@ namespace WCloud.Framework.Database.Abstractions.Extension
             }
         }
         #endregion
-
 
         #region 递归相关逻辑
 
@@ -159,7 +157,7 @@ namespace WCloud.Framework.Database.Abstractions.Extension
         public static async Task<_<T>> AddTreeNode<T>(this IRepository<T> repo, T model, string model_flag = null) where T : TreeEntityBase
         {
             var res = new _<T>();
-            model.InitSelf();
+            model.InitEntity();
 
             if (model.IsFirstLevel())
             {
@@ -193,7 +191,9 @@ namespace WCloud.Framework.Database.Abstractions.Extension
             var dead_nodes = list.FindNodeChildrenRecursively_(node).Select(x => x.Id);
 
             if (dead_nodes.Any())
+            {
                 await repo.DeleteWhereAsync(x => dead_nodes.Contains(x.Id));
+            }
         }
 
         public static async Task<bool> DeleteSingleNodeWhenNoChildren_<T>(this IRepository<T> repo, string node_uid) where T : TreeEntityBase

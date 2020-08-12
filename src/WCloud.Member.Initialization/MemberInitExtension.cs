@@ -1,6 +1,5 @@
 ﻿using Bogus;
 using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,7 +12,7 @@ using WCloud.Member.Domain.Tenant;
 using WCloud.Member.Domain.User;
 using WCloud.Member.Shared.Helper;
 
-namespace WCloud.Member.Application.InitData
+namespace WCloud.Member.Initialization
 {
     public static class MemberInitExtension
     {
@@ -63,7 +62,7 @@ namespace WCloud.Member.Application.InitData
                     {
                         OrgName = "体验水司",
                         UserUID = admin_uid,
-                    }.InitSelf();
+                    }.InitEntity();
 
                     org.SetId(default_org_uid);
 
@@ -80,7 +79,7 @@ namespace WCloud.Member.Application.InitData
                         UserUID = admin_uid,
                         MemberApproved = 1,
                         Flag = (int)MemberRoleEnum.管理员
-                    }.InitSelf("auto-mb");
+                    }.InitEntity();
                     org_member_set.Add(map);
                     db.SaveChanges();
                 }
@@ -98,7 +97,7 @@ namespace WCloud.Member.Application.InitData
                     UserUID = m.Id,
                     MemberApproved = 1,
                     IsOwner = 0
-                }.InitSelf("m");
+                }.InitEntity();
             }
 
             using (var s = app.CreateScope())
@@ -113,7 +112,7 @@ namespace WCloud.Member.Application.InitData
                         NickName = faker.Name.FullName(),
                         UserSex = (int)faker.Person.Gender,
                         PassWord = password,
-                    }.InitSelf("user");
+                    }.InitEntity();
                 }
 
                 var db = s.ServiceProvider.Resolve_<IMSRepository<UserEntity>>().Database;

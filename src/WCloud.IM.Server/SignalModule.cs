@@ -6,6 +6,7 @@ using Hangfire.AspNetCore;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebSockets;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,16 +15,19 @@ using Microsoft.OpenApi.Models;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
+using WCloud.Core;
 using WCloud.Framework.Apm;
 using WCloud.Framework.Jobs;
 using WCloud.Framework.MVC;
 using WCloud.Framework.Socket;
 using WCloud.Framework.Startup;
 using WCloud.Member.Application;
+using WCloud.Member.Authentication;
 
 namespace WCloud.IM.Server
 {
     [DependsOn(
+        typeof(CoreModule),
         typeof(MemberModule),
         typeof(CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),
@@ -128,6 +132,12 @@ namespace WCloud.IM.Server
             job_client.Schedule<xx>(x => x.Log(), TimeSpan.FromSeconds(30));
 
 #if DEBUG
+            app.Map("/test", app => app.Run(async context =>
+            {
+                var x = context.__login_required__();
+                await context.Response.WriteAsync(x ? "yes" : "false");
+            }));
+
             app.UseRouting();
             app.UseEndpoints(e => e.MapDefaultControllerRoute());
 #endif

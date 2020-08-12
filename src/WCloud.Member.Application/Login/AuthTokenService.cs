@@ -64,7 +64,7 @@ namespace WCloud.Member.Application.Service.impl
                 ExpiryTimeUtc = now + TimeSpan.FromDays(this.TokenExpireDays),
                 RefreshToken = Com.GetUUID(),
                 UserUID = user_uid
-            }.InitSelf("token");
+            }.InitEntity();
 
             if (!token.IsValid(out var msg))
                 throw new MsgException(msg);

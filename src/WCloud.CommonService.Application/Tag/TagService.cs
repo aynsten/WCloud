@@ -49,7 +49,7 @@ namespace WCloud.CommonService.Application.Tag
             if (await this._tagRepo.ExistAsync(x => x.TagName == data.TagName))
                 return res.SetErrorMsg("存在同名标签");
 
-            data.InitSelf();
+            data.InitEntity();
 
             await this._tagRepo.InsertAsync(data);
             return res.SetSuccessData(data);
@@ -140,7 +140,7 @@ namespace WCloud.CommonService.Application.Tag
                     EntityType = entity_type,
                     SubjectID = subject_id,
                     TagUID = x
-                }.InitSelf()));
+                }.InitEntity()));
                 await db.SaveChangesAsync();
             }
         }

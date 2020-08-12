@@ -84,7 +84,7 @@ namespace WCloud.Member.Application.Login
 
             var data = new _<T>();
 
-            model.InitSelf();
+            model.InitEntity();
             if (ValidateHelper.IsNotEmpty(model.PassWord))
             {
                 model.PassWord = this._passHelper.Encrypt(model.PassWord);
@@ -118,7 +118,7 @@ namespace WCloud.Member.Application.Login
             user.Should().NotBeNull("用户不存在，无法修改密码");
 
             user.PassWord = this._passHelper.Encrypt(pwd);
-            user.Update();
+            user.SetUpdateTime();
             user.LastPasswordUpdateTimeUtc = user.UpdateTimeUtc;
 
             await this._userRepo.UpdateAsync(user);
@@ -132,11 +132,11 @@ namespace WCloud.Member.Application.Login
 
             if (active)
             {
-                await this._userRepo.RecoverByUIDs(uids);
+                await this._userRepo.RecoverByIdAsync(uids);
             }
             else
             {
-                await this._userRepo.RemoveByUIDs(uids);
+                await this._userRepo.RemoveByIdAsync(uids);
             }
         }
 

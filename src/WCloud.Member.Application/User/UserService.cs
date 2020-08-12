@@ -68,7 +68,7 @@ namespace WCloud.Member.Application.Service.impl
                 model.NickName
             });
 
-            user.Update();
+            user.SetUpdateTime();
 
             if (!user.IsValid(out var msg))
             {
@@ -96,7 +96,7 @@ namespace WCloud.Member.Application.Service.impl
             user.RealName = real_name;
             user.IdCardConfirmed = 1;
 
-            user.Update();
+            user.SetUpdateTime();
 
             await this._userRepo.UpdateAsync(user);
             data.SetSuccessData(user);
@@ -114,7 +114,7 @@ namespace WCloud.Member.Application.Service.impl
 
             user.UserImg = avatar_url;
 
-            user.Update();
+            user.SetUpdateTime();
 
             await this._userRepo.UpdateAsync(user);
             data.SetSuccessData(user);

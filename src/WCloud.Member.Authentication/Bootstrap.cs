@@ -1,10 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using WCloud.Core.Authentication.Model;
 using WCloud.Member.Authentication.Midddlewares;
 using WCloud.Member.Authentication.OrgSelector;
-using WCloud.Member.Authentication.UserContext;
 
 namespace WCloud.Member.Authentication
 {
@@ -35,7 +33,6 @@ namespace WCloud.Member.Authentication
         public static IServiceCollection AddScopedLoginContext(this IServiceCollection collection)
         {
             collection.AddScoped<ICurrentOrgSelector, MyCurrentOrgSelector>();
-            collection.AddScoped(typeof(ILoginContext<>), typeof(UserLoginContext<>));
 
             collection.AddScoped<WCloudAdminInfo>(provider => new WCloudAdminInfo());
             collection.AddScoped<WCloudUserInfo>(provider => new WCloudUserInfo());

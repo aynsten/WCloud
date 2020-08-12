@@ -48,8 +48,8 @@ namespace WCloud.Member.Application.Service.impl
                 return new _<OrgRoleEntity>().SetErrorMsg("角色名重复");
             }
 
-            var res = await this._orgRoleRepo.AddEntity_(orgrole);
-            return res;
+            var res = await this._orgRoleRepo.InsertAsync(orgrole);
+            return new _<OrgRoleEntity>().SetSuccessData(orgrole);
         }
 
         public virtual async Task DeleteOrgRole(string role_uid)

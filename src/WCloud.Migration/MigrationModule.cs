@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
+using WCloud.Core;
 using WCloud.Core.Helper;
 using WCloud.Framework.MVC;
 using WCloud.Member.Application;
@@ -15,6 +16,7 @@ using WCloud.Member.Application;
 namespace WCloud.Migration
 {
     [DependsOn(
+        typeof(CoreModule),
         typeof(MemberModule),
         typeof(CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),

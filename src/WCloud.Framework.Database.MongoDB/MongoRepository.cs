@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Lib.helper;
 using MongoDB.Driver;
+using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.MongoDB.Mapping;
 
 namespace WCloud.Framework.Database.MongoDB
 {
-    public class MongoRepository<T> : IMongoRepository<T> where T : MongoEntityBase
+    public class MongoRepository<T> : IMongoRepository<T> where T : EntityBase
     {
         private readonly IServiceProvider provider;
         private readonly IMongoClient _client;

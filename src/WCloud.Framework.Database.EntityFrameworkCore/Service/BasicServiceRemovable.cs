@@ -15,12 +15,12 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
 
         public async Task RecoverByUIDs(params string[] uids)
         {
-            await this._repo.RecoverByUIDs(uids);
+            await this._repo.RecoverByIdAsync(uids);
         }
 
         public async Task RemoveByUIDs(params string[] uids)
         {
-            await this._repo.RemoveByUIDs(uids);
+            await this._repo.RemoveByIdAsync(uids);
         }
     }
 }

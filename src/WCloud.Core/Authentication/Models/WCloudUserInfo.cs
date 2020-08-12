@@ -8,7 +8,7 @@ namespace WCloud.Core.Authentication.Model
     /// <summary>
     /// 当前登陆用户信息
     /// </summary>
-    public class WCloudUserInfo : ILoginModel
+    public class WCloudUserInfo 
     {
         /// <summary>
         /// 登陆人id
@@ -34,6 +34,11 @@ namespace WCloud.Core.Authentication.Model
         /// </summary>
         public Dictionary<string, string> ExtraData { get; set; }
 
+        public bool IsAuthed()
+        {
+            var res = ValidateHelper.IsNotEmpty(this.UserID);
+            return res;
+        }
 
         /// <summary>
         /// 在租户中具有某个角色

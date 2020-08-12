@@ -53,7 +53,7 @@ namespace WCloud.Member.Application.Service.impl
             menu.NodeName = model.NodeName;
             menu.PermissionJson = model.PermissionJson;
 
-            menu.Update();
+            menu.SetUpdateTime();
 
             await this._menuRepo.UpdateAsync(menu);
         }

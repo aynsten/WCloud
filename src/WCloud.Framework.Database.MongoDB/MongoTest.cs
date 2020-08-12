@@ -16,7 +16,7 @@ using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.MongoDB
 {
-    class Mongoxx<T> where T : MongoEntityBase
+    class Mongoxx<T> where T : EntityBase
     {
         private readonly IMongoClient _client;
         private readonly IMongoDatabase _db;
@@ -24,7 +24,7 @@ namespace WCloud.Framework.Database.MongoDB
 
         public IQueryable<T> Queryable => this._set.AsQueryable();
 
-        class counter_entity : MongoEntityBase
+        class counter_entity : EntityBase
         {
             public string Category { get; set; }
             public int MaxId { get; set; }
@@ -88,7 +88,7 @@ namespace WCloud.Framework.Database.MongoDB
         }
     }
 
-    class xx : MongoEntityBase { }
+    class xx : EntityBase { }
 
     [ConnectionStringName("xx")]
     class MongoDbContextTest : AbpMongoDbContext

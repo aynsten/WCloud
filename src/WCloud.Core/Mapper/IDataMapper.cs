@@ -2,7 +2,7 @@
 
 namespace WCloud.Core.Mapper
 {
-    public interface IObjectMapper
+    public interface IDataMapper
     {
         TDestination Map<TSource, TDestination>(TSource source);
 

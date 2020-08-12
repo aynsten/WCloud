@@ -25,7 +25,7 @@ namespace WCloud.Core
         IMessagePublisher MessagePublisher { get; }
         ICacheKeyManager CacheKeyManager { get; }
         IStringArraySerializer StringArraySerializer { get; }
-        IObjectMapper ObjectMapper { get; }
+        IDataMapper ObjectMapper { get; }
         IEntityValidationHelper EntityValidator { get; }
     }
 
@@ -48,8 +48,8 @@ namespace WCloud.Core
         private readonly Lazy<IStringArraySerializer> lazy_string_array_serializer;
         public IStringArraySerializer StringArraySerializer => this.lazy_string_array_serializer.Value;
 
-        private readonly Lazy<IObjectMapper> lazy_object_mapper;
-        public IObjectMapper ObjectMapper => this.lazy_object_mapper.Value;
+        private readonly Lazy<IDataMapper> lazy_object_mapper;
+        public IDataMapper ObjectMapper => this.lazy_object_mapper.Value;
 
         private readonly Lazy<ILogger<T>> lazy_logger;
         public ILogger Logger => lazy_logger.Value;
@@ -69,7 +69,7 @@ namespace WCloud.Core
             this.lazy_publisher = __lazy_resolve__<IMessagePublisher>();
             this.lazy_cache_key = __lazy_resolve__<ICacheKeyManager>();
             this.lazy_string_array_serializer = __lazy_resolve__<IStringArraySerializer>();
-            this.lazy_object_mapper = __lazy_resolve__<IObjectMapper>();
+            this.lazy_object_mapper = __lazy_resolve__<IDataMapper>();
             this.lazy_entity_validator = __lazy_resolve__<IEntityValidationHelper>();
         }
 

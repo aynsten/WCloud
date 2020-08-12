@@ -6,6 +6,8 @@
 
   <ItemGroup>
   
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+  
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     
     <PackageReference Include="Volo.Abp.ObjectMapping" Version="3.0.3" />
@@ -14,7 +16,6 @@
   <ItemGroup>
     <Folder Include="Validator\" />
     <Folder Include="Validator\FluentValidatorImpl\" />
-    <Folder Include="Mapper\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />

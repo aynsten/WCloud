@@ -15,13 +15,11 @@ namespace System
     /// <summary>
     /// 接口公共返回值的缩写
     /// </summary>
-    [Serializable]
     public class _ : _<object> { }
 
     /// <summary>
     /// 接口公共返回值的缩写
     /// </summary>
-    [Serializable]
     public class _<T> : IDataContainer<T>
     {
         [JsonIgnore]
@@ -33,10 +31,13 @@ namespace System
 
         public virtual bool Success { get; set; } = false;
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public virtual string ErrorCode { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public virtual string ErrorMsg { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public virtual T Data { get; set; }
 
         [JsonIgnore]

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using AutoMapper;
 using WCloud.Core.Mapper;
 
 namespace WCloud.Framework.Common.Mapper
 {
-    public class AbpObjectMapperProvider : IDataMapper
+    public class AutoMapperProvider : IDataMapper
     {
-        private readonly Volo.Abp.ObjectMapping.IObjectMapper mapper;
-        public AbpObjectMapperProvider(Volo.Abp.ObjectMapping.IObjectMapper mapper)
+        private readonly IMapper mapper;
+        public AutoMapperProvider(IMapper mapper)
         {
             this.mapper = mapper;
         }

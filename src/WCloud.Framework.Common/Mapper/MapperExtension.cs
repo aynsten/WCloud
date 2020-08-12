@@ -7,7 +7,13 @@ namespace WCloud.Framework.Common.Mapper
     {
         public static IServiceCollection AddAbpObjectMapperProvider(this IServiceCollection collection)
         {
-            collection.AddTransient<IObjectMapper, AbpObjectMapperProvider>();
+            collection.AddTransient<IDataMapper, AbpObjectMapperProvider>();
+            return collection;
+        }
+
+        public static IServiceCollection AddAutoMapperProvider(this IServiceCollection collection)
+        {
+            collection.AddTransient<IDataMapper, AutoMapperProvider>();
             return collection;
         }
     }

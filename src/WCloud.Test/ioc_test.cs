@@ -2,7 +2,6 @@
 using Autofac.Extensions.DependencyInjection;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using WCloud.Framework.Aop.AutofacProvider;

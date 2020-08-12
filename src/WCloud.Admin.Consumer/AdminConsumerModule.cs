@@ -1,7 +1,7 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
@@ -10,14 +10,15 @@ using WCloud.Core.MessageBus;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
 using WCloud.Member.Application;
-using WCloud.Member.Application.InitData;
 using WCloud.Member.DataAccess.EF;
+using WCloud.Member.Initialization;
 
 namespace WCloud.Admin.Consumer
 {
     [DependsOn(
         typeof(CoreModule),
         typeof(MemberModule),
+        typeof(MemberInitiallizationModule),
         typeof(CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),
         typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),

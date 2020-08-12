@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.Database.EntityFrameworkCore;
+using WCloud.Member.Application;
 using WCloud.Member.Application.Service;
 using WCloud.Member.DataAccess.EF;
 using WCloud.Member.Domain.Admin;
 
-namespace WCloud.Member.Application.InitData
+namespace WCloud.Member.Initialization
 {
     public class InitDataHelper : IInitDataHelper
     {

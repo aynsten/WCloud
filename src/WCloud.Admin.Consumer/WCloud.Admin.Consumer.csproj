@@ -27,6 +27,7 @@
     <ProjectReference Include="..\WCloud.Member.Application\WCloud.Member.Application.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\WCloud.Member.Initialization\WCloud.Member.Initialization.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.json">

@@ -1,6 +1,5 @@
 ﻿using Bogus;
 using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,7 +12,7 @@ using WCloud.Member.Domain.Tenant;
 using WCloud.Member.Domain.User;
 using WCloud.Member.Shared.Helper;
 
-namespace WCloud.Member.Application.InitData
+namespace WCloud.Member.Initialization
 {
     public static class MemberInitExtension
     {

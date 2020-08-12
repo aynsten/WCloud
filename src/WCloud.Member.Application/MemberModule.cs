@@ -1,12 +1,11 @@
-﻿using System;
-using System.Reflection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Reflection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.MySQL;
 using Volo.Abp.Modularity;
 using WCloud.Framework.Common.Validator;
-using WCloud.Member.Application.InitData;
 using WCloud.Member.DataAccess.EF;
 using WCloud.Member.Shared;
 using WCloud.Member.Shared.Helper;
@@ -36,7 +35,6 @@ namespace WCloud.Member.Application
             //helper
             collection.AddSingleton<IPasswordHelper, DefaultPasswordHelper>();
             collection.AddSingleton<IMobilePhoneFormatter, DefaultMobilePhoneFormatter>();
-            collection.AddTransient<IInitDataHelper, InitDataHelper>();
         }
 
         void __add_db_context__(IServiceCollection collection)

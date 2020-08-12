@@ -18,6 +18,9 @@ namespace WCloud.Framework.Database.MongoDB
             this._database_name = database_name;
         }
 
+        public MongoConnectionWrapper(string connection_string, string database_name) : this(new MongoClient(connection_string), database_name)
+        { }
+
         public IMongoClient Client => this._client;
 
         public string DatabaseName => this._database_name;

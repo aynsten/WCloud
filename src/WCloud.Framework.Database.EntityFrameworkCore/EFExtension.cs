@@ -7,12 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using FluentAssertions;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore
 {
     public static class EFExtension
     {
-        private static void Test<T>() where T : class
+#if DEBUG
+        static void Test<T>() where T : class
         {
             IEnumerable<T> list = null;
             IQueryable<T> query = null;
@@ -35,6 +37,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
             //just like this:
             list.GetEnumerator();
         }
+#endif
 
         /// <summary>
         /// 如果存在未提交的更改就抛出异常
@@ -44,7 +47,9 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
         public static void ThrowIfHasChanges(this DbContext context)
         {
             if (context.ChangeTracker.HasChanges())
+            {
                 throw new UnSubmitChangesException($"{context.GetType().FullName}存在未提交的更改");
+            }
         }
 
         public static void RollbackEntityChanges(this DbContext context)
@@ -52,9 +57,9 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
             if (context.ChangeTracker.HasChanges())
             {
                 var entries = context.ChangeTracker.Entries()
-                       .Where(e => 
-                       e.State == EntityState.Added || 
-                       e.State == EntityState.Modified || 
+                       .Where(e =>
+                       e.State == EntityState.Added ||
+                       e.State == EntityState.Modified ||
                        e.State == EntityState.Deleted)
                        .ToArray();
 
@@ -69,16 +74,18 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
         /// 创建表
         /// </summary>
         public static void TryCreateTable(this DbContext context)
-            => context.Database.EnsureCreated();
+        {
+            context.Database.EnsureCreated();
+        }
 
         public static void AttachIfNot<T>(this DbContext db, T entity) where T : class, IDBTable
         {
-            if (entity == null)
-                throw new ArgumentNullException($"{nameof(AttachIfNot)}.{nameof(entity)}");
+            entity.Should().NotBeNull();
 
-            if (db.ChangeTracker.Entries<T>().Any(ent => ent.Entity == entity))
-                return;
-            db.Set<T>().Attach(entity);
+            if (!db.ChangeTracker.Entries<T>().Any(ent => ent.Entity == entity))
+            {
+                db.Set<T>().Attach(entity);
+            }
         }
 
         /// <summary>
@@ -89,7 +96,8 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
         /// <returns></returns>
         public static IQueryable<T> AsNoTrackingQueryable<T>(this IQueryable<T> set) where T : class
         {
-            return set.AsQueryableTrackingOrNot(false);
+            var res = set.AsQueryableTrackingOrNot(false);
+            return res;
         }
 
         /// <summary>
@@ -97,7 +105,11 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
         /// </summary>
         public static IQueryable<T> AsQueryableTrackingOrNot<T>(this IQueryable<T> set, bool tracking) where T : class
         {
-            return tracking ? set.AsQueryable() : set.AsNoTracking().AsQueryable();
+            var res = tracking ?
+                set.AsQueryable() :
+                set.AsNoTracking();
+
+            return res;
         }
 
         /// <summary>
@@ -113,39 +125,14 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
             //little hack here until Entity Framework really supports stored procedures
             //otherwise, navigation properties of loaded entities are not loaded until an entity is attached to the context
             var set = db.Set<T>();
-            //运算符重载
-            var alreadyAttached = set.Local.FirstOrDefault(x => x == entity);
-            if (alreadyAttached == null)
+            if (!set.Local.Any(x => x == entity))
             {
                 //attach new entity
                 set.Attach(entity);
                 return entity;
             }
 
-            //entity is already loaded
-            return alreadyAttached;
-        }
-
-        public static async Task<T> FirstOrThrowAsync<T>(this IQueryable<T> query, string error_msg)
-        {
-            var model = await query.FirstOrDefaultAsync();
-            if (model == null)
-                throw new DataNotFoundException(error_msg);
-            return model;
-        }
-
-        /// <summary>
-        /// 获取记录总数和分页总数
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="query"></param>
-        /// <param name="page_size"></param>
-        /// <returns></returns>
-        public static async Task<(int item_count, int page_count)> QueryRowCountAndPageCountAsync<T>(this IQueryable<T> query, int page_size)
-        {
-            var item_count = await query.CountAsync();
-            var page_count = PagerHelper.GetPageCount(item_count, page_size);
-            return (item_count, page_count);
+            return entity;
         }
 
         /// <summary>

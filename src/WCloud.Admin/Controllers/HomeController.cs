@@ -1,5 +1,3 @@
-// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +12,7 @@ using WCloud.Member.Authentication.ControllerExtensions;
 namespace WCloud.Admin.Controllers
 {
     [AllowAnonymous]
+    [AdminServiceRoute]
     public class HomeController : WCloudBaseController, IAdminController
     {
         private readonly IWebHostEnvironment _environment;
@@ -27,20 +26,17 @@ namespace WCloud.Admin.Controllers
             this._logger = logger;
         }
 
+        [HttpGet, ApiRoute]
         public IActionResult Index() => Content("ok");
 
-        /// <summary>
-        /// ����session
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet, AdminRoute]
+        [HttpGet, ApiRoute]
         public IActionResult session()
         {
             HttpContext.Session.SetObjectAsJson("xx", DateTime.UtcNow);
             return Content("ok");
         }
 
-        [HttpGet, AdminRoute]
+        [HttpGet, ApiRoute]
         public async Task<IActionResult> Apm()
         {
             var transaction = Elastic.Apm.Agent

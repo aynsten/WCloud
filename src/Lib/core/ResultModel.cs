@@ -38,6 +38,9 @@ namespace System
         public virtual string ErrorMsg { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public virtual string[] ErrorMsgList { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public virtual T Data { get; set; }
 
         [JsonIgnore]

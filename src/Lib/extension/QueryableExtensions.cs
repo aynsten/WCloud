@@ -13,7 +13,9 @@ namespace Lib.extension
         public static IQueryable<T> WhereIf_<T>(this IQueryable<T> query, bool condition, Expression<Func<T, bool>> where)
         {
             if (condition)
+            {
                 query = query.Where(predicate: where);
+            }
             return query;
         }
 
@@ -36,8 +38,11 @@ namespace Lib.extension
             IQueryable<T> q = query;
 
             if (pager.skip > 0)
+            {
                 q = q.Skip(pager.skip);
-            return q.Take(pager.take);
+            }
+            var res = q.Take(pager.take);
+            return res;
         }
 
         /// <summary>
@@ -72,9 +77,12 @@ namespace Lib.extension
         /// 排序
         /// </summary>
         public static IOrderedQueryable<T> OrderBy_<T, SortColumn>(this IQueryable<T> query,
-            Expression<Func<T, SortColumn>> orderby, bool desc = true) =>
-            desc ?
+            Expression<Func<T, SortColumn>> orderby, bool desc = true)
+        {
+            var res = desc ?
             query.OrderByDescending(orderby) :
             query.OrderBy(orderby);
+            return res;
+        }
     }
 }

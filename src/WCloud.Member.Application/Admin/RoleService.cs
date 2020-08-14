@@ -2,36 +2,37 @@
 using Lib.extension;
 using Lib.helper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WCloud.Core;
 using WCloud.Core.Helper;
 using WCloud.Framework.Database.Abstractions.Extension;
-using WCloud.Member.DataAccess.EF;
 using WCloud.Member.Domain.Admin;
 
 namespace WCloud.Member.Application.Service.impl
 {
     public class RoleService : IRoleService
     {
-        private readonly IMSRepository<RoleEntity> _roleRepo;
-        private readonly IMSRepository<AdminRoleEntity> _userRoleRepo;
+        private readonly IWCloudContext _context;
+        private readonly IRoleRepository roleRepository;
         private readonly IStringArraySerializer permissionSerializer;
 
         public RoleService(
-            IMSRepository<RoleEntity> _roleRepo,
-            IMSRepository<AdminRoleEntity> _userRoleRepo,
+            IWCloudContext<RoleService> _context,
+            IRoleRepository roleRepository,
             IStringArraySerializer permissionSerializer)
         {
-            this._roleRepo = _roleRepo;
-            this._userRoleRepo = _userRoleRepo;
+            this._context = _context;
+            this.roleRepository = roleRepository;
             this.permissionSerializer = permissionSerializer;
         }
 
         public virtual async Task<List<RoleEntity>> QueryRoleList(string parent = null)
         {
-            var query = this._roleRepo.NoTrackingQueryable;
+            var query = this.roleRepository.Queryable;
 
             query = query.WhereIf(ValidateHelper.IsNotEmpty(parent), x => x.ParentUID == parent);
 
@@ -47,12 +48,13 @@ namespace WCloud.Member.Application.Service.impl
 
             var data = new _<RoleEntity>();
 
-            if (await this._roleRepo.ExistAsync(x => x.NodeName == role.NodeName))
+            if (await this.roleRepository.ExistAsync(x => x.NodeName == role.NodeName))
             {
                 return data.SetErrorMsg("角色名重复");
             }
 
-            var res = await this._roleRepo.AddTreeNode(role, "role");
+            var res = await this.roleRepository.AddTreeNode(role, "role");
+            this._context.Logger.LogInformation("添加新角色");
             return res;
         }
 
@@ -63,7 +65,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var data = new _<RoleEntity>();
 
-            var role = await this._roleRepo.QueryOneAsync(x => x.Id == model.Id);
+            var role = await this.roleRepository.QueryOneAsync(x => x.Id == model.Id);
             role.Should().NotBeNull($"角色不存在：{model.Id}");
 
             role.NodeName = model.NodeName;
@@ -75,7 +77,7 @@ namespace WCloud.Member.Application.Service.impl
                 return data;
             }
 
-            await this._roleRepo.UpdateAsync(role);
+            await this.roleRepository.UpdateAsync(role);
 
             return data.SetSuccessData(role);
         }
@@ -86,13 +88,7 @@ namespace WCloud.Member.Application.Service.impl
             roles.Should().NotBeNull("set user roles roles");
             roles.ForEach(x => x.AdminUID.Should().Be(user_uid, "set user roles user uid equal"));
 
-            await this._userRoleRepo.DeleteWhereAsync(x => x.AdminUID == user_uid);
-            if (roles.Any())
-            {
-                roles = roles.Select(x => x.InitEntity()).ToList();
-
-                await this._userRoleRepo.InsertBulkAsync(roles);
-            }
+            await this.roleRepository.SetUserRoles(user_uid, roles.Select(x => x.RoleUID).ToArray());
         }
 
         public virtual async Task SetRolePermissions(string role_uid, string[] permissions)
@@ -100,13 +96,13 @@ namespace WCloud.Member.Application.Service.impl
             role_uid.Should().NotBeNullOrEmpty("set role permission role uid");
             permissions.Should().NotBeNull("set role permission permissions");
 
-            var model = await this._roleRepo.QueryOneAsync(x => x.Id == role_uid);
+            var model = await this.roleRepository.QueryOneAsync(x => x.Id == role_uid);
             model.Should().NotBeNull("set role permission");
 
             if (!this.permissionSerializer.Deserialize(model.PermissionJson).AllEqual(permissions))
             {
                 model.PermissionJson = permissions.ToJson();
-                await this._roleRepo.UpdateAsync(model);
+                await this.roleRepository.UpdateAsync(model);
             }
         }
 
@@ -114,7 +110,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             uid.Should().NotBeNullOrEmpty("delete role uid");
 
-            await this._roleRepo.DeleteSingleNodeWhenNoChildren_(uid);
+            await this.roleRepository.DeleteSingleNodeWhenNoChildren_(uid);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Lib.helper;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WCloud.Member.Domain.Admin
@@ -16,6 +17,9 @@ namespace WCloud.Member.Domain.Admin
 
     public interface IAdminRepository : IMemberRepository<AdminEntity>
     {
+        Task<PagerData<AdminEntity>> QueryUserList(string name = null, string email = null, string keyword = null, int? isremove = null, int page = 1, int pagesize = 20);
         Task<PagerData<AdminEntity>> QueryAdmin(QueryAdminParameter filter, int page, int pagesize);
+        Task<IEnumerable<AdminEntity>> LoadRoles(IEnumerable<AdminEntity> list);
+        Task<List<AdminEntity>> QueryTopUser(string q, string[] role_uid, int size);
     }
 }

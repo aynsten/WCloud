@@ -1,23 +1,18 @@
 ﻿using FluentAssertions;
 using Lib.cache;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using WCloud.Core;
 
 namespace WCloud.Framework.Startup
 {
     public static class CacheStartup
     {
-        public static IServiceCollection AddCacheProvider_(this IServiceCollection collection)
-        {
-            collection.AddTransient<ICacheProvider, DistributeCacheProvider>();
-
-            return collection;
-        }
-
         public static IServiceCollection AddRedisCacheProvider_(this IServiceCollection collection, string redis_str)
         {
             redis_str.Should().NotBeNullOrEmpty();
-
+            collection.RemoveAll<IDistributedCache>();
             collection.AddStackExchangeRedisCache(option =>
             {
                 option.InstanceName = "rds-";

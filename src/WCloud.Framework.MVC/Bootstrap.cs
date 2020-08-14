@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Lib.cache;
 using Lib.data;
 using Lib.extension;
 using Lib.helper;
@@ -14,9 +10,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using Volo.Abp.VirtualFileSystem;
 using WCloud.Core;
 using WCloud.Core.Cache;
@@ -24,7 +27,6 @@ using WCloud.Core.PollyExtension;
 using WCloud.Framework.Common.Validator;
 using WCloud.Framework.Filters;
 using WCloud.Framework.Logging;
-using WCloud.Framework.Middleware;
 using WCloud.Framework.Redis;
 using WCloud.Framework.Redis.implement;
 using WCloud.Framework.Startup;
@@ -43,12 +45,6 @@ namespace WCloud.Framework.MVC
         {
             collection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             return collection;
-        }
-
-        public static IApplicationBuilder UseLibMvcMiddleware(this IApplicationBuilder builder)
-        {
-            builder.UseMiddleware<SetEncodingMiddleware>();
-            return builder;
         }
 
         /// <summary>
@@ -129,6 +125,33 @@ namespace WCloud.Framework.MVC
             }
 
             return collection;
+        }
+
+        static IServiceCollection AddCacheProvider_(this IServiceCollection collection)
+        {
+            collection.RemoveAll<ICacheProvider>();
+            collection.AddTransient<ICacheProvider, DistributeCacheProvider>();
+
+            return collection;
+        }
+
+        static IDataProtectionBuilder AddFileBasedDataProtection_(this IServiceCollection collection,
+            IConfiguration config,
+            IWebHostEnvironment env)
+        {
+            var app_name = config.GetAppName() ?? "shared_app";
+
+            var builder = collection
+                .AddDataProtection()
+                .SetApplicationName(applicationName: app_name)
+                .AddKeyManagementOptions(option =>
+                {
+                    option.AutoGenerateKeys = true;
+                    option.NewKeyLifetime = TimeSpan.FromDays(1000);
+                });
+            builder.PersistKeysToFileSystem(new DirectoryInfo(env.ContentRootPath));
+
+            return builder;
         }
 
         /// <summary>

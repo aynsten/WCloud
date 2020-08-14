@@ -86,6 +86,21 @@ namespace Lib.helper
             var head = page - span;
             var tail = page + span;
 
+            //render 1
+            if (head > 1 + 1)
+            {
+                //reader ...
+            }
+            for (var i = Math.Max(1 + 1, head); i <= Math.Min(pageCount - 1, tail); ++i)
+            {
+                //render i
+            }
+            if (tail < pageCount - 1)
+            {
+                //render ...
+            }
+            //render page count
+
             builder.Append(post);
             var res = builder.ToString();
             return res;

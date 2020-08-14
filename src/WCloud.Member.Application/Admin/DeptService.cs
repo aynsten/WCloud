@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Member.DataAccess.EF;
 using WCloud.Member.Domain.Admin;
-using WCloud.Member.Domain.User;
 
 namespace WCloud.Member.Application.Service.impl
 {

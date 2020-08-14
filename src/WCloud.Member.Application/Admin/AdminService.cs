@@ -1,15 +1,11 @@
 ﻿using FluentAssertions;
-using Lib.extension;
 using Lib.helper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Framework.Database.Abstractions.Extension;
-using WCloud.Framework.Database.EntityFrameworkCore;
-using WCloud.Member.DataAccess.EF;
 using WCloud.Member.Domain.Admin;
 
 namespace WCloud.Member.Application.Service.impl
@@ -18,22 +14,13 @@ namespace WCloud.Member.Application.Service.impl
     {
         private readonly IWCloudContext<AdminService> _context;
         private readonly IAdminRepository adminRepository;
-        private readonly IMSRepository<AdminEntity> _adminRepo;
-        private readonly IMSRepository<AdminRoleEntity> _adminRoleRepo;
-        private readonly IMSRepository<RoleEntity> _roleRepo;
 
         public AdminService(
             IWCloudContext<AdminService> _context,
-            IAdminRepository adminRepository,
-            IMSRepository<AdminEntity> _adminRepo,
-            IMSRepository<AdminRoleEntity> _adminRoleRepo,
-            IMSRepository<RoleEntity> _roleRepo)
+            IAdminRepository adminRepository)
         {
             this._context = _context;
             this.adminRepository = adminRepository;
-            this._adminRepo = _adminRepo;
-            this._adminRoleRepo = _adminRoleRepo;
-            this._roleRepo = _roleRepo;
         }
 
         public virtual async Task UpdateUser(AdminEntity model)
@@ -43,7 +30,7 @@ namespace WCloud.Member.Application.Service.impl
 
             var data = new _<AdminEntity>();
 
-            var user = await this._adminRepo.QueryOneAsync(x => x.Id == model.Id);
+            var user = await this.adminRepository.QueryOneAsync(x => x.Id == model.Id);
             user.Should().NotBeNull($"admin不存在:{model.Id}");
 
             user.SetField(new
@@ -57,14 +44,14 @@ namespace WCloud.Member.Application.Service.impl
 
             user.SetUpdateTime();
 
-            await this._adminRepo.UpdateAsync(user);
+            await this.adminRepository.UpdateAsync(user);
         }
 
         public async Task<AdminEntity> GetUserByUID(string uid)
         {
             uid.Should().NotBeNullOrEmpty("admin service getuserbyuid");
 
-            var res = await this._adminRepo.QueryOneAsync(x => x.Id == uid);
+            var res = await this.adminRepository.QueryOneAsync(x => x.Id == uid);
             return res;
         }
 
@@ -72,36 +59,32 @@ namespace WCloud.Member.Application.Service.impl
         {
             uid.Should().NotBeNullOrEmpty("admin service getuserbyuid");
 
-            var data = await this._adminRepo.QueryOneAsync(x => x.Id == uid);
+            var data = await this.adminRepository.QueryOneAsync(x => x.Id == uid);
             data.Should().NotBeNull();
 
             var res = this._context.ObjectMapper.Map<AdminEntity, AdminDto>(data);
 
             return res;
         }
-        public async Task<PagerData<AdminEntity>> QueryAdmin(QueryAdminParameter filter, int page, int pagesize)
+
+        public async Task<PagerData<AdminDto>> QueryAdmin(QueryAdminParameter filter, int page, int pagesize)
         {
             page.Should().BeGreaterOrEqualTo(1, "admin service page");
             pagesize.Should().BeInRange(1, 100, "admin service pagesize");
 
             var data = await this.adminRepository.QueryAdmin(filter, page, pagesize);
 
-            var res = data;// data.MapPagerData(x => this._context.ObjectMapper.Map<AdminEntity, AdminDto>(x));
+            var res = data.MapPagerData(x => this._context.ObjectMapper.Map<AdminEntity, AdminDto>(x));
 
             return res;
         }
+
         public async Task<PagerData<AdminEntity>> QueryUserList(string name = null, string email = null, string keyword = null, int? isremove = null, int page = 1, int pagesize = 20)
         {
             page.Should().BeGreaterOrEqualTo(1, "admin service page");
             pagesize.Should().BeInRange(1, 100, "admin service pagesize");
 
-            var query = this._adminRepo.NoTrackingQueryable.IgnoreQueryFilters();
-
-            query = query.WhereIf(isremove != null, x => x.IsDeleted == isremove);
-            query = query.WhereIf(ValidateHelper.IsNotEmpty(name), x => x.NickName == name);
-            query = query.WhereIf(ValidateHelper.IsNotEmpty(keyword), x => x.NickName.StartsWith(keyword));
-
-            var data = await query.ToPagedListAsync(page, pagesize, x => x.CreateTimeUtc, desc: false);
+            var data = await this.adminRepository.QueryUserList(name, email, keyword, isremove, page, pagesize);
 
             return data;
         }
@@ -110,37 +93,18 @@ namespace WCloud.Member.Application.Service.impl
         {
             name.Should().NotBeNullOrEmpty("adminservice getuserbyusername");
 
-            var res = await this._adminRepo.QueryOneAsync(x => x.UserName == name);
+            var res = await this.adminRepository.QueryOneAsync(x => x.UserName == name);
             return res;
         }
 
         public async Task<IEnumerable<AdminEntity>> LoadRoles(IEnumerable<AdminEntity> list)
         {
             list.Should().NotBeNull("load roles list");
+            var data = await this.adminRepository.LoadRoles(list);
 
-            if (list.Any())
-            {
-                var uids = list.Select(x => x.Id).ToList();
-                var maps = await this._adminRoleRepo.NoTrackingQueryable
-                    .Where(x => uids.Contains(x.AdminUID)).Select(x => new { x.AdminUID, x.RoleUID }).ToArrayAsync();
+            var res = data;
 
-                if (maps.Any())
-                {
-                    var role_uids = maps.Select(x => x.RoleUID).ToList();
-                    var roles = await this._roleRepo.QueryManyAsync(x => role_uids.Contains(x.Id));
-
-                    foreach (var m in list)
-                    {
-                        var user_uids = maps.Where(x => x.AdminUID == m.Id).Select(x => x.RoleUID).ToList();
-                        m.Roles = roles.Where(x => user_uids.Contains(x.Id)).ToArray();
-                    }
-                }
-            }
-            foreach (var m in list)
-            {
-                m.Roles ??= new RoleEntity[] { };
-            }
-            return list;
+            return res;
         }
 
         public async Task<_<AdminEntity>> AddAdmin(AdminEntity model)
@@ -151,12 +115,12 @@ namespace WCloud.Member.Application.Service.impl
             var res = new _<AdminEntity>();
 
             model.InitEntity();
-            if (await this._adminRepo.ExistAsync(x => x.UserName == model.UserName))
+            if (await this.adminRepository.ExistAsync(x => x.UserName == model.UserName))
             {
                 return res.SetErrorMsg("用户名已存在");
             }
 
-            await this._adminRepo.InsertAsync(model);
+            await this.adminRepository.InsertAsync(model);
 
             return res.SetSuccessData(model);
         }
@@ -165,28 +129,11 @@ namespace WCloud.Member.Application.Service.impl
         {
             size.Should().BeInRange(1, 100, "query top user size");
 
-            var db = this._adminRepo.Database;
-            var user_query = db.Set<AdminEntity>().AsNoTrackingQueryable();
+            var data = await this.adminRepository.QueryTopUser(q, role_uid, size);
 
-            user_query = user_query.WhereIf(ValidateHelper.IsNotEmpty(q),
-                x => x.UserName.StartsWith(q) || x.NickName.StartsWith(q));
+            var res = data;
 
-            if (ValidateHelper.IsNotEmpty(role_uid))
-            {
-                var role_map_query = db.Set<AdminRoleEntity>().AsNoTracking();
-
-                var query = from user in user_query
-                            join map in role_map_query.Where(x => role_uid.Contains(x.RoleUID))
-                            on user.Id equals map.AdminUID
-                            select user;
-
-                user_query = query;
-            }
-
-
-            var data = await user_query.Take(size).ToListAsync();
-
-            return data;
+            return res;
         }
     }
 }

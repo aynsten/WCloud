@@ -15,7 +15,7 @@ namespace WCloud.Core
     /// 在业务代码中使用，不要在底层基础框架中使用，不然容易导致循环依赖
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IWCloudContext<T> : IDisposable
+    public interface IWCloudContext : IDisposable
     {
         IServiceProvider Provider { get; }
         ILogger Logger { get; }
@@ -28,6 +28,8 @@ namespace WCloud.Core
         IDataMapper ObjectMapper { get; }
         IEntityValidationHelper EntityValidator { get; }
     }
+
+    public interface IWCloudContext<T> : IWCloudContext { }
 
     internal class DefaultWCloudContext<T> : IWCloudContext<T>
     {

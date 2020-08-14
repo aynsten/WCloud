@@ -1,6 +1,6 @@
 ﻿using Lib.data;
+using Microsoft.Extensions.DependencyInjection;
 using WCloud.Framework.Database.Abstractions;
-using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Member.Domain
 {
@@ -13,7 +13,7 @@ namespace WCloud.Member.Domain
     /// 基础crud和queryable
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IMemberRepository<T> : ILinqRepository<T>, IRepository<T> where T : EntityBase, IMemberShipDBTable
+    public interface IMemberRepository<T> : ILinqRepository<T>, IRepository<T>, IAutoRegistered where T : class, IMemberShipDBTable
     {
         //
     }

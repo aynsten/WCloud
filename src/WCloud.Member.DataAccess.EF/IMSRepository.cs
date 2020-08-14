@@ -1,4 +1,5 @@
-﻿using WCloud.Framework.Database.EntityFrameworkCore.Repository;
+﻿using System;
+using WCloud.Framework.Database.EntityFrameworkCore.Repository;
 using WCloud.Member.Domain;
 
 namespace WCloud.Member.DataAccess.EF
@@ -11,7 +12,8 @@ namespace WCloud.Member.DataAccess.EF
     /// 只使用repo做数据操作不显示，约束很多
     /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     /// </summary>
-    public interface IMSRepository<T> : IEFRepository<T> where T : class, IMemberShipDBTable
+    [Obsolete("使用通用repo")]
+    public interface IMSRepository<T> : IEFRepository<T>, IMemberRepository<T> where T : class, IMemberShipDBTable
     {
         //
     }

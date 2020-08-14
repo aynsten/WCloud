@@ -21,15 +21,11 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Volo.Abp.VirtualFileSystem;
-using WCloud.Core;
 using WCloud.Core.Cache;
 using WCloud.Core.PollyExtension;
 using WCloud.Framework.Common.Validator;
 using WCloud.Framework.Filters;
 using WCloud.Framework.Logging;
-using WCloud.Framework.Redis;
-using WCloud.Framework.Redis.implement;
-using WCloud.Framework.Startup;
 
 namespace WCloud.Framework.MVC
 {
@@ -98,31 +94,7 @@ namespace WCloud.Framework.MVC
                 AddBasicNoDependencyServices(collection);
             }
             //加密相关
-            var data_protect_builder = collection.AddFileBasedDataProtection_(config, env);
-            //----------------------------------------------------------------------------------
-            //redis-connection
-            var redis_server = config.GetRedisConnectionString();
-            if (ValidateHelper.IsNotEmpty(redis_server))
-            {
-                var redis_wrapper = new RedisConnectionWrapper(redis_server);
-                collection.AddDisposableSingleInstanceService(redis_wrapper);
-                //redis kv存储
-                collection.AddScoped<IRedisAll>(provider =>
-                {
-                    var kv_db = (int)ConfigSet.Redis.KV存储;
-                    var serializer = provider.Resolve_<ISerializeProvider>();
-                    var helper = new RedisHelper(redis_wrapper.Connection, kv_db, serializer);
-                    return helper;
-                });
-                //使用redis替换内存缓存
-                collection.AddRedisCacheProvider_(redis_server);
-                //加密私钥
-                var db = (int)ConfigSet.Redis.加密KEY;
-                var app_name = config.GetAppName();
-                data_protect_builder.PersistKeysToStackExchangeRedis(
-                    () => redis_wrapper.Connection.SelectDatabase(db),
-                    $"data_protection_key:{app_name}");
-            }
+            collection.AddFileBasedDataProtection_(config, env);
 
             return collection;
         }

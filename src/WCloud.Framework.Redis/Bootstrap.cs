@@ -1,56 +1,112 @@
-﻿using System;
-using Lib.extension;
+﻿using FluentAssertions;
+using Lib.data;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using StackExchange.Redis;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using System;
+using WCloud.Core;
 using WCloud.Framework.Redis.implement;
 
 namespace WCloud.Framework.Redis
 {
     public static class RedisBootstrap
     {
-        class RedisBootstrap__ { }
-
-        static void __add_error_log__(Exception e = null, string msg = null)
+        public static RedisConnectionWrapper GetRedisClientWrapper(this IServiceCollection collection, bool nullable = false)
         {
-            using (var s = IocContext.Instance.Scope())
+            var res = collection.GetSingletonInstanceOrNull<RedisConnectionWrapper>();
+            if (!nullable)
             {
-                var logger = s.ServiceProvider.Resolve_<ILogger<RedisBootstrap__>>();
-                logger.AddErrorLog(msg: msg, e: e);
+                res.Should().NotBeNull("请先注册redis链接");
             }
+            return res;
         }
 
-        public static IServiceCollection AddRedisWrapper(this IServiceCollection collection, string connection_string, int db,
-            Action<IConnectionMultiplexer> config = null)
+        public static RedisConnectionWrapper GetRedisClientWrapper(this IServiceProvider provider)
         {
-            var pool = ConnectionMultiplexer.Connect(connection_string);
-            if (config == null)
-            {
-                config = (x) =>
-                {
-                    x.ConnectionFailed += (sender, e) => __add_error_log__(msg: "Redis连接失败:", e: e.Exception);
-                    x.ConnectionRestored += (sender, e) => __add_error_log__(msg: "redis连接恢复正常");
-                    x.ErrorMessage += (sender, e) => __add_error_log__(msg: "Redis-ErrorMessage");
-                    x.InternalError += (sender, e) => __add_error_log__(msg: "Redis内部错误", e: e.Exception);
-                };
-            }
-            config.Invoke(pool);
+            var res = provider.Resolve_<RedisConnectionWrapper>();
+            res.Should().NotBeNull();
+            return res;
+        }
 
-            var connection = new RedisConnectionWrapper(pool);
+        public static IServiceCollection AddRedisClient(this IServiceCollection collection, IConfiguration config)
+        {
+            var redis_wrapper = collection.GetRedisClientWrapper(true);
+            redis_wrapper.Should().NotBeNull();
+
+            var connection_string = config.GetRedisConnectionString();
+
+            var connection = new RedisConnectionWrapper(connection_string);
             collection.AddDisposableSingleInstanceService(connection);
 
-            //all of them above
-            collection.AddSingleton<IRedisAll>(x =>
+            return collection;
+        }
+
+        public static IServiceCollection AddRedisHelper(this IServiceCollection collection)
+        {
+            collection.RemoveAll<IRedisAll>();
+            collection.AddScoped<IRedisAll>(provider =>
             {
-                var option = x.Resolve_<RedisConnectionWrapper>();
-                return new RedisHelper(option.Connection, db);
+                var redis_wrapper = provider.GetRedisClientWrapper();
+                var kv_db = (int)ConfigSet.Redis.KV存储;
+                var serializer = provider.Resolve_<ISerializeProvider>();
+                var helper = new RedisHelper(redis_wrapper.Connection, kv_db, serializer);
+                return helper;
+            });
+            return collection;
+        }
+
+        public static IServiceCollection AddRedisDistributedCacheProvider_(this IServiceCollection collection)
+        {
+            var redis_wrapper = collection.GetRedisClientWrapper();
+
+            var redis_str = redis_wrapper.ConnectionString;
+            redis_str.Should().NotBeNullOrEmpty();
+
+            collection.RemoveAll<IDistributedCache>();
+
+            collection.AddStackExchangeRedisCache(option =>
+            {
+                option.InstanceName = "rds-";
+                //option.Configuration = redis_str;
+
+                option.ConfigurationOptions ??= new StackExchange.Redis.ConfigurationOptions();
+
+                option.ConfigurationOptions.EndPoints.Add(redis_str);
+
+                var db = (int)ConfigSet.Redis.缓存;
+                option.ConfigurationOptions.DefaultDatabase = db;
             });
 
             return collection;
         }
 
-        public static IServiceCollection AddRedisHelper(this IServiceCollection collection, int db)
+        public static IServiceCollection AddRedisDataProtectionKeyStore(this IServiceCollection collection, IConfiguration config)
         {
+            var redis_wrapper = collection.GetRedisClientWrapper();
+
+            var app_name = config.GetAppName() ?? "shared_app";
+
+            collection.RemoveAll<IDataProtectionBuilder>()
+                .RemoveAll<IDataProtectionProvider>()
+                .RemoveAll<IDataProtector>();
+
+            var builder = collection
+                .AddDataProtection()
+                .SetApplicationName(applicationName: app_name)
+                .AddKeyManagementOptions(option =>
+                {
+                    option.AutoGenerateKeys = true;
+                    option.NewKeyLifetime = TimeSpan.FromDays(1000);
+                });
+
+            //加密私钥
+            var db = (int)ConfigSet.Redis.加密KEY;
+            builder.PersistKeysToStackExchangeRedis(
+                () => redis_wrapper.Connection.SelectDatabase(db),
+                $"data_protection_key:{app_name}");
+
             return collection;
         }
     }

@@ -5,14 +5,10 @@ using System;
 
 namespace WCloud.Framework.Redis
 {
-    public interface IRedisConnection : IDisposable
-    {
-        IConnectionMultiplexer Connection { get; }
-    }
-
-    public class RedisConnectionWrapper : IRedisConnection, ISingleInstanceService
+    public class RedisConnectionWrapper : ISingleInstanceService
     {
         private readonly IConnectionMultiplexer _con;
+        public string ConnectionString { get; }
 
         public RedisConnectionWrapper(IConnectionMultiplexer con)
         {
@@ -36,7 +32,8 @@ namespace WCloud.Framework.Redis
 
         public RedisConnectionWrapper(string connectionString) : this(__connect__(connectionString))
         {
-            // 
+            this.ConnectionString = connectionString;
+            this.ConnectionString.Should().NotBeNullOrEmpty();
         }
 
         public IConnectionMultiplexer Connection => this._con;

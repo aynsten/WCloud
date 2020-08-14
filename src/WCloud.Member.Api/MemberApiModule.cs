@@ -1,10 +1,9 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
@@ -17,6 +16,7 @@ using WCloud.Framework.Wechat.Login;
 using WCloud.Framework.Wechat.Models;
 using WCloud.Member.Application;
 using WCloud.Member.Authentication;
+using WCloud.Framework.Redis;
 
 namespace WCloud.Member.Api
 {
@@ -39,6 +39,10 @@ namespace WCloud.Member.Api
             var _env = services.GetHostingEnvironment();
 
             services.AddBasicServices();
+            services.AddRedisClient(_config)
+                .AddRedisHelper()
+                .AddRedisDistributedCacheProvider_()
+                .AddRedisDataProtectionKeyStore(_config);
 
             services.Configure<WxConfig>(_config.GetSection("wx"));
             services.AddSingleton(provider => provider.Resolve_<IOptions<WxConfig>>().Value);

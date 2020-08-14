@@ -16,11 +16,5 @@ namespace WCloud.Framework.Common.Mapper
             var res = this.mapper.Map<TSource, TDestination>(source);
             return res;
         }
-
-        public TDestination Map<TSource, TDestination>(TSource source, TDestination destination)
-        {
-            var res = this.mapper.Map<TSource, TDestination>(source, destination);
-            return res;
-        }
     }
 }

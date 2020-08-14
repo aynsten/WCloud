@@ -24,9 +24,9 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
     {
         public WCloudEFRepository(IServiceProvider provider) : base(provider) { }
 
-        protected override EntityEntry<T> __track_entity__(ref DbContext db, T model)
+        protected override EntityEntry<T> __update__(ref DbContext db, T model)
         {
-            var tracker = base.__track_entity__(ref db, model);
+            var tracker = base.__update__(ref db, model);
 
             tracker.Property(x => x.Id).IsModified = false;
             tracker.Property(x => x.CreateTimeUtc).IsModified = false;
@@ -48,8 +48,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
     /// <summary>
     /// 通过泛型指定dbcontext
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <typeparam name="DbContextType"></typeparam>
+    [Obsolete]
     public abstract class EFRepositoryFromNew<T, DbContextType> : EFRepositoryBase<T>
         where T : class, IDBTable
         where DbContextType : DbContext, new()
@@ -147,7 +146,9 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 
             db.ThrowIfHasChanges();
 
-            db.Entry(model).State = EntityState.Deleted;
+            db.AttachIfNot(model).State = EntityState.Deleted;
+
+            //db.Entry(model).State = EntityState.Deleted;
         }
 
         public virtual int Delete(T model)
@@ -195,24 +196,22 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 
         #region 修改
 
-        protected virtual EntityEntry<T> __track_entity__(ref DbContext db, T model)
+        protected virtual EntityEntry<T> __update__(ref DbContext db, T model)
         {
-            var tracker = db.Entry(model);
-            tracker.Should().NotBeNull();
+            var entry = db.AttachIfNot(model);
 
-            if (tracker.State != EntityState.Modified)
+            if (entry.State != EntityState.Modified)
             {
-                tracker.State = EntityState.Modified;
-                //warning here
+                entry.State = EntityState.Modified;
             }
 
-            return tracker;
+            return entry;
         }
 
         public virtual int Update(T model)
         {
             var db = this.Database;
-            this.__track_entity__(ref db, model);
+            this.__update__(ref db, model);
             var res = db.SaveChanges();
             return res;
         }
@@ -220,7 +219,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
         public virtual async Task<int> UpdateAsync(T model)
         {
             var db = this.Database;
-            this.__track_entity__(ref db, model);
+            this.__update__(ref db, model);
             var res = await db.SaveChangesAsync();
             return res;
         }

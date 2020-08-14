@@ -2,11 +2,10 @@
 using Lib.extension;
 using Lib.helper;
 using Lib.io;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
@@ -34,24 +33,6 @@ namespace WCloud.Framework.MVC.Extension
             {
                 return false;
             }
-        }
-
-        public static string GetPagerHtml<T, EXT>(this PagerData<T, EXT> pager, Controller controller, string pageKey, int currentPage, int pageSize)
-        {
-            var p = new Dictionary<string, string>();
-            var _context = controller.HttpContext;
-
-            var kv = _context.Request.Query.ToDict().Where(x => ValidateHelper.IsNotEmpty(x.Key) && x.Key.ToLower() != pageKey.ToLower()).ToDictionary(x => x.Key, x => ConvertHelper.GetString(x.Value));
-
-            p.AddDict(kv);
-
-            return PagerHelper.GetPagerHtmlByData(
-                url: _context.Request.PathBase,
-                pageKey: pageKey,
-                urlParams: p,
-                itemCount: pager.ItemCount,
-                page: currentPage,
-                pageSize: pageSize);
         }
 
         /// <summary>

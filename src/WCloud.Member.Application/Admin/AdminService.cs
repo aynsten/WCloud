@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WCloud.Core;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.Database.EntityFrameworkCore;
 using WCloud.Member.DataAccess.EF;
@@ -15,15 +16,21 @@ namespace WCloud.Member.Application.Service.impl
 {
     public class AdminService : IAdminService
     {
+        private readonly IWCloudContext<AdminService> _context;
+        private readonly IAdminRepository adminRepository;
         private readonly IMSRepository<AdminEntity> _adminRepo;
         private readonly IMSRepository<AdminRoleEntity> _adminRoleRepo;
         private readonly IMSRepository<RoleEntity> _roleRepo;
 
         public AdminService(
+            IWCloudContext<AdminService> _context,
+            IAdminRepository adminRepository,
             IMSRepository<AdminEntity> _adminRepo,
             IMSRepository<AdminRoleEntity> _adminRoleRepo,
             IMSRepository<RoleEntity> _roleRepo)
         {
+            this._context = _context;
+            this.adminRepository = adminRepository;
             this._adminRepo = _adminRepo;
             this._adminRoleRepo = _adminRoleRepo;
             this._roleRepo = _roleRepo;
@@ -65,17 +72,30 @@ namespace WCloud.Member.Application.Service.impl
         {
             uid.Should().NotBeNullOrEmpty("admin service getuserbyuid");
 
-            var res = await this._adminRepo.QueryOneAsync(x => x.Id == uid);
+            var data = await this._adminRepo.QueryOneAsync(x => x.Id == uid);
+            data.Should().NotBeNull();
 
-            throw new NotImplementedException();
+            var res = this._context.ObjectMapper.Map<AdminEntity, AdminDto>(data);
+
+            return res;
         }
+        public async Task<PagerData<AdminEntity>> QueryAdmin(QueryAdminParameter filter, int page, int pagesize)
+        {
+            page.Should().BeGreaterOrEqualTo(1, "admin service page");
+            pagesize.Should().BeInRange(1, 100, "admin service pagesize");
 
+            var data = await this.adminRepository.QueryAdmin(filter, page, pagesize);
+
+            var res = data;// data.MapPagerData(x => this._context.ObjectMapper.Map<AdminEntity, AdminDto>(x));
+
+            return res;
+        }
         public async Task<PagerData<AdminEntity>> QueryUserList(string name = null, string email = null, string keyword = null, int? isremove = null, int page = 1, int pagesize = 20)
         {
             page.Should().BeGreaterOrEqualTo(1, "admin service page");
             pagesize.Should().BeInRange(1, 100, "admin service pagesize");
 
-            var query = this._adminRepo.Database.Set<AdminEntity>().IgnoreQueryFilters().AsNoTrackingQueryable();
+            var query = this._adminRepo.NoTrackingQueryable.IgnoreQueryFilters();
 
             query = query.WhereIf(isremove != null, x => x.IsDeleted == isremove);
             query = query.WhereIf(ValidateHelper.IsNotEmpty(name), x => x.NickName == name);
@@ -101,7 +121,7 @@ namespace WCloud.Member.Application.Service.impl
             if (list.Any())
             {
                 var uids = list.Select(x => x.Id).ToList();
-                var maps = await this._adminRoleRepo.Database.Set<AdminRoleEntity>().AsNoTrackingQueryable()
+                var maps = await this._adminRoleRepo.NoTrackingQueryable
                     .Where(x => uids.Contains(x.AdminUID)).Select(x => new { x.AdminUID, x.RoleUID }).ToArrayAsync();
 
                 if (maps.Any())

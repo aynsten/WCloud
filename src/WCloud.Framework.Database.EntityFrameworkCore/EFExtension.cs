@@ -1,13 +1,13 @@
-﻿using Lib.data;
+﻿using FluentAssertions;
 using Lib.extension;
 using Lib.helper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using FluentAssertions;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore
 {
@@ -78,16 +78,6 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
             context.Database.EnsureCreated();
         }
 
-        public static void AttachIfNot<T>(this DbContext db, T entity) where T : class, IDBTable
-        {
-            entity.Should().NotBeNull();
-
-            if (!db.ChangeTracker.Entries<T>().Any(ent => ent.Entity == entity))
-            {
-                db.Set<T>().Attach(entity);
-            }
-        }
-
         /// <summary>
         /// 获取不跟踪的IQueryable用于查询，效率更高
         /// </summary>
@@ -113,26 +103,41 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
         }
 
         /// <summary>
-        /// 把实体加载到EF上下文，不重复加载
-        /// Nop中的方法
+        /// 把实体加载到内存上下文中
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="db"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public static T AttachEntityToContext<T>(this DbContext db, T entity) where T : class
+        public static EntityEntry<T> AttachIfNot<T>(this DbContext db, T entity) where T : class
         {
-            //little hack here until Entity Framework really supports stored procedures
-            //otherwise, navigation properties of loaded entities are not loaded until an entity is attached to the context
-            var set = db.Set<T>();
-            if (!set.Local.Any(x => x == entity))
-            {
-                //attach new entity
-                set.Attach(entity);
-                return entity;
-            }
+            entity.Should().NotBeNull();
 
-            return entity;
+            var set = db.Set<T>();
+
+            var entry = db.ChangeTracker.Entries<T>().FirstOrDefault(ent => ent.Entity == entity);
+
+            if (entry == null)
+            {
+                entry = set.Attach(entity);
+            }
+            return entry;
+
+#if DEBUG
+            EntityEntry<T> attach_entity_to_context()
+            {
+                var attached = set.Local.FirstOrDefault(x => x == entity);
+
+                if (attached == null)
+                {
+                    //attach new entity
+                    attached = set.Attach(entity).Entity;
+                }
+
+                var res = db.Entry(attached);
+                return res;
+            }
+#endif
         }
 
         /// <summary>

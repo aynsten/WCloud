@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Lib.cache;
 using Lib.data;
 using Lib.extension;
 using Lib.helper;
@@ -14,20 +10,22 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using Volo.Abp.VirtualFileSystem;
-using WCloud.Core;
 using WCloud.Core.Cache;
 using WCloud.Core.PollyExtension;
 using WCloud.Framework.Common.Validator;
 using WCloud.Framework.Filters;
 using WCloud.Framework.Logging;
-using WCloud.Framework.Middleware;
-using WCloud.Framework.Redis;
-using WCloud.Framework.Redis.implement;
-using WCloud.Framework.Startup;
 
 namespace WCloud.Framework.MVC
 {
@@ -43,12 +41,6 @@ namespace WCloud.Framework.MVC
         {
             collection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             return collection;
-        }
-
-        public static IApplicationBuilder UseLibMvcMiddleware(this IApplicationBuilder builder)
-        {
-            builder.UseMiddleware<SetEncodingMiddleware>();
-            return builder;
         }
 
         /// <summary>
@@ -102,33 +94,36 @@ namespace WCloud.Framework.MVC
                 AddBasicNoDependencyServices(collection);
             }
             //加密相关
-            var data_protect_builder = collection.AddFileBasedDataProtection_(config, env);
-            //----------------------------------------------------------------------------------
-            //redis-connection
-            var redis_server = config.GetRedisConnectionString();
-            if (ValidateHelper.IsNotEmpty(redis_server))
-            {
-                var redis_wrapper = new RedisConnectionWrapper(redis_server);
-                collection.AddDisposableSingleInstanceService(redis_wrapper);
-                //redis kv存储
-                collection.AddScoped<IRedisAll>(provider =>
-                {
-                    var kv_db = (int)ConfigSet.Redis.KV存储;
-                    var serializer = provider.Resolve_<ISerializeProvider>();
-                    var helper = new RedisHelper(redis_wrapper.Connection, kv_db, serializer);
-                    return helper;
-                });
-                //使用redis替换内存缓存
-                collection.AddRedisCacheProvider_(redis_server);
-                //加密私钥
-                var db = (int)ConfigSet.Redis.加密KEY;
-                var app_name = config.GetAppName();
-                data_protect_builder.PersistKeysToStackExchangeRedis(
-                    () => redis_wrapper.Connection.SelectDatabase(db),
-                    $"data_protection_key:{app_name}");
-            }
+            collection.AddFileBasedDataProtection_(config, env);
 
             return collection;
+        }
+
+        static IServiceCollection AddCacheProvider_(this IServiceCollection collection)
+        {
+            collection.RemoveAll<ICacheProvider>();
+            collection.AddTransient<ICacheProvider, DistributeCacheProvider>();
+
+            return collection;
+        }
+
+        static IDataProtectionBuilder AddFileBasedDataProtection_(this IServiceCollection collection,
+            IConfiguration config,
+            IWebHostEnvironment env)
+        {
+            var app_name = config.GetAppName() ?? "shared_app";
+
+            var builder = collection
+                .AddDataProtection()
+                .SetApplicationName(applicationName: app_name)
+                .AddKeyManagementOptions(option =>
+                {
+                    option.AutoGenerateKeys = true;
+                    option.NewKeyLifetime = TimeSpan.FromDays(1000);
+                });
+            builder.PersistKeysToFileSystem(new DirectoryInfo(env.ContentRootPath));
+
+            return builder;
         }
 
         /// <summary>

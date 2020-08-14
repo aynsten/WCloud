@@ -7,6 +7,7 @@ using Volo.Abp.EntityFrameworkCore.MySQL;
 using Volo.Abp.Modularity;
 using WCloud.Framework.Common.Validator;
 using WCloud.Member.DataAccess.EF;
+using WCloud.Member.Domain;
 using WCloud.Member.Shared;
 using WCloud.Member.Shared.Helper;
 
@@ -50,6 +51,7 @@ namespace WCloud.Member.Application
             });
 
             collection.AddAbpDbContext<MemberShipDbContext>(builder => { });
+            collection.AddScoped(typeof(IMemberRepository<>), typeof(MemberShipRepository<>));
             collection.AddScoped(typeof(IMSRepository<>), typeof(MemberShipRepository<>));
         }
     }

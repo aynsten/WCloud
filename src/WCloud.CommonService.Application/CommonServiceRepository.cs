@@ -11,7 +11,7 @@ namespace WCloud.CommonService.Application
         //
     }
 
-    public class CommonServiceRepository<T> : EFRepository<T, CommonServiceDbContext>, ICommonServiceRepository<T>
+    public class CommonServiceRepository<T> : WCloudEFRepository<T, CommonServiceDbContext>, ICommonServiceRepository<T>
         where T : EntityBase, ICommonServiceEntity
     {
         public CommonServiceRepository(IServiceProvider provider) : base(provider) { }

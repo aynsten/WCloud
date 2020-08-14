@@ -1,7 +1,6 @@
 ﻿using Lib.data;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+using WCloud.Framework.Database.Abstractions;
 
 namespace WCloud.Member.Domain
 {
@@ -9,4 +8,13 @@ namespace WCloud.Member.Domain
     /// 会员中心数据表约束
     /// </summary>
     public interface IMemberShipDBTable : IDBTable { }
+
+    /// <summary>
+    /// 基础crud和queryable
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface IMemberRepository<T> : ILinqRepository<T>, IRepository<T>, IAutoRegistered where T : class, IMemberShipDBTable
+    {
+        //
+    }
 }

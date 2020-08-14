@@ -1,27 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\common.props" />
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <LangVersion>7.3</LangVersion>
-  </PropertyGroup>
+	<Import Project="..\..\common.props" />
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Lua\Extend.lua" />
-    <None Remove="Lua\Unlock.lua" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Lua\Extend.lua" />
+		<None Remove="Lua\Unlock.lua" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Lua\Extend.lua" />
-    <EmbeddedResource Include="Lua\Unlock.lua" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Lua\Extend.lua" />
+		<EmbeddedResource Include="Lua\Unlock.lua" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="RedLock.net" Version="2.2.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="3.1.5" />
+		<PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="3.1.5" />
+		<PackageReference Include="RedLock.net" Version="2.2.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
+	</ItemGroup>
 
 </Project>

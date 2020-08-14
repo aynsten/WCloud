@@ -2,7 +2,7 @@
 using Autofac.Extensions.DependencyInjection;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using WCloud.Framework.Aop.AutofacProvider;
@@ -12,6 +12,20 @@ namespace WCloud.Test
     [TestClass]
     public class ioc_test
     {
+        [TestMethod]
+        public void single_instance()
+        {
+            var collection = new ServiceCollection();
+            collection.AddSingleton(provider => new service_());
+
+            collection.GetSingletonInstanceOrNull<service_>().Should().BeNull();
+
+            collection.RemoveAll<service_>();
+            collection.AddSingleton(new service_());
+
+            collection.GetSingletonInstanceOrNull<service_>().Should().NotBeNull();
+        }
+
         //[TestMethod]
         public void autofac_test()
         {

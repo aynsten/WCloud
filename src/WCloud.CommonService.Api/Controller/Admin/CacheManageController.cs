@@ -99,8 +99,6 @@ namespace WCloud.CommonService.Api.Controller
         /// <summary>
         /// 清空缓存
         /// </summary>
-        /// <param name="method_name">缓存key管理方法名，除此以外还有动态参数</param>
-        /// <returns></returns>
         [HttpPost, ApiRoute]
         public async Task<IActionResult> RemoveCacheKey(
             [FromForm]string type_name,

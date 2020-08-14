@@ -22,6 +22,7 @@ using WCloud.Member.Shared.Localization;
 
 namespace WCloud.Admin.Controllers
 {
+    [AdminServiceRoute]
     public class AccountController : WCloudBaseController, IAdminController
     {
         private readonly ILoginService<AdminEntity> _login;
@@ -41,7 +42,7 @@ namespace WCloud.Admin.Controllers
         /// <param name="username">用户名</param>
         /// <param name="password">密码</param>
         /// <returns></returns>
-        [HttpPost, AdminRoute]
+        [HttpPost, ApiRoute]
         public async Task<IActionResult> LoginViaPass([FromForm]string username, [FromForm]string password)
         {
             if (!ValidateHelper.IsAllNotEmpty(username, password))
@@ -66,7 +67,7 @@ namespace WCloud.Admin.Controllers
         /// <summary>
         /// 自己改自己的密码
         /// </summary>
-        [HttpPost, AdminRoute, AuthAdmin]
+        [HttpPost, ApiRoute, AuthAdmin]
         public async Task<IActionResult> ChangePwd([FromForm]string old_pwd, [FromForm]string pwd)
         {
             if (!ValidateHelper.IsAllNotEmpty(old_pwd, pwd))
@@ -91,7 +92,7 @@ namespace WCloud.Admin.Controllers
         /// <summary>
         /// 管理员重设用户密码
         /// </summary>
-        [HttpPost, AdminRoute, AuthAdmin(Permission = "reset-pwd")]
+        [HttpPost, ApiRoute, AuthAdmin(Permission = "reset-pwd")]
         public async Task<IActionResult> ResetPwd([FromForm]string user_uid, [FromForm]string pwd)
         {
             if (!ValidateHelper.IsAllNotEmpty(user_uid, pwd))
@@ -108,7 +109,7 @@ namespace WCloud.Admin.Controllers
         /// 退出登陆
         /// </summary>
         /// <returns></returns>
-        [HttpPost, AdminRoute]
+        [HttpPost, ApiRoute]
         public async Task<IActionResult> LogOutAction()
         {
             await this.HttpContext.SignOutAsync(ConfigSet.Identity.AdminLoginScheme);
@@ -120,7 +121,7 @@ namespace WCloud.Admin.Controllers
         /// 获取用户信息
         /// </summary>
         /// <returns></returns>
-        [HttpPost, AdminRoute]
+        [HttpPost, ApiRoute]
         public async Task<IActionResult> GetLoginAdminInfo()
         {
             var loginuser = await this.GetLoginAdminAsync();
@@ -128,7 +129,7 @@ namespace WCloud.Admin.Controllers
         }
 
 #if DEBUG
-        [HttpGet, AdminRoute]
+        [HttpGet, ApiRoute]
         public async Task<string> lang([FromServices]IStringLocalizer<MemberShipResource> l, [FromQuery]string key)
         {
             var ls = this.HttpContext.RequestServices.GetServices<IStringLocalizer<MemberShipResource>>().ToArray();

@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Lib.data;
 using Lib.extension;
-using Lib.helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,9 +9,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 {
+    /// <summary>
+    /// 永远不会修改iid，uid，create time
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="DbContextType"></typeparam>
+    public class WCloudEFRepository<T, DbContextType> : EFRepository<T, DbContextType>
+        where T : EntityBase
+        where DbContextType : DbContext
+    {
+        public WCloudEFRepository(IServiceProvider provider) : base(provider) { }
+
+        protected override EntityEntry<T> __update__(ref DbContext db, T model)
+        {
+            var tracker = base.__update__(ref db, model);
+
+            tracker.Property(x => x.Id).IsModified = false;
+            tracker.Property(x => x.CreateTimeUtc).IsModified = false;
+
+            return tracker;
+        }
+    }
+
     public class EFRepository<T, DbContextType> : EFRepositoryBase<T>
         where T : class, IDBTable
         where DbContextType : DbContext
@@ -26,8 +48,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
     /// <summary>
     /// 通过泛型指定dbcontext
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <typeparam name="DbContextType"></typeparam>
+    [Obsolete]
     public abstract class EFRepositoryFromNew<T, DbContextType> : EFRepositoryBase<T>
         where T : class, IDBTable
         where DbContextType : DbContext, new()
@@ -58,19 +79,21 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
         #region 添加
         public virtual int Insert(T model)
         {
-            this.__add_bulk__(this.Database, new[] { model });
-            var res = this.Database.SaveChanges();
+            var db = this.Database;
+            this.__add_bulk__(db, new[] { model });
+            var res = db.SaveChanges();
             return res;
         }
 
         public virtual async Task<int> InsertAsync(T model)
         {
-            this.__add_bulk__(this.Database, new[] { model });
-            var res = await this.Database.SaveChangesAsync();
+            var db = this.Database;
+            this.__add_bulk__(db, new[] { model });
+            var res = await db.SaveChangesAsync();
             return res;
         }
 
-        void __add_bulk__(DbContext context, IEnumerable<T> models)
+        protected virtual void __add_bulk__(DbContext context, IEnumerable<T> models)
         {
             context.Should().NotBeNull();
             models.Should().NotBeNull();
@@ -93,8 +116,9 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
         /// <returns></returns>
         public virtual int InsertBulk(IEnumerable<T> models)
         {
-            this.__add_bulk__(this.Database, models);
-            var res = this.Database.SaveChanges();
+            var db = this.Database;
+            this.__add_bulk__(db, models);
+            var res = db.SaveChanges();
             return res;
         }
 
@@ -107,99 +131,96 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
         /// <returns></returns>
         public virtual async Task<int> InsertBulkAsync(IEnumerable<T> models)
         {
-            this.__add_bulk__(this.Database, models);
-            var res = await this.Database.SaveChangesAsync();
+            var db = this.Database;
+            this.__add_bulk__(db, models);
+            var res = await db.SaveChangesAsync();
             return res;
         }
         #endregion
 
         #region 删除
 
-        R __delete__<R>(T model, Func<DbContext, R> handler)
+        protected virtual void __delete__(DbContext db, T model)
         {
-            if (model == null)
-                throw new ArgumentException("参数为空");
+            model.Should().NotBeNull();
 
-            this.Database.ThrowIfHasChanges();
+            db.ThrowIfHasChanges();
 
-            this.Database.Entry(model).State = EntityState.Deleted;
+            db.AttachIfNot(model).State = EntityState.Deleted;
 
-            return handler.Invoke(this.Database);
+            //db.Entry(model).State = EntityState.Deleted;
         }
 
         public virtual int Delete(T model)
         {
-            var res = this.__delete__(model, db => db.SaveChanges());
+            var db = this.Database;
+            this.__delete__(db, model);
+            var res = db.SaveChanges();
             return res;
         }
 
         public virtual async Task<int> DeleteAsync(T model)
         {
-            var res = this.__delete__(model, db => db.SaveChangesAsync());
-            return await res;
+            var db = this.Database;
+            this.__delete__(db, model);
+            var res = await db.SaveChangesAsync();
+            return res;
         }
 
-        void __delete_where__(Expression<Func<T, bool>> where)
+        protected virtual void __delete_where__(ref DbContext db, Expression<Func<T, bool>> where)
         {
-            this.Database.ThrowIfHasChanges();
+            db.ThrowIfHasChanges();
 
             var range = this.Table.AsQueryable();
             range = range.WhereIfNotNull(where);
 
-            this.Table.RemoveRange(range);
+            db.Set<T>().RemoveRange(range);
         }
 
         public virtual int DeleteWhere(Expression<Func<T, bool>> where)
         {
-            this.__delete_where__(where);
-            var res = this.Database.SaveChanges();
+            var db = this.Database;
+            this.__delete_where__(ref db, where);
+            var res = db.SaveChanges();
             return res;
         }
 
         public virtual async Task<int> DeleteWhereAsync(Expression<Func<T, bool>> where)
         {
-            this.__delete_where__(where);
-            var res = await this.Database.SaveChangesAsync();
+            var db = this.Database;
+            this.__delete_where__(ref db, where);
+            var res = await db.SaveChangesAsync();
             return res;
         }
         #endregion
 
         #region 修改
 
-        protected virtual EntityEntry<T> __TrackEntity__(T model)
+        protected virtual EntityEntry<T> __update__(ref DbContext db, T model)
         {
-            var tracker = this.Database.Entry(model) ?? throw new NotSupportedException(nameof(model));
+            var entry = db.AttachIfNot(model);
 
-            if (tracker.State != EntityState.Modified)
+            if (entry.State != EntityState.Modified)
             {
-                tracker.State = EntityState.Modified;
-                //warning here
+                entry.State = EntityState.Modified;
             }
 
-            return tracker;
-        }
-
-        void __update__(T model)
-        {
-            if (model == null)
-                throw new ArgumentException("参数为空");
-
-            //this.Database.ThrowIfHasChanges();
-
-            this.__TrackEntity__(model);
+            return entry;
         }
 
         public virtual int Update(T model)
         {
-            this.__update__(model);
-            var res = this.Database.SaveChanges();
+            var db = this.Database;
+            this.__update__(ref db, model);
+            var res = db.SaveChanges();
             return res;
         }
 
         public virtual async Task<int> UpdateAsync(T model)
         {
-            this.__update__(model);
-            var res = await this.Database.SaveChangesAsync();
+            var db = this.Database;
+            this.__update__(ref db, model);
+            var res = await db.SaveChangesAsync();
             return res;
         }
 
@@ -209,21 +230,19 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 
         public virtual T GetByKeys(string key)
         {
-            if (ValidateHelper.IsEmpty(key))
-                throw new ArgumentException("参数为空");
+            key.Should().NotBeNullOrEmpty("参数为空");
 
             return this.Table.Find(key);
         }
 
         public virtual async Task<T> GetByKeysAsync(string key)
         {
-            if (ValidateHelper.IsEmpty(key))
-                throw new ArgumentException("参数为空");
+            key.Should().NotBeNullOrEmpty("参数为空");
 
             return await this.Table.FindAsync(key);
         }
 
-        IQueryable<T> __query_many__<OrderByColumnType>(
+        protected virtual IQueryable<T> __query_many__<OrderByColumnType>(
             Expression<Func<T, bool>> where,
             Expression<Func<T, OrderByColumnType>> orderby,
             bool desc,
@@ -239,8 +258,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
             }
             if (start != null)
             {
-                if (orderby == null)
-                    throw new ArgumentException("使用skip前必须先排序");
+                orderby.Should().NotBeNull("使用skip前必须先排序");
                 query = query.Skip(start.Value);
             }
             if (count != null)

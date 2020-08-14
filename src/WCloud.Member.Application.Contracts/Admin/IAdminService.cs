@@ -10,7 +10,8 @@ namespace WCloud.Member.Application.Service
     public interface IAdminService : IAutoRegistered
     {
         Task<AdminEntity> GetUserByUID(string uid);
-
+        Task<PagerData<AdminDto>> QueryAdmin(QueryAdminParameter filter, int page, int pagesize);
+        [Obsolete]
         Task<PagerData<AdminEntity>> QueryUserList(string name = null, string email = null, string keyword = null, int? isremove = null, int page = 1, int pagesize = 20);
 
         Task<List<AdminEntity>> QueryTopUser(string q = null, string[] role_uid = null, int size = 20);

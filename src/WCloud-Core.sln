@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib", "Lib\Lib.csproj", "{C5A718FA-7D4D-4441-B1C2-B7F33B83A974}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lib", "Lib\Lib.csproj", "{C5A718FA-7D4D-4441-B1C2-B7F33B83A974}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "40-Apps", "40-Apps", "{0BD291DE-A83F-4793-9939-67061BDEF1AE}"
 EndProject
@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Test", "WCloud.Test\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{F5140E05-5685-4793-94DA-1F528D0DFDA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Member.Application", "WCloud.Member.Application\WCloud.Member.Application.csproj", "{9B589BD2-45A4-4595-B89E-385E0FF71CE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Member.Application", "WCloud.Member.Application\WCloud.Member.Application.csproj", "{9B589BD2-45A4-4595-B89E-385E0FF71CE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Core", "WCloud.Core\WCloud.Core.csproj", "{8F906F51-6858-4283-8723-98F49C9342E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Core", "WCloud.Core\WCloud.Core.csproj", "{8F906F51-6858-4283-8723-98F49C9342E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "20-Infrastructures", "20-Infrastructures", "{DBA64623-FC26-4CA5-B552-4268B3F118EA}"
 EndProject
@@ -29,17 +29,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Identity.Providers",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Test", "WCloud.Framework.Test\WCloud.Framework.Test.csproj", "{167CAF8E-9A39-4166-8AC3-3F8C256B22B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.MessageBus", "WCloud.Framework.MessageBus\WCloud.Framework.MessageBus.csproj", "{169709AC-9E59-412E-8BAB-8FE6F7611457}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.MessageBus", "WCloud.Framework.MessageBus\WCloud.Framework.MessageBus.csproj", "{169709AC-9E59-412E-8BAB-8FE6F7611457}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Socket", "WCloud.Framework.Socket\WCloud.Framework.Socket.csproj", "{AF38841F-CF5C-40EE-A1F0-4980A0A5DBEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Socket", "WCloud.Framework.Socket\WCloud.Framework.Socket.csproj", "{AF38841F-CF5C-40EE-A1F0-4980A0A5DBEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Logging", "WCloud.Framework.Logging\WCloud.Framework.Logging.csproj", "{2F5BE0B6-0571-4EBA-A0A6-0B9D6CD2AEDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Logging", "WCloud.Framework.Logging\WCloud.Framework.Logging.csproj", "{2F5BE0B6-0571-4EBA-A0A6-0B9D6CD2AEDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Storage", "WCloud.Framework.Storage\WCloud.Framework.Storage.csproj", "{D5C73DF7-C00F-449F-8291-A090D2CAF46F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Storage", "WCloud.Framework.Storage\WCloud.Framework.Storage.csproj", "{D5C73DF7-C00F-449F-8291-A090D2CAF46F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Jobs", "WCloud.Framework.Jobs\WCloud.Framework.Jobs.csproj", "{995F77E7-DCCC-494B-BC7E-92F078BBC797}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Jobs", "WCloud.Framework.Jobs\WCloud.Framework.Jobs.csproj", "{995F77E7-DCCC-494B-BC7E-92F078BBC797}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Redis", "WCloud.Framework.Redis\WCloud.Framework.Redis.csproj", "{81951D3E-12D4-44C3-B570-AB9FCC6D844D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Redis", "WCloud.Framework.Redis\WCloud.Framework.Redis.csproj", "{81951D3E-12D4-44C3-B570-AB9FCC6D844D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Admin", "WCloud.Admin\WCloud.Admin.csproj", "{4BCD7EDF-19E6-4B6A-BC56-799571BF3BE0}"
 EndProject
@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Member.Api", "WCloud
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Admin", "Admin", "{2D1D5BBD-0703-4E00-AEEB-87872268BDCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.CommonService.Application", "WCloud.CommonService.Application\WCloud.CommonService.Application.csproj", "{29093412-65F1-4C41-BC38-45329DFF44F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.CommonService.Application", "WCloud.CommonService.Application\WCloud.CommonService.Application.csproj", "{29093412-65F1-4C41-BC38-45329DFF44F5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Admin.Consumer", "WCloud.Admin.Consumer\WCloud.Admin.Consumer.csproj", "{F4E5099F-3060-4859-8623-0D763919A2C2}"
 EndProject
@@ -71,47 +71,47 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IMServer", "IMServer", "{2ACF56E2-73C6-4EFF-B17C-CCD397C55CED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Member.Authentication", "WCloud.Member.Authentication\WCloud.Member.Authentication.csproj", "{03D1C2F2-CD6D-4837-9973-0D53D00BC30F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Member.Authentication", "WCloud.Member.Authentication\WCloud.Member.Authentication.csproj", "{03D1C2F2-CD6D-4837-9973-0D53D00BC30F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.MVC", "WCloud.Framework.MVC\WCloud.Framework.MVC.csproj", "{0603586F-6702-4DA3-92EB-54C53EA3B078}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.MVC", "WCloud.Framework.MVC\WCloud.Framework.MVC.csproj", "{0603586F-6702-4DA3-92EB-54C53EA3B078}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Member.Domain", "WCloud.Member.Domain\WCloud.Member.Domain.csproj", "{BE993E5D-237D-4BCF-9F66-1DD2943B9502}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Member.Domain", "WCloud.Member.Domain\WCloud.Member.Domain.csproj", "{BE993E5D-237D-4BCF-9F66-1DD2943B9502}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Member.Shared", "WCloud.Member.Shared\WCloud.Member.Shared.csproj", "{7D7E3A68-DD9D-49DF-9FF6-2558EEAB3CE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Member.Shared", "WCloud.Member.Shared\WCloud.Member.Shared.csproj", "{7D7E3A68-DD9D-49DF-9FF6-2558EEAB3CE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Database.EntityFrameworkCore", "WCloud.Framework.Database.EntityFrameworkCore\WCloud.Framework.Database.EntityFrameworkCore.csproj", "{D6F9C8D7-2783-4A4E-9C09-3FFFAF77C654}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Database.EntityFrameworkCore", "WCloud.Framework.Database.EntityFrameworkCore\WCloud.Framework.Database.EntityFrameworkCore.csproj", "{D6F9C8D7-2783-4A4E-9C09-3FFFAF77C654}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Wechat", "WCloud.Framework.Wechat\WCloud.Framework.Wechat.csproj", "{B3ECE47E-775E-42B3-95CB-9D919520CA0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Wechat", "WCloud.Framework.Wechat\WCloud.Framework.Wechat.csproj", "{B3ECE47E-775E-42B3-95CB-9D919520CA0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Alipay", "WCloud.Framework.Alipay\WCloud.Framework.Alipay.csproj", "{FA8291AB-311B-454E-8C1F-302557C8EF40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Alipay", "WCloud.Framework.Alipay\WCloud.Framework.Alipay.csproj", "{FA8291AB-311B-454E-8C1F-302557C8EF40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Apm", "WCloud.Framework.Apm\WCloud.Framework.Apm.csproj", "{13798DC1-E5FF-4159-8C5C-8F67970C266B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Apm", "WCloud.Framework.Apm\WCloud.Framework.Apm.csproj", "{13798DC1-E5FF-4159-8C5C-8F67970C266B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Aop", "WCloud.Framework.Aop\WCloud.Framework.Aop.csproj", "{90482EDE-9C85-4218-9A64-C85A54C6F5DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Aop", "WCloud.Framework.Aop\WCloud.Framework.Aop.csproj", "{90482EDE-9C85-4218-9A64-C85A54C6F5DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Database.Abstractions", "WCloud.Framework.Database.Abstractions\WCloud.Framework.Database.Abstractions.csproj", "{0AB98938-52F0-4E47-BD45-5ACDF61E7464}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Database.Abstractions", "WCloud.Framework.Database.Abstractions\WCloud.Framework.Database.Abstractions.csproj", "{0AB98938-52F0-4E47-BD45-5ACDF61E7464}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "31-Frameworks.Database", "31-Frameworks.Database", "{A05088B3-9251-4DC7-A848-5A63C9CBE542}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.HttpClient", "WCloud.Framework.HttpClient\WCloud.Framework.HttpClient.csproj", "{8C9BA0BE-D2BD-41B1-B229-BEA619C6628D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.HttpClient", "WCloud.Framework.HttpClient\WCloud.Framework.HttpClient.csproj", "{8C9BA0BE-D2BD-41B1-B229-BEA619C6628D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Database.MongoDB", "WCloud.Framework.Database.MongoDB\WCloud.Framework.Database.MongoDB.csproj", "{3F646E86-FCC9-47F6-B8A9-EDD2404D5FF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Database.MongoDB", "WCloud.Framework.Database.MongoDB\WCloud.Framework.Database.MongoDB.csproj", "{3F646E86-FCC9-47F6-B8A9-EDD2404D5FF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Member.Application.Contracts", "WCloud.Member.Application.Contracts\WCloud.Member.Application.Contracts.csproj", "{20F04C82-635A-4F9E-837A-6326BB9D7B8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Member.Application.Contracts", "WCloud.Member.Application.Contracts\WCloud.Member.Application.Contracts.csproj", "{20F04C82-635A-4F9E-837A-6326BB9D7B8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Member.DataAccess.EF", "WCloud.Member.DataAccess.EF\WCloud.Member.DataAccess.EF.csproj", "{6FFF11D3-CC86-4434-A657-FA5EA57A5C85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Member.DataAccess.EF", "WCloud.Member.DataAccess.EF\WCloud.Member.DataAccess.EF.csproj", "{6FFF11D3-CC86-4434-A657-FA5EA57A5C85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Database.Dapper", "WCloud.Framework.Database.Dapper\WCloud.Framework.Database.Dapper.csproj", "{29D07A9A-1ECC-4374-9E29-B5420B7D58FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Database.Dapper", "WCloud.Framework.Database.Dapper\WCloud.Framework.Database.Dapper.csproj", "{29D07A9A-1ECC-4374-9E29-B5420B7D58FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Database.Linq2DB", "WCloud.Framework.Database.Linq2DB\WCloud.Framework.Database.Linq2DB.csproj", "{B1026831-C172-459D-A773-4C43384F5CFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Database.Linq2DB", "WCloud.Framework.Database.Linq2DB\WCloud.Framework.Database.Linq2DB.csproj", "{B1026831-C172-459D-A773-4C43384F5CFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Elasticsearch", "WCloud.Framework.Elasticsearch\WCloud.Framework.Elasticsearch.csproj", "{E4CC6F44-FB6B-4878-96DE-902BBD5EE96F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Elasticsearch", "WCloud.Framework.Elasticsearch\WCloud.Framework.Elasticsearch.csproj", "{E4CC6F44-FB6B-4878-96DE-902BBD5EE96F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Zookeeper", "WCloud.Framework.Zookeeper\WCloud.Framework.Zookeeper.csproj", "{E610EE7D-1C4F-4A35-B152-7029738CE724}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Zookeeper", "WCloud.Framework.Zookeeper\WCloud.Framework.Zookeeper.csproj", "{E610EE7D-1C4F-4A35-B152-7029738CE724}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.IO", "WCloud.Framework.IO\WCloud.Framework.IO.csproj", "{13D5BBC6-1F62-4E82-BB8D-CCA1254279A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.IO", "WCloud.Framework.IO\WCloud.Framework.IO.csproj", "{13D5BBC6-1F62-4E82-BB8D-CCA1254279A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Orleans", "WCloud.Framework.Orleans\WCloud.Framework.Orleans.csproj", "{A0273DCC-C8F3-4BDD-AFAB-C58A92901152}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Orleans", "WCloud.Framework.Orleans\WCloud.Framework.Orleans.csproj", "{A0273DCC-C8F3-4BDD-AFAB-C58A92901152}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "34-Frameworks.MemberShip", "34-Frameworks.MemberShip", "{A60D3A76-6B44-40F4-A4FE-5306965028DE}"
 EndProject
@@ -121,17 +121,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Abstract", "Abstract", "{78
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "32-Frameworks.Storage", "32-Frameworks.Storage", "{F8C64B2F-6C65-4F54-BA05-C1D514FD04AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Common", "WCloud.Framework.Common\WCloud.Framework.Common.csproj", "{6315A8B6-F351-4428-8C34-9E08BAC18394}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Common", "WCloud.Framework.Common\WCloud.Framework.Common.csproj", "{6315A8B6-F351-4428-8C34-9E08BAC18394}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Database.EntityFrameworkCore.MySQL", "WCloud.Framework.Database.EntityFrameworkCore.MySQL\WCloud.Framework.Database.EntityFrameworkCore.MySQL.csproj", "{B5057FBA-D44E-47DD-B7E5-E7385AB3F29C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Database.EntityFrameworkCore.MySQL", "WCloud.Framework.Database.EntityFrameworkCore.MySQL\WCloud.Framework.Database.EntityFrameworkCore.MySQL.csproj", "{B5057FBA-D44E-47DD-B7E5-E7385AB3F29C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Member.DataAccess.MongoDB", "WCloud.Member.DataAccess.MongoDB\WCloud.Member.DataAccess.MongoDB.csproj", "{B7CBA6F8-757E-4A79-94E9-5ACCC3D65179}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Member.DataAccess.MongoDB", "WCloud.Member.DataAccess.MongoDB\WCloud.Member.DataAccess.MongoDB.csproj", "{B7CBA6F8-757E-4A79-94E9-5ACCC3D65179}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.CommonService.Shared", "WCloud.CommonService.Shared\WCloud.CommonService.Shared.csproj", "{5B6A027A-7292-4D5A-ABF1-ED4DCF17E013}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.CommonService.Shared", "WCloud.CommonService.Shared\WCloud.CommonService.Shared.csproj", "{5B6A027A-7292-4D5A-ABF1-ED4DCF17E013}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Storage.MongoDB", "WCloud.Framework.Storage.MongoDB\WCloud.Framework.Storage.MongoDB.csproj", "{1E41765E-726C-47D4-97F5-BB5454E61A6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Framework.Storage.MongoDB", "WCloud.Framework.Storage.MongoDB\WCloud.Framework.Storage.MongoDB.csproj", "{1E41765E-726C-47D4-97F5-BB5454E61A6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Member.Initialization", "WCloud.Member.Initialization\WCloud.Member.Initialization.csproj", "{EF1DC6FB-67DE-4516-9ED2-BF8864970FB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Member.Initialization", "WCloud.Member.Initialization\WCloud.Member.Initialization.csproj", "{EF1DC6FB-67DE-4516-9ED2-BF8864970FB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.InternalGateway", "WCloud.InternalGateway\WCloud.InternalGateway.csproj", "{F0BFE6BB-5DB2-4FF0-B0DE-DF3ADD78623F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Member.InternalApi", "WCloud.Member.InternalApi\WCloud.Member.InternalApi.csproj", "{330EF619-EE08-41BC-9A72-09A7F9E037D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -331,6 +335,14 @@ Global
 		{EF1DC6FB-67DE-4516-9ED2-BF8864970FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF1DC6FB-67DE-4516-9ED2-BF8864970FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF1DC6FB-67DE-4516-9ED2-BF8864970FB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0BFE6BB-5DB2-4FF0-B0DE-DF3ADD78623F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0BFE6BB-5DB2-4FF0-B0DE-DF3ADD78623F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0BFE6BB-5DB2-4FF0-B0DE-DF3ADD78623F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0BFE6BB-5DB2-4FF0-B0DE-DF3ADD78623F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{330EF619-EE08-41BC-9A72-09A7F9E037D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{330EF619-EE08-41BC-9A72-09A7F9E037D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{330EF619-EE08-41BC-9A72-09A7F9E037D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{330EF619-EE08-41BC-9A72-09A7F9E037D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -391,6 +403,8 @@ Global
 		{5B6A027A-7292-4D5A-ABF1-ED4DCF17E013} = {F526440A-EA68-44F3-B3DB-A371545D19CA}
 		{1E41765E-726C-47D4-97F5-BB5454E61A6D} = {F8C64B2F-6C65-4F54-BA05-C1D514FD04AA}
 		{EF1DC6FB-67DE-4516-9ED2-BF8864970FB3} = {A60D3A76-6B44-40F4-A4FE-5306965028DE}
+		{F0BFE6BB-5DB2-4FF0-B0DE-DF3ADD78623F} = {74102F0D-8695-4AF2-BB69-826464960E0D}
+		{330EF619-EE08-41BC-9A72-09A7F9E037D6} = {C4E534F0-9696-4F59-A51E-39926D333B7C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BCE6D6AC-1FCF-437D-87BD-EA135E67597C}

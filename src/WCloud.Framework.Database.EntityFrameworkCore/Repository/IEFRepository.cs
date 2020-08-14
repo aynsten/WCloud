@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Lib.data;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Lib.data;
-using Microsoft.EntityFrameworkCore;
 using WCloud.Framework.Database.Abstractions;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 {
-    public interface IEFRepository<T> : ILinqRepository<T>, IRepository<T>
-        where T : class, IDBTable
+    public interface IEFRepository<T> : ILinqRepository<T>, IRepository<T> where T : class, IDBTable
     {
         DbContext Database { get; }
         DbSet<T> Table { get; }

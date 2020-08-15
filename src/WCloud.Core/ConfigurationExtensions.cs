@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using Lib.extension;
 
 namespace Microsoft.Extensions.Configuration
@@ -21,6 +22,14 @@ namespace Microsoft.Extensions.Configuration
             identity_server.EndsWith("/").Should().BeFalse("identity server后面不要加斜杠");
 
             return identity_server;
+        }
+
+        public static string GetInternalApiGatewayAddressOrThrow(this IConfiguration config)
+        {
+            var res = config["internal_api_gateway"];
+            res.Should().NotBeNullOrEmpty();
+            res.StartsWith("http", StringComparison.OrdinalIgnoreCase).Should().BeTrue();
+            return res;
         }
 
         public static string GetRedisConnectionString(this IConfiguration config)

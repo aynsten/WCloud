@@ -137,6 +137,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.InternalGateway", "W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Member.InternalApi", "WCloud.Member.InternalApi\WCloud.Member.InternalApi.csproj", "{330EF619-EE08-41BC-9A72-09A7F9E037D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Member.InternalApi.Client", "WCloud.Member.InternalApi.Client\WCloud.Member.InternalApi.Client.csproj", "{18B6B100-0B72-4EA6-8A50-DCC3FC721224}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -343,6 +345,10 @@ Global
 		{330EF619-EE08-41BC-9A72-09A7F9E037D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{330EF619-EE08-41BC-9A72-09A7F9E037D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{330EF619-EE08-41BC-9A72-09A7F9E037D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18B6B100-0B72-4EA6-8A50-DCC3FC721224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18B6B100-0B72-4EA6-8A50-DCC3FC721224}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18B6B100-0B72-4EA6-8A50-DCC3FC721224}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18B6B100-0B72-4EA6-8A50-DCC3FC721224}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -405,6 +411,7 @@ Global
 		{EF1DC6FB-67DE-4516-9ED2-BF8864970FB3} = {A60D3A76-6B44-40F4-A4FE-5306965028DE}
 		{F0BFE6BB-5DB2-4FF0-B0DE-DF3ADD78623F} = {74102F0D-8695-4AF2-BB69-826464960E0D}
 		{330EF619-EE08-41BC-9A72-09A7F9E037D6} = {C4E534F0-9696-4F59-A51E-39926D333B7C}
+		{18B6B100-0B72-4EA6-8A50-DCC3FC721224} = {C4E534F0-9696-4F59-A51E-39926D333B7C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BCE6D6AC-1FCF-437D-87BD-EA135E67597C}

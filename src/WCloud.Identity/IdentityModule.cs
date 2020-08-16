@@ -20,7 +20,7 @@ namespace WCloud.Identity
 {
     [DependsOn(
         typeof(CoreModule),
-        typeof(WCloud.Member.Application.MemberModule),
+        typeof(WCloud.Member.Application.MemberApplicationModule),
         typeof(WCloud.CommonService.Application.CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),
         typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),

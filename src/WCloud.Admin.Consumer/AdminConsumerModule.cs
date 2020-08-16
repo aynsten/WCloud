@@ -17,7 +17,7 @@ namespace WCloud.Admin.Consumer
 {
     [DependsOn(
         typeof(CoreModule),
-        typeof(MemberModule),
+        typeof(MemberApplicationModule),
         typeof(MemberInitiallizationModule),
         typeof(CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),

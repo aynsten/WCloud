@@ -22,7 +22,7 @@ namespace WCloud.Admin
 {
     [DependsOn(
         typeof(CoreModule),
-        typeof(MemberModule),
+        typeof(MemberApplicationModule),
         typeof(CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),
         typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),

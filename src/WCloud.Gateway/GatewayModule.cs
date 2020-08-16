@@ -24,7 +24,7 @@ namespace WCloud.Gateway
 {
     [DependsOn(
         typeof(CoreModule),
-        typeof(MemberModule),
+        typeof(MemberApplicationModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),
         typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),
         typeof(Volo.Abp.AspNetCore.Mvc.AbpAspNetCoreMvcModule)

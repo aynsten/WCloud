@@ -1,8 +1,13 @@
 ﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WCloud.Member.DataAccess.MongoDB
 {
-    public class Class1
+    public static class MongoDataAccessExtension
     {
+        public static IServiceCollection AddMemberDataAccessMongoDBProvider(this IServiceCollection collection)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

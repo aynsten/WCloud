@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.VirtualFileSystem;
+using WCloud.Member.Shared.Helper;
 using WCloud.Member.Shared.Localization;
 
 namespace WCloud.Member.Shared
@@ -15,6 +17,14 @@ namespace WCloud.Member.Shared
 
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
+            var collection = context.Services;
+
+            //helper
+            collection.AddSingleton<IPasswordHelper, DefaultPasswordHelper>();
+            collection.AddSingleton<IMobilePhoneFormatter, DefaultMobilePhoneFormatter>();
+
+            //mapper here
+
             this.Configure<AbpVirtualFileSystemOptions>(options =>
             {
                 options.FileSets.AddEmbedded<MemberSharedModule>(baseNamespace: "WCloud.Member.Shared");

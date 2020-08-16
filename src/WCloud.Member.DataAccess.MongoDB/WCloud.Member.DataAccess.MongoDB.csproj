@@ -7,5 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WCloud.Framework.Database.MongoDB\WCloud.Framework.Database.MongoDB.csproj" />
+    <ProjectReference Include="..\WCloud.Member.Domain\WCloud.Member.Domain.csproj" />
   </ItemGroup>
 </Project>

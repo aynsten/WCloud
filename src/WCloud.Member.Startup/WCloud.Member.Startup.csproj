@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WCloud.Member.Application\WCloud.Member.Application.csproj" />
+    <ProjectReference Include="..\WCloud.Member.DataAccess.EF\WCloud.Member.DataAccess.EF.csproj" />
+    <ProjectReference Include="..\WCloud.Member.DataAccess.MongoDB\WCloud.Member.DataAccess.MongoDB.csproj" />
+  </ItemGroup>
 </Project>

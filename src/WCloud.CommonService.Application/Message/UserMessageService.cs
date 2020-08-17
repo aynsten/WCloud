@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using System;
 using System.Linq;
-using WCloud.Framework.Database.EntityFrameworkCore.Service;
+using WCloud.Framework.Database.Abstractions.Service;
 
 namespace WCloud.CommonService.Application.Message
 {

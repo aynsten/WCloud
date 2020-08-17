@@ -1,27 +1,26 @@
 ﻿using FluentAssertions;
 using Lib.extension;
 using Lib.helper;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WCloud.Core;
 using WCloud.Framework.Database.Abstractions.Extension;
+using WCloud.Framework.Database.Abstractions.Service;
 using WCloud.Framework.Database.EntityFrameworkCore;
-using WCloud.Framework.Database.EntityFrameworkCore.Service;
-using WCloud.Member.DataAccess.EF;
-using WCloud.Member.Domain.Login;
 using WCloud.Member.Domain.User;
 
 namespace WCloud.Member.Application.Service.impl
 {
     public class UserService : BasicService<UserEntity>, IUserService
     {
-        private readonly IMSRepository<UserEntity> _userRepo;
+        private readonly IWCloudContext _context;
+        private readonly IUserRepository _userRepo;
 
         public UserService(
             IServiceProvider provider,
-            IMSRepository<UserEntity> _userRepo) : base(provider, _userRepo)
+            IUserRepository _userRepo) : base(provider, _userRepo)
         {
             this._userRepo = _userRepo;
         }
@@ -33,14 +32,14 @@ namespace WCloud.Member.Application.Service.impl
             {
                 var uids = data.Select(x => x.Id).ToArray();
 
-                var phones = await this._userRepo.Database.Set<UserPhoneEntity>().AsNoTracking().Where(x => uids.Contains(x.UserUID)).ToArrayAsync();
+                var phones = this._userRepo.UserPhoneQueryable.Where(x => uids.Contains(x.UserUID)).ToArray();
 
                 foreach (var m in data)
                 {
                     m.UserPhone = phones.FirstOrDefault(x => x.UserUID == m.Id);
                 }
             }
-            return data;
+            return await Task.FromResult(data);
         }
 
         public virtual async Task<_<UserEntity>> UpdateUser(UserEntity model)
@@ -121,12 +120,14 @@ namespace WCloud.Member.Application.Service.impl
             return res;
         }
 
-        async Task<IQueryable<UserEntity>> __build_query__(IQueryable<UserEntity> query, string keyword, DbContext db)
+        async Task<IQueryable<UserEntity>> __build_query__(IQueryable<UserEntity> query, string keyword)
         {
-            var uids_ = await db.Set<UserPhoneEntity>().AsNoTracking()
-                .Where(x => x.Phone == keyword).Select(x => x.UserUID).Take(1).ToArrayAsync();
+            var uids_ = this._userRepo.UserPhoneQueryable
+                .Where(x => x.Phone == keyword).Select(x => x.UserUID).Take(1).ToArray();
 
             query = query.Where(x => x.UserName == keyword || x.NickName == keyword || uids_.Contains(x.Id));
+
+            await Task.CompletedTask;
 
             return query;
         }
@@ -134,13 +135,12 @@ namespace WCloud.Member.Application.Service.impl
         public async Task<IEnumerable<UserEntity>> GetTopMatchedUsers(string keyword, int max_count)
         {
             keyword.Should().NotBeNullOrEmpty();
-            var db = this._userRepo.Database;
 
-            var query = db.Set<UserEntity>().AsNoTracking();
+            var query = this._userRepo.Queryable;
 
-            query = await this.__build_query__(query, keyword, db);
+            query = await this.__build_query__(query, keyword);
 
-            var res = await query.Take(max_count).ToArrayAsync();
+            var res = query.Take(max_count).ToArray();
 
             return res;
         }
@@ -152,13 +152,11 @@ namespace WCloud.Member.Application.Service.impl
             page.Should().BeGreaterOrEqualTo(1);
             pagesize.Should().BeInRange(1, 100);
 
-            var db = this._userRepo.Database;
-
-            var query = db.Set<UserEntity>().IgnoreQueryFilters().AsNoTracking();
+            var query = this._userRepo.Queryable;
 
             if (ValidateHelper.IsNotEmpty(keyword))
             {
-                query = await this.__build_query__(query, keyword, db);
+                query = await this.__build_query__(query, keyword);
             }
 
             if (isremove != null)

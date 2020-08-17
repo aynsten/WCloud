@@ -2,14 +2,10 @@
 using Lib.cache;
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using WCloud.Core.Cache;
-using WCloud.Core.Helper;
-using WCloud.Member.DataAccess.EF;
+using WCloud.Core;
 using WCloud.Member.Domain.Tenant;
 
 namespace WCloud.Member.Application.PermissionValidator
@@ -19,21 +15,15 @@ namespace WCloud.Member.Application.PermissionValidator
     {
         private readonly TimeSpan _cache_timeout = TimeSpan.FromMinutes(10);
 
-        private readonly ICacheProvider _cache;
-        private readonly ICacheKeyManager _keyManager;
-        private readonly IMSRepository<OrgRoleEntity> _repo;
-        private readonly IStringArraySerializer permissionSerializer;
+        private readonly IWCloudContext _context;
+        private readonly IOrgRoleRepository _repo;
 
         public OrgPermissionValidatorService(
-            ICacheProvider _cache,
-            ICacheKeyManager keyManager,
-            IMSRepository<OrgRoleEntity> _repo,
-            IStringArraySerializer permissionSerializer)
+            IWCloudContext<OrgPermissionValidatorService> _context,
+            IOrgRoleRepository _repo)
         {
-            this._cache = _cache;
-            this._keyManager = keyManager;
+            this._context = _context;
             this._repo = _repo;
-            this.permissionSerializer = permissionSerializer;
         }
 
         void __check__(string org_uid, string subject_id, IEnumerable<string> permissions)
@@ -75,7 +65,8 @@ namespace WCloud.Member.Application.PermissionValidator
 
         public async Task<string[]> LoadAllOrgPermission(string org_uid, string subject_id)
         {
-            async Task<string[]> my_permission()
+            /*
+            async Task<string[]> QueryMyPermission(string org_uid, string subject_id)
             {
                 var db = this._repo.Database;
 
@@ -93,12 +84,15 @@ namespace WCloud.Member.Application.PermissionValidator
 
                 return res.SelectMany(x => this.permissionSerializer.Deserialize(x.PermissionJson)).Distinct().ToArray();
             }
+             */
 
             if (this.__permissions__ == null)
             {
-                var cache_key = this._keyManager.UserOrgPermission(org_uid, subject_id);
+                var cache_key = this._context.CacheKeyManager.UserOrgPermission(org_uid, subject_id);
 
-                var data = await this._cache.GetOrSetAsync_(cache_key, my_permission, this._cache_timeout);
+                var data = await this._context.CacheProvider.GetOrSetAsync_(cache_key,
+                    () => this._repo.QueryMyPermission(org_uid, subject_id),
+                    this._cache_timeout);
 
                 this.__permissions__ = data ?? new string[] { };
             }

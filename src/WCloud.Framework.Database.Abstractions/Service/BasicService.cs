@@ -8,12 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using WCloud.Framework.Database.Abstractions;
 using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.Abstractions.Extension;
-using WCloud.Framework.Database.Abstractions.Service;
 
-namespace WCloud.Framework.Database.EntityFrameworkCore.Service
+namespace WCloud.Framework.Database.Abstractions.Service
 {
     public abstract class BasicService<T> : IBasicService<T> where T : EntityBase
     {

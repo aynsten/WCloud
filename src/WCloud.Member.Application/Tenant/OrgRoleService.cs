@@ -1,38 +1,37 @@
 ﻿using FluentAssertions;
 using Lib.extension;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WCloud.Core.Helper;
-using WCloud.Framework.Database.Abstractions.Extension;
-using WCloud.Member.DataAccess.EF;
+using WCloud.Core;
 using WCloud.Member.Domain.Tenant;
 
 namespace WCloud.Member.Application.Service.impl
 {
     public class OrgRoleService : IOrgRoleService
     {
-        private readonly IMSRepository<OrgRoleEntity> _orgRoleRepo;
-        private readonly IStringArraySerializer permissionSerializer;
+        private readonly IWCloudContext _context;
+        private readonly IOrgRoleRepository _orgRoleRepo;
 
         public OrgRoleService(
-            IMSRepository<OrgRoleEntity> _orgRoleRepo,
-            IStringArraySerializer permissionSerializer)
+            IWCloudContext<OrgRoleService> _context,
+            IOrgRoleRepository _orgRoleRepo)
         {
+            this._context = _context;
             this._orgRoleRepo = _orgRoleRepo;
-            this.permissionSerializer = permissionSerializer;
         }
 
         public virtual async Task<List<OrgRoleEntity>> GetOrgRoles(string org_uid)
         {
             org_uid.Should().NotBeNullOrEmpty("get org roles org uid");
 
-            var query = this._orgRoleRepo.NoTrackingQueryable;
+            var query = this._orgRoleRepo.Queryable;
             query = query.Where(x => x.OrgUID == org_uid);
 
-            var list = await query.OrderByDescending(x => x.CreateTimeUtc).Take(5000).ToListAsync();
+            var list = query.OrderByDescending(x => x.CreateTimeUtc).Take(5000).ToList();
+
+            await Task.CompletedTask;
 
             return list;
         }
@@ -68,7 +67,7 @@ namespace WCloud.Member.Application.Service.impl
             var model = await this._orgRoleRepo.QueryOneAsync(x => x.Id == org_role_uid && x.OrgUID == org_uid);
             model.Should().NotBeNull("org role");
 
-            if (!this.permissionSerializer.Deserialize(model.PermissionJson).AllEqual(permissions))
+            if (!this._context.StringArraySerializer.Deserialize(model.PermissionJson).AllEqual(permissions))
             {
                 model.PermissionJson = permissions.ToJson();
                 await this._orgRoleRepo.UpdateAsync(model);

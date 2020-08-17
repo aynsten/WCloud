@@ -3,12 +3,10 @@ using WCloud.Framework.Database.EntityFrameworkCore;
 using WCloud.Framework.Database.EntityFrameworkCore.AbpDatabase;
 using WCloud.Member.Domain;
 using WCloud.Member.Domain.Admin;
-using WCloud.Member.Domain.Employee;
 using WCloud.Member.Domain.Login;
 using WCloud.Member.Domain.Permission;
 using WCloud.Member.Domain.Tenant;
 using WCloud.Member.Domain.User;
-using WCloud.Member.Domain.Vendor;
 
 namespace WCloud.Member.DataAccess.EF
 {
@@ -56,11 +54,6 @@ namespace WCloud.Member.DataAccess.EF
 
         public virtual DbSet<RoleEntity> RoleEntity { get; set; }
         public virtual DbSet<AdminRoleEntity> UserRoleEntity { get; set; }
-
-        //-----------------------------------商户/员工
-
-        public virtual DbSet<VendorEntity> VendorEntity { get; set; }
-        public virtual DbSet<EmployeeEntity> EmployeeEntity { get; set; }
 
         //-----------------------------------用户/登陆
 

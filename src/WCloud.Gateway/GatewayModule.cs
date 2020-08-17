@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.extension;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.Core;
@@ -74,6 +74,7 @@ namespace WCloud.Gateway
                 app.UseProductionCors(_config);
             }
 
+#if DEBUG
             app.Map("/test", builder =>
             {
                 builder.Run(async context =>
@@ -83,7 +84,6 @@ namespace WCloud.Gateway
                     await context.Response.WriteAsync(d);
                 });
             });
-#if DEBUG
             //source file
             app.UseStaticFiles();
             var apps = new[] { "water", "user", "app", "RM" };

@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using WCloud.Framework.Database.Abstractions.Extension;
-using WCloud.Framework.Database.EntityFrameworkCore.Service;
+using WCloud.Framework.Database.Abstractions.Service;
 
 namespace WCloud.CommonService.Application.KVStore
 {

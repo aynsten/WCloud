@@ -1,16 +1,11 @@
 ﻿using FluentAssertions;
 using Lib.extension;
 using Lib.helper;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WCloud.Core.Authentication.Roles;
-using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.Abstractions.Extension;
-using WCloud.Framework.Database.EntityFrameworkCore;
-using WCloud.Member.DataAccess.EF;
 using WCloud.Member.Domain.Tenant;
 using WCloud.Member.Domain.User;
 
@@ -18,22 +13,11 @@ namespace WCloud.Member.Application.Service.impl
 {
     public class OrgService : IOrgService
     {
-        private readonly IMSRepository<OrgEntity> _orgRepo;
-        private readonly IMSRepository<OrgMemberEntity> _orgMemberRepo;
-        private readonly IMSRepository<UserEntity> _userRepo;
-        private readonly IMSRepository<OrgMemberRoleEntity> _orgMemberRoleRepo;
+        private readonly IOrgRepository _orgRepo;
 
-
-        public OrgService(
-            IMSRepository<OrgEntity> _orgRepo,
-            IMSRepository<OrgMemberEntity> _orgMemberRepo,
-            IMSRepository<UserEntity> _userRepo,
-            IMSRepository<OrgMemberRoleEntity> _orgMemberRoleRepo)
+        public OrgService(IOrgRepository _orgRepo)
         {
             this._orgRepo = _orgRepo;
-            this._orgMemberRepo = _orgMemberRepo;
-            this._userRepo = _userRepo;
-            this._orgMemberRoleRepo = _orgMemberRoleRepo;
         }
 
 
@@ -126,11 +110,13 @@ namespace WCloud.Member.Application.Service.impl
             page.Should().BeGreaterOrEqualTo(1);
             pagesize.Should().BeInRange(1, 100);
 
-            var query = this._orgRepo.Database.Set<OrgEntity>().IgnoreQueryFilters().AsNoTracking();
+            var query = this._orgRepo.Queryable;
             query = query.WhereIf(isremove != null, x => x.IsDeleted == isremove);
             query = query.WhereIf(ValidateHelper.IsNotEmpty(q), x => x.OrgName.StartsWith(q));
 
-            var data = await query.ToPagedListAsync(page, pagesize, x => x.CreateTimeUtc);
+            var data = query.ToPagedList(page, pagesize, x => x.CreateTimeUtc);
+
+            await Task.CompletedTask;
 
             return data;
         }
@@ -138,8 +124,11 @@ namespace WCloud.Member.Application.Service.impl
         public async Task<List<OrgMemberEntity>> GetMyOrgMap(string user_uid)
         {
             user_uid.Should().NotBeNullOrEmpty();
-
+            var res = await this._orgRepo.GetMyOrgMap(user_uid);
+            /*
+             
             var res = await this._orgMemberRepo.QueryManyAsync(x => x.MemberApproved > 0 && x.UserUID == user_uid);
+             */
             return res;
         }
 
@@ -158,6 +147,11 @@ namespace WCloud.Member.Application.Service.impl
             page.Should().BeGreaterOrEqualTo(1);
             pagesize.Should().BeInRange(1, 100);
 
+            var res = await this._orgRepo.QueryDeactiveMembers(org_uid, q, page, pagesize);
+
+            return res;
+            /*
+             
             var db = this._orgRepo.Database;
 
             var map_query = db.Set<OrgMemberEntity>().AsNoTrackingQueryable();
@@ -173,6 +167,7 @@ namespace WCloud.Member.Application.Service.impl
             var paged = await query.ToPagedListAsync(page, pagesize, x => x.CreateTimeUtc);
 
             return paged;
+             */
         }
 
         public virtual async Task<_<OrgMemberEntity>> AddMember(OrgMemberEntity model)
@@ -181,7 +176,12 @@ namespace WCloud.Member.Application.Service.impl
             model.OrgUID.Should().NotBeNullOrEmpty();
             model.UserUID.Should().NotBeNullOrEmpty();
 
-            var org = await this._orgRepo.QueryOneAsNoTrackAsync(x => x.Id == model.OrgUID);
+            var res = await this._orgRepo.AddMember(model);
+
+            return res;
+
+            /*
+            var org = await this._orgRepo.QueryOneAsync(x => x.Id == model.OrgUID);
             org.Should().NotBeNull();
 
             if (org.MemeberCount >= 3000)
@@ -199,6 +199,7 @@ namespace WCloud.Member.Application.Service.impl
             }
 
             return new _<OrgMemberEntity>().SetSuccessData(model);
+            */
         }
 
         public virtual async Task<_<OrgMemberEntity>> RemoveOwner(string org_uid, string user_uid)
@@ -206,6 +207,11 @@ namespace WCloud.Member.Application.Service.impl
             org_uid.Should().NotBeNullOrEmpty();
             user_uid.Should().NotBeNullOrEmpty();
 
+            var res = await this._orgRepo.RemoveOwner(org_uid, user_uid);
+
+            return res;
+
+            /*
             var res = new _<OrgMemberEntity>();
 
             var entity = await this._orgMemberRepo.QueryOneAsync(x => x.OrgUID == org_uid && x.UserUID == user_uid);
@@ -224,13 +230,16 @@ namespace WCloud.Member.Application.Service.impl
 
             res.SetSuccessData(entity);
             return res;
+            */
         }
 
-        async Task UpdateMemberStatus(string org_uid, string user_uid, bool active)
+        public async Task UpdateMemberStatus(string org_uid, string user_uid, bool active)
         {
             org_uid.Should().NotBeNullOrEmpty();
             user_uid.Should().NotBeNullOrEmpty();
 
+            /*
+             
             var user_in_org = await this._orgMemberRepo.ExistAsync(x => x.OrgUID == org_uid && x.UserUID == user_uid);
             user_in_org.Should().Be(true);
 
@@ -244,6 +253,8 @@ namespace WCloud.Member.Application.Service.impl
             await db.SaveChangesAsync();
 
             await this.UpdateOrgMemberCount(org_uid);
+             */
+            await this._orgRepo.UpdateMemberStatus(org_uid, user_uid, active);
         }
 
         public virtual async Task DeactiveMember(string org_uid, string user_uid)
@@ -259,7 +270,10 @@ namespace WCloud.Member.Application.Service.impl
         public async Task<List<UserEntity>> AllActiveMembers(string org_uid)
         {
             org_uid.Should().NotBeNullOrEmpty();
-
+            var res = await this._orgRepo.AllActiveMembers(org_uid);
+            return res;
+            /*
+             
             var db = this._orgRepo.Database;
 
             var map_query = db.Set<OrgMemberEntity>().AsNoTrackingQueryable();
@@ -274,10 +288,15 @@ namespace WCloud.Member.Application.Service.impl
             var list = await query.Take(3000).ToListAsync();
 
             return list;
+             */
         }
 
         public async Task<List<UserEntity>> GetMembersByRole(string org_uid, string role_uid)
         {
+            var res = await this._orgRepo.GetMembersByRole(org_uid, role_uid);
+            return res;
+            /*
+             
             var db = this._orgRepo.Database;
 
             var member_query = db.Set<OrgMemberEntity>().AsNoTrackingQueryable();
@@ -297,6 +316,7 @@ namespace WCloud.Member.Application.Service.impl
             var res = await query.Take(5000).ToListAsync();
 
             return res;
+             */
         }
 
         public async Task<List<UserEntity>> LoadOrgRoles(string org_uid, List<UserEntity> list)
@@ -304,6 +324,12 @@ namespace WCloud.Member.Application.Service.impl
             org_uid.Should().NotBeNullOrEmpty();
             list.Should().NotBeNull();
 
+            var res = await this._orgRepo.LoadOrgRoles(org_uid, list);
+
+            return res;
+
+            /*
+             
             if (ValidateHelper.IsNotEmpty(list))
             {
                 var db = this._orgRepo.Database;
@@ -338,12 +364,16 @@ namespace WCloud.Member.Application.Service.impl
             }
 
             return list;
+             */
         }
 
         public async Task UpdateOrgMemberCount(string org_uid)
         {
             org_uid.Should().NotBeNullOrEmpty();
 
+            await this._orgRepo.UpdateOrgMemberCount(org_uid);
+
+            /*
             var db = this._orgRepo.Database;
 
             var org = await db.Set<OrgEntity>().FirstOrDefaultAsync(x => x.Id == org_uid);
@@ -362,6 +392,7 @@ namespace WCloud.Member.Application.Service.impl
             org.SetUpdateTime();
 
             await db.SaveChangesAsync();
+            */
         }
 
         public async Task<_<OrgEntity>> ChangeOrgName(string org_uid, string name)
@@ -396,17 +427,25 @@ namespace WCloud.Member.Application.Service.impl
                 x.UserUID.Should().Be(user_uid);
                 x.OrgUID.Should().Be(org_uid);
             });
-
+            /*
+             
             //删除旧的角色
             await this._orgMemberRoleRepo.DeleteWhereAsync(x => x.OrgUID == org_uid && x.UserUID == user_uid);
 
             await this._orgMemberRoleRepo.InsertBulkAsync(model.Select(x => x.InitEntity()));
+             */
+            await this._orgRepo.SaveOrgMemberRole(org_uid, user_uid, model);
         }
 
         public async Task<IEnumerable<OrgEntity>> LoadOwners(IEnumerable<OrgEntity> list)
         {
             list.Should().NotBeNull();
 
+            var res = await this._orgRepo.LoadOwners(list);
+
+            return res;
+            /*
+             
             if (ValidateHelper.IsNotEmpty(list))
             {
                 var org_uids = list.Select(x => x.Id).ToArray();
@@ -432,21 +471,10 @@ namespace WCloud.Member.Application.Service.impl
                         m.Owners = users.Where(x => uids.Contains(x.Id)).ToList();
                     }
                 }
-
-                /*
-                var query = from map in map_query.Where(x => org_uids.Contains(x.Id) && x.IsOwner > 0)
-                            join user in user_query
-                            on map.UserUID equals user.Id
-                            select new
-                            {
-                                map.OrgUID,
-                                map.UserUID,
-                                user
-                            };*/
-
             }
 
             return list;
+             */
         }
     }
 }

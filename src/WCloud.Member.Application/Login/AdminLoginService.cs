@@ -2,7 +2,6 @@
 using Lib.core;
 using Lib.extension;
 using Lib.helper;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +19,7 @@ namespace WCloud.Member.Application.Service.impl
         private readonly IWCloudContext _context;
         protected readonly IPasswordHelper _passHelper;
         protected readonly IMobilePhoneFormatter _mobileFormatter;
-        protected readonly IAdminAccountRepository _userRepo;
+        protected readonly IAdminAccountRepository adminAccountRepository;
 
         protected AdminLoginService(
             IWCloudContext<AdminLoginService> _context,
@@ -31,7 +30,7 @@ namespace WCloud.Member.Application.Service.impl
             this._context = _context;
             this._passHelper = passHelper;
             this._mobileFormatter = _mobileFormatter;
-            this._userRepo = _userRepo;
+            this.adminAccountRepository = _userRepo;
         }
 
         public virtual async Task<_<AdminEntity>> ValidUserPassword(string user_name, string password)
@@ -102,7 +101,7 @@ namespace WCloud.Member.Application.Service.impl
                 model.SetId(specific_uid);
             }
 
-            await this._userRepo.InsertAsync(model);
+            await this.adminAccountRepository.InsertAsync(model);
             data.SetSuccessData(model);
             return data;
         }
@@ -112,14 +111,14 @@ namespace WCloud.Member.Application.Service.impl
             uid.Should().NotBeNullOrEmpty();
             pwd.Should().NotBeNullOrEmpty();
 
-            var user = await this._userRepo.QueryOneAsync(x => x.Id == uid);
+            var user = await this.adminAccountRepository.QueryOneAsync(x => x.Id == uid);
             user.Should().NotBeNull("用户不存在，无法修改密码");
 
             user.PassWord = this._passHelper.Encrypt(pwd);
             user.SetUpdateTime();
             user.LastPasswordUpdateTimeUtc = user.UpdateTimeUtc;
 
-            await this._userRepo.UpdateAsync(user);
+            await this.adminAccountRepository.UpdateAsync(user);
         }
 
         public virtual async Task ActiveOrDeActiveUser(string uid, bool active)
@@ -130,11 +129,11 @@ namespace WCloud.Member.Application.Service.impl
 
             if (active)
             {
-                await this._userRepo.RecoverByIdAsync(uids);
+                await this.adminAccountRepository.RecoverByIdAsync(uids);
             }
             else
             {
-                await this._userRepo.RemoveByIdAsync(uids);
+                await this.adminAccountRepository.RemoveByIdAsync(uids);
             }
         }
 
@@ -142,7 +141,7 @@ namespace WCloud.Member.Application.Service.impl
         {
             uid.Should().NotBeNullOrEmpty();
 
-            var res = await this._userRepo.QueryOneAsync(x => x.Id == uid);
+            var res = await this.adminAccountRepository.QueryOneAsync(x => x.Id == uid);
             return res;
         }
 
@@ -152,9 +151,11 @@ namespace WCloud.Member.Application.Service.impl
 
             user_name = this._mobileFormatter.Format(user_name);
 
-            var res = await this._userRepo.Queryable.Where(x => x.UserName == user_name).Take(2).ToArrayAsync();
-            if (res.Length > 1)
+            var res = await this.adminAccountRepository.QueryManyAsync(x => x.UserName == user_name, 2);
+            if (res.Count > 1)
+            {
                 throw new MsgException("找到多个用户，无法登陆");
+            }
 
             return res.FirstOrDefault();
         }
@@ -168,7 +169,7 @@ namespace WCloud.Member.Application.Service.impl
         public virtual async Task<bool> IsUserNameExist(string user_name)
         {
             user_name.Should().NotBeNullOrEmpty();
-            var res = await this._userRepo.IsUserNameExist(user_name);
+            var res = await this.adminAccountRepository.IsUserNameExist(user_name);
             return res;
         }
 
@@ -178,7 +179,7 @@ namespace WCloud.Member.Application.Service.impl
             user_name.Should().NotBeNullOrEmpty();
 
 
-            var user = await this._userRepo.QueryOneAsync(x => x.Id == uid);
+            var user = await this.adminAccountRepository.QueryOneAsync(x => x.Id == uid);
 
             user.Should().NotBeNull();
 
@@ -193,7 +194,7 @@ namespace WCloud.Member.Application.Service.impl
             }
 
             user.UserName = user_name;
-            await this._userRepo.UpdateAsync(user);
+            await this.adminAccountRepository.UpdateAsync(user);
         }
     }
 }

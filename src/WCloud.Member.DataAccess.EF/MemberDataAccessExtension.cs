@@ -1,10 +1,12 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using Volo.Abp.EntityFrameworkCore;
+using WCloud.Member.DataAccess.EF.Login;
 using WCloud.Member.Domain;
+using WCloud.Member.Domain.Login;
 
 namespace WCloud.Member.DataAccess.EF
 {
@@ -32,6 +34,7 @@ namespace WCloud.Member.DataAccess.EF
             collection.AddAbpDbContext<MemberShipDbContext>(builder => { });
             collection.AddScoped(typeof(IMemberRepository<>), typeof(MemberShipRepository<>));
             collection.AddScoped(typeof(IMSRepository<>), typeof(MemberShipRepository<>));
+            collection.AddScoped(typeof(IMemberLoginRepository<>), typeof(MemberLoginRepository<>));
 
             return collection;
         }

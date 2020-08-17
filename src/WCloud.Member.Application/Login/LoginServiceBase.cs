@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.core;
 using Lib.extension;
 using Lib.helper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.Database.EntityFrameworkCore.Repository;

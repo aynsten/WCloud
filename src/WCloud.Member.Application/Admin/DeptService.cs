@@ -6,16 +6,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WCloud.Framework.Database.Abstractions.Extension;
-using WCloud.Member.DataAccess.EF;
+using WCloud.Member.Domain;
 using WCloud.Member.Domain.Admin;
 
 namespace WCloud.Member.Application.Service.impl
 {
     public class DeptService : IDeptService
     {
-        private readonly IMSRepository<DepartmentEntity> _deptRepo;
+        private readonly IMemberRepository<DepartmentEntity> _deptRepo;
 
-        public DeptService(IMSRepository<DepartmentEntity> _deptRepo)
+        public DeptService(IMemberRepository<DepartmentEntity> _deptRepo)
         {
             this._deptRepo = _deptRepo;
         }
@@ -49,7 +49,7 @@ namespace WCloud.Member.Application.Service.impl
 
         public async Task<List<DepartmentEntity>> Query(string group = null)
         {
-            var query = this._deptRepo.NoTrackingQueryable;
+            var query = this._deptRepo.Queryable;
 
             query = query.WhereIf(ValidateHelper.IsNotEmpty(group), x => x.GroupKey == group);
 

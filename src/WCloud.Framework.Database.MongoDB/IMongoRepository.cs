@@ -9,7 +9,7 @@ using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.MongoDB
 {
-    public interface IMongoRepository<T> : ILinqRepository<T>, IRepository<T> where T : EntityBase
+    public interface IMongoRepository<T> : ILinqRepository<T> where T : EntityBase
     {
         IMongoCollection<T> Collection { get; }
 

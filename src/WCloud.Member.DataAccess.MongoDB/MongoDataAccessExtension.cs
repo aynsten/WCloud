@@ -21,7 +21,7 @@ namespace WCloud.Member.DataAccess.MongoDB
             var config = collection.GetConfiguration();
             var connection_string = config.GetMemberMongoDBConnectionStringOrThrow();
 
-            collection.UseMongoDB("wcloud_member_ship", connection_string);
+            collection.AddMongoDB("wcloud_member_ship", connection_string);
             collection.AddMongoMapping(new[] { typeof(MemberDataAccessMongoDBModule).Assembly });
 
             collection.AddScoped(typeof(IMemberRepository<>), typeof(MemberShipMongoRepository<>));

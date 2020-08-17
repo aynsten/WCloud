@@ -6,12 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.Database.EntityFrameworkCore;
 using WCloud.Framework.Database.EntityFrameworkCore.Service;
 using WCloud.Member.DataAccess.EF;
-using WCloud.Member.Domain.Admin;
 using WCloud.Member.Domain.Login;
 using WCloud.Member.Domain.User;
 
@@ -20,18 +18,12 @@ namespace WCloud.Member.Application.Service.impl
     public class UserService : BasicService<UserEntity>, IUserService
     {
         private readonly IMSRepository<UserEntity> _userRepo;
-        private readonly IMSRepository<AdminRoleEntity> _userRoleRepo;
-        private readonly IMSRepository<RoleEntity> _roleRepo;
 
         public UserService(
             IServiceProvider provider,
-            IMSRepository<UserEntity> _userRepo,
-            IMSRepository<AdminRoleEntity> _userRoleRepo,
-            IMSRepository<RoleEntity> _roleRepo) : base(provider, _userRepo)
+            IMSRepository<UserEntity> _userRepo) : base(provider, _userRepo)
         {
             this._userRepo = _userRepo;
-            this._userRoleRepo = _userRoleRepo;
-            this._roleRepo = _roleRepo;
         }
 
         public async Task<IEnumerable<UserEntity>> LoadUserPhone(IEnumerable<UserEntity> data)

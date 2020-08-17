@@ -1,10 +1,21 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Lib.data;
 
 namespace WCloud.Framework.Database.Abstractions
 {
+    public interface ILinqRepository<T> : IQueryableRepository<T>, IRepository<T> where T : IDBTable
+    {
+        //
+    }
+
+    public interface IQueryableRepository<T> : IDisposable where T : IDBTable
+    {
+        IQueryable<T> Queryable { get; }
+    }
+
     /// <summary>
     /// 仓储接口
     /// </summary>

@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
+using Lib.extension;
 using Lib.helper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -8,10 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using WCloud.Framework.Database.Abstractions;
 using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.Database.Abstractions.Service;
-using WCloud.Framework.Database.EntityFrameworkCore.Repository;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore.Service
 {
@@ -21,9 +21,9 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
 
         protected readonly ILogger _logger;
         protected readonly IServiceProvider _provider;
-        protected readonly IEFRepository<T> _repo;
+        protected readonly ILinqRepository<T> _repo;
 
-        public BasicService(IServiceProvider provider, IEFRepository<T> _repo)
+        public BasicService(IServiceProvider provider, ILinqRepository<T> _repo)
         {
             provider.Should().NotBeNull();
             _repo.Should().NotBeNull();
@@ -95,18 +95,16 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
             page.Should().BeGreaterOrEqualTo(1);
             pagesize.Should().BeInRange(1, 5000);
 
-            var db = this._repo.Database;
-
-            var query = db.Set<T>().AsNoTrackingQueryable();
+            var query = this._repo.Queryable;
 
             if (ValidateHelper.IsNotEmpty(q))
             {
                 query = this.SearchKeyword(query, q);
             }
 
-            var res = await query.ToPagedListAsync(page, pagesize, orderby: orderby, desc: desc);
+            var res = query.ToPagedList(page, pagesize, orderby: orderby, desc: desc);
 
-            return res;
+            return await Task.FromResult(res);
         }
 
         protected virtual object UpdateField(T data)
@@ -141,7 +139,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Service
         {
             uid.Should().NotBeNullOrEmpty();
 
-            var res = await this._repo.QueryOneAsNoTrackAsync(x => x.Id == uid);
+            var res = await this._repo.QueryOneAsync(x => x.Id == uid);
 
             return res;
         }

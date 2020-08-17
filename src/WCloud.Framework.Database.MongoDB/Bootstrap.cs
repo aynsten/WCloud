@@ -5,17 +5,17 @@ namespace WCloud.Framework.Database.MongoDB
 {
     public static class MongoBootstrap
     {
-        public static IServiceCollection UseMongoDB(this IServiceCollection collection,
+        public static IServiceCollection AddMongoDB(this IServiceCollection collection,
             string database_name, string connection_string)
         {
             var client = new MongoClient(MongoClientSettings.FromConnectionString(connection_string));
 
-            UseMongoDB(collection, database_name, client);
+            AddMongoDB(collection, database_name, client);
 
             return collection;
         }
 
-        public static IServiceCollection UseMongoDB(this IServiceCollection collection, string database_name, IMongoClient client)
+        public static IServiceCollection AddMongoDB(this IServiceCollection collection, string database_name, IMongoClient client)
         {
             var connection = new MongoConnectionWrapper(client, database_name);
 

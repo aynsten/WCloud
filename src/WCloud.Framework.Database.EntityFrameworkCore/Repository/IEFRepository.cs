@@ -9,7 +9,7 @@ using WCloud.Framework.Database.Abstractions;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 {
-    public interface IEFRepository<T> : ILinqRepository<T>, IRepository<T> where T : class, IDBTable
+    public interface IEFRepository<T> : ILinqRepository<T> where T : class, IDBTable
     {
         DbContext Database { get; }
         DbSet<T> Table { get; }

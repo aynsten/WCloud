@@ -13,7 +13,7 @@ namespace WCloud.Member.Domain
     /// 基础crud和queryable
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IMemberRepository<T> : ILinqRepository<T>, IRepository<T>, IAutoRegistered where T : class, IMemberShipDBTable
+    public interface IMemberRepository<T> : ILinqRepository<T>, IAutoRegistered where T : class, IMemberShipDBTable
     {
         //
     }

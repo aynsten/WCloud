@@ -2,14 +2,10 @@
 using Lib.cache;
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using WCloud.Core.Cache;
-using WCloud.Core.Helper;
-using WCloud.Member.DataAccess.EF;
+using WCloud.Core;
 using WCloud.Member.Domain.Admin;
 
 namespace WCloud.Member.Application.PermissionValidator
@@ -19,21 +15,15 @@ namespace WCloud.Member.Application.PermissionValidator
     {
         private readonly TimeSpan _cache_timeout = TimeSpan.FromMinutes(10);
 
-        private readonly ICacheProvider _cache;
-        private readonly ICacheKeyManager _keyManager;
-        private readonly IMSRepository<RoleEntity> _repo;
-        private readonly IStringArraySerializer permissionSerializer;
+        private readonly IWCloudContext _context;
+        private readonly IRoleRepository _repo;
 
         public PermissionValidatorService(
-            ICacheProvider _cache,
-            ICacheKeyManager keyManager,
-            IMSRepository<RoleEntity> _repo,
-            IStringArraySerializer permissionSerializer)
+            IWCloudContext<PermissionValidatorService> _context,
+            IRoleRepository _repo)
         {
-            this._cache = _cache;
-            this._keyManager = keyManager;
+            this._context = _context;
             this._repo = _repo;
-            this.permissionSerializer = permissionSerializer;
         }
 
         void __check__(string subject_id, IEnumerable<string> permissions)
@@ -74,32 +64,13 @@ namespace WCloud.Member.Application.PermissionValidator
 
         public async Task<string[]> LoadAllPermissionsName(string subject_id)
         {
-            /// <summary>
-            /// 用户->角色->权限
-            /// </summary>
-            /// <param name="subject_id"></param>
-            /// <returns></returns>
-            async Task<string[]> __my_permission__()
-            {
-                var db = this._repo.Database;
-
-                var user_role_query = db.Set<AdminRoleEntity>().AsNoTracking();
-                var role_query = db.Set<RoleEntity>().AsNoTracking();
-
-                var roles = user_role_query.Where(x => x.AdminUID == subject_id).Select(x => x.RoleUID);
-
-                var res = await role_query
-                    .Where(x => roles.Contains(x.Id))
-                    .ToArrayAsync();
-
-                return res.SelectMany(x => this.permissionSerializer.Deserialize(x.PermissionJson)).Distinct().ToArray();
-            }
-
             if (this.__permissions__ == null)
             {
-                var cache_key = this._keyManager.AdminPermission(subject_id);
+                var cache_key = this._context.CacheKeyManager.AdminPermission(subject_id);
 
-                var data = await this._cache.GetOrSetAsync_(cache_key, __my_permission__, this._cache_timeout);
+                var data = await this._context.CacheProvider.GetOrSetAsync_(cache_key,
+                    () => this._repo.QueryMyPermission(subject_id),
+                    this._cache_timeout);
 
                 this.__permissions__ = data ?? new string[] { };
             }

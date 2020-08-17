@@ -20,7 +20,7 @@ namespace WCloud.CommonService.Application.KVStore
         {
             key.Should().NotBeNullOrEmpty("kv get value");
 
-            var res = await this._repo.Table.AsNoTracking().OrderByDescending(x => x.CreateTimeUtc).FirstOrDefaultAsync(x => x.Key == key);
+            var res = await this._repo.Queryable.OrderByDescending(x => x.CreateTimeUtc).FirstOrDefaultAsync(x => x.Key == key);
 
             return res?.Value;
         }
@@ -51,11 +51,7 @@ namespace WCloud.CommonService.Application.KVStore
             key.Should().NotBeNullOrEmpty("kv set value key");
             data.Should().NotBeNull("kv set value data");
 
-            var db = this._repo.Database;
-
-            var set = db.Set<KVStoreEntity>();
-            set.RemoveRange(set.Where(x => x.Key == key));
-            await db.SaveChangesAsync();
+            await this._repo.DeleteWhereAsync(x => x.Key == key);
 
             var entity = new KVStoreEntity()
             {
@@ -64,9 +60,7 @@ namespace WCloud.CommonService.Application.KVStore
             };
             entity.InitEntity();
 
-            set.Add(entity);
-
-            await db.SaveChangesAsync();
+            await this._repo.InsertAsync(entity);
         }
     }
 }

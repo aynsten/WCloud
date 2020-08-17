@@ -10,7 +10,6 @@ using WCloud.Core;
 using WCloud.Framework.MVC;
 using WCloud.Framework.MVC.BaseController;
 using WCloud.Member.Application;
-using WCloud.Member.Application.Service;
 using WCloud.Member.Authentication;
 using WCloud.Member.Authentication.ControllerExtensions;
 using WCloud.Member.Authentication.Filters;
@@ -22,20 +21,17 @@ namespace WCloud.Member.Api.Controller
     public class AdminAccountController : WCloudBaseController, IAdminController
     {
         private readonly ILoginService<AdminEntity> _login;
-        private readonly IAuthTokenService authTokenService;
         private readonly IConfiguration config;
         private readonly HttpClient httpClient;
         private readonly OAuthConfig oAuthConfig;
 
         public AdminAccountController(
             ILoginService<AdminEntity> login,
-            IAuthTokenService authTokenService,
             IConfiguration config,
             IHttpClientFactory factory,
             OAuthConfig oAuthConfig)
         {
             this._login = login;
-            this.authTokenService = authTokenService;
             this.config = config;
             this.oAuthConfig = oAuthConfig;
             this.httpClient = factory.CreateClient("my_admin_oauth");
@@ -48,7 +44,7 @@ namespace WCloud.Member.Api.Controller
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpPost, ApiRoute]
-        public async Task<IActionResult> OauthPwdLogin([FromForm]string user_name, [FromForm]string password)
+        public async Task<IActionResult> OauthPwdLogin([FromForm] string user_name, [FromForm] string password)
         {
             var disco = await this.httpClient.__disco__(this.config);
             var tokenResponse = await this.httpClient.RequestTokenAsync(new TokenRequest
@@ -79,7 +75,7 @@ namespace WCloud.Member.Api.Controller
         /// <param name="refresh_token"></param>
         /// <returns></returns>
         [HttpPost, ApiRoute]
-        public async Task<IActionResult> RefreshToken([FromForm]string refresh_token)
+        public async Task<IActionResult> RefreshToken([FromForm] string refresh_token)
         {
             var disco = await this.httpClient.__disco__(this.config);
 
@@ -103,7 +99,7 @@ namespace WCloud.Member.Api.Controller
         /// 自己改自己的密码
         /// </summary>
         [HttpPost, ApiRoute, AuthAdmin]
-        public async Task<IActionResult> ChangePwd([FromForm]string old_pwd, [FromForm]string pwd)
+        public async Task<IActionResult> ChangePwd([FromForm] string old_pwd, [FromForm] string pwd)
         {
             if (!ValidateHelper.IsAllNotEmpty(old_pwd, pwd))
             {
@@ -128,7 +124,7 @@ namespace WCloud.Member.Api.Controller
         /// 管理员重设用户密码
         /// </summary>
         [HttpPost, ApiRoute, AuthAdmin(Permission = "reset-pwd")]
-        public async Task<IActionResult> ResetPwd([FromForm]string user_uid, [FromForm]string pwd)
+        public async Task<IActionResult> ResetPwd([FromForm] string user_uid, [FromForm] string pwd)
         {
             if (!ValidateHelper.IsAllNotEmpty(user_uid, pwd))
             {

@@ -26,14 +26,10 @@ namespace WCloud.Admin.Controllers
     public class AccountController : WCloudBaseController, IAdminController
     {
         private readonly ILoginService<AdminEntity> _login;
-        private readonly IAuthTokenService authTokenService;
 
-        public AccountController(
-            ILoginService<AdminEntity> login,
-            IAuthTokenService authTokenService)
+        public AccountController(ILoginService<AdminEntity> login)
         {
             this._login = login;
-            this.authTokenService = authTokenService;
         }
 
         /// <summary>
@@ -43,7 +39,7 @@ namespace WCloud.Admin.Controllers
         /// <param name="password">密码</param>
         /// <returns></returns>
         [HttpPost, ApiRoute]
-        public async Task<IActionResult> LoginViaPass([FromForm]string username, [FromForm]string password)
+        public async Task<IActionResult> LoginViaPass([FromForm] string username, [FromForm] string password)
         {
             if (!ValidateHelper.IsAllNotEmpty(username, password))
             {
@@ -68,7 +64,7 @@ namespace WCloud.Admin.Controllers
         /// 自己改自己的密码
         /// </summary>
         [HttpPost, ApiRoute, AuthAdmin]
-        public async Task<IActionResult> ChangePwd([FromForm]string old_pwd, [FromForm]string pwd)
+        public async Task<IActionResult> ChangePwd([FromForm] string old_pwd, [FromForm] string pwd)
         {
             if (!ValidateHelper.IsAllNotEmpty(old_pwd, pwd))
             {
@@ -93,7 +89,7 @@ namespace WCloud.Admin.Controllers
         /// 管理员重设用户密码
         /// </summary>
         [HttpPost, ApiRoute, AuthAdmin(Permission = "reset-pwd")]
-        public async Task<IActionResult> ResetPwd([FromForm]string user_uid, [FromForm]string pwd)
+        public async Task<IActionResult> ResetPwd([FromForm] string user_uid, [FromForm] string pwd)
         {
             if (!ValidateHelper.IsAllNotEmpty(user_uid, pwd))
             {
@@ -130,7 +126,7 @@ namespace WCloud.Admin.Controllers
 
 #if DEBUG
         [HttpGet, ApiRoute]
-        public async Task<string> lang([FromServices]IStringLocalizer<MemberShipResource> l, [FromQuery]string key)
+        public async Task<string> lang([FromServices] IStringLocalizer<MemberShipResource> l, [FromQuery] string key)
         {
             var ls = this.HttpContext.RequestServices.GetServices<IStringLocalizer<MemberShipResource>>().ToArray();
 
@@ -144,9 +140,9 @@ namespace WCloud.Admin.Controllers
             return l[key ?? "contact"] ?? "?";
         }
 
-        async Task<IActionResult> __signin__(string user_uid)
+        async Task<IActionResult> __signin__([FromServices] IAuthTokenService authTokenService, string user_uid)
         {
-            var token = await this.authTokenService.CreateAccessTokenAsync($"user:{user_uid}");
+            var token = await authTokenService.CreateAccessTokenAsync($"user:{user_uid}");
 
             var identity = new ClaimsIdentity(authenticationType: ConfigSet.Identity.AdminLoginScheme);
 

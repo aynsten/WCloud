@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Lib.cache;
 using Lib.core;
 using Lib.extension;
 using Lib.helper;
@@ -7,29 +6,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WCloud.Core;
 using WCloud.Core.Authentication.Model;
 using WCloud.Core.Cache;
 using WCloud.Framework.Database.Abstractions.Extension;
-using WCloud.Member.DataAccess.EF;
+using WCloud.Member.Domain;
 using WCloud.Member.Domain.Login;
 
 namespace WCloud.Member.Application.Service.impl
 {
     public class AuthTokenService : IAuthTokenService
     {
-        protected readonly ICacheProvider _cache;
-        protected readonly ICacheKeyManager _keyManager;
-        protected readonly IMSRepository<AuthTokenEntity> _tokenRepo;
+        protected readonly IWCloudContext _context;
+        protected readonly IMemberRepository<AuthTokenEntity> _tokenRepo;
 
         protected virtual int TokenExpireDays => 30;
 
         public AuthTokenService(
-            ICacheProvider _cache,
-            ICacheKeyManager _keyManager,
-            IMSRepository<AuthTokenEntity> _tokenRepo)
+            IWCloudContext<AuthTokenService> _context,
+            IMemberRepository<AuthTokenEntity> _tokenRepo)
         {
-            this._cache = _cache;
-            this._keyManager = _keyManager;
+            this._context = _context;
             this._tokenRepo = _tokenRepo;
         }
 
@@ -49,8 +46,11 @@ namespace WCloud.Member.Application.Service.impl
         /// <param name="token"></param>
         /// <param name="now"></param>
         /// <returns></returns>
-        protected virtual bool NeedRefresh(AuthTokenEntity token, DateTime now) =>
-            Math.Abs((token.ExpiryTimeUtc - now).TotalDays) < (this.TokenExpireDays / 2.0);
+        protected virtual bool NeedRefresh(AuthTokenEntity token, DateTime now)
+        {
+            var res = Math.Abs((token.ExpiryTimeUtc - now).TotalDays) < (this.TokenExpireDays / 2.0);
+            return res;
+        }
 
         public virtual async Task<TokenModel> CreateAccessTokenAsync(string user_uid)
         {
@@ -101,12 +101,12 @@ namespace WCloud.Member.Application.Service.impl
 
             var keys = new List<string>();
 
-            keys.AddList_(data.TokenUID?.Select(x => this._keyManager.AuthToken(x)));
-            keys.AddList_(data.UserUID?.Select(x => this._keyManager.UserInfo(x)));
+            keys.AddList_(data.TokenUID?.Select(x => this._context.CacheKeyManager.AuthToken(x)));
+            keys.AddList_(data.UserUID?.Select(x => this._context.CacheKeyManager.UserInfo(x)));
 
             foreach (var key in keys.Where(x => x?.Length > 0).Distinct())
             {
-                await this._cache.RemoveAsync(key);
+                await this._context.CacheProvider.RemoveAsync(key);
             }
         }
 
@@ -131,17 +131,22 @@ namespace WCloud.Member.Application.Service.impl
         {
             token_uids.Should().NotBeNullOrEmpty("delete tokens token uids");
 
-            var db = this._tokenRepo.Database;
-
-            var token_query = db.Set<AuthTokenEntity>();
-
-            token_query.RemoveRange(token_query.Where(x => token_uids.Contains(x.Id)));
-
-            await db.SaveChangesAsync();
-
-            foreach (var token in token_uids)
+            var batch_size = 100;
+            while (true)
             {
-                await this._cache.RemoveAsync(this._keyManager.AuthToken(token));
+                var data = await this._tokenRepo.QueryManyAsync(x => token_uids.Contains(x.Id), count: batch_size);
+                if (!data.Any())
+                {
+                    break;
+                }
+
+                var ids = data.Select(x => x.Id).ToArray();
+                await this._tokenRepo.DeleteByIds(ids);
+
+                if (data.Count < batch_size)
+                {
+                    break;
+                }
             }
         }
 

@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WCloud.Core;
-using WCloud.Core.Helper;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Member.Domain.Admin;
 
@@ -18,16 +17,13 @@ namespace WCloud.Member.Application.Service.impl
     {
         private readonly IWCloudContext _context;
         private readonly IRoleRepository roleRepository;
-        private readonly IStringArraySerializer permissionSerializer;
 
         public RoleService(
             IWCloudContext<RoleService> _context,
-            IRoleRepository roleRepository,
-            IStringArraySerializer permissionSerializer)
+            IRoleRepository roleRepository)
         {
             this._context = _context;
             this.roleRepository = roleRepository;
-            this.permissionSerializer = permissionSerializer;
         }
 
         public virtual async Task<List<RoleEntity>> QueryRoleList(string parent = null)
@@ -99,7 +95,7 @@ namespace WCloud.Member.Application.Service.impl
             var model = await this.roleRepository.QueryOneAsync(x => x.Id == role_uid);
             model.Should().NotBeNull("set role permission");
 
-            if (!this.permissionSerializer.Deserialize(model.PermissionJson).AllEqual(permissions))
+            if (!this._context.StringArraySerializer.Deserialize(model.PermissionJson).AllEqual(permissions))
             {
                 model.PermissionJson = permissions.ToJson();
                 await this.roleRepository.UpdateAsync(model);

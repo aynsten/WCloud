@@ -9,9 +9,9 @@ namespace WCloud.Identity.Providers.MongoStoreProvider
         //
     }
 
-    internal class IdsRepository<T> : MongoRepository<T>, IIdsRepository<T> where T : EntityBase
+    internal class IdsRepository<T> : MongoRepository<T, IdsMongoConnectionWrapper>, IIdsRepository<T> where T : EntityBase
     {
-        public IdsRepository(IServiceProvider provider, IdsMongoConnectionWrapper wrapper) : base(provider, wrapper)
+        public IdsRepository(IServiceProvider provider) : base(provider)
         { }
     }
 }

@@ -1,17 +1,20 @@
-﻿using System;
+﻿using FluentAssertions;
+using Lib.helper;
+using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using FluentAssertions;
-using Lib.helper;
-using MongoDB.Driver;
 using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.MongoDB.Mapping;
 
 namespace WCloud.Framework.Database.MongoDB
 {
-    public class MongoRepository<T> : IMongoRepository<T> where T : EntityBase
+    public class MongoRepository<T, ConnectionWrapper> : IMongoRepository<T>
+        where T : EntityBase
+        where ConnectionWrapper : MongoConnectionWrapper
     {
         private readonly IServiceProvider provider;
         private readonly IMongoClient _client;
@@ -21,7 +24,10 @@ namespace WCloud.Framework.Database.MongoDB
         public IQueryable<T> Queryable => this._collection.AsQueryable();
         public IMongoCollection<T> Collection => this._collection;
 
-        public MongoRepository(IServiceProvider provider, MongoConnectionWrapper wrapper)
+        public MongoRepository(IServiceProvider provider) : this(provider, provider.Resolve_<ConnectionWrapper>())
+        { }
+
+        public MongoRepository(IServiceProvider provider, ConnectionWrapper wrapper)
         {
             this.provider = provider;
             this._client = wrapper.Client;

@@ -1,7 +1,8 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Lib.cache;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 using WCloud.Core.Authentication.Model;
 using WCloud.Core.Cache;
 using WCloud.Core.Helper;
@@ -23,6 +24,7 @@ namespace WCloud.Core
         WCloudUserInfo CurrentUserInfo { get; }
 
         IMessagePublisher MessagePublisher { get; }
+        ICacheProvider CacheProvider { get; }
         ICacheKeyManager CacheKeyManager { get; }
         IStringArraySerializer StringArraySerializer { get; }
         IDataMapper ObjectMapper { get; }
@@ -59,6 +61,9 @@ namespace WCloud.Core
         private readonly Lazy<IEntityValidationHelper> lazy_entity_validator;
         public IEntityValidationHelper EntityValidator => this.lazy_entity_validator.Value;
 
+        private readonly Lazy<ICacheProvider> lazy_cache_provider;
+        public ICacheProvider CacheProvider => this.lazy_cache_provider.Value;
+
         public DefaultWCloudContext(IServiceProvider provider)
         {
             Lazy<x> __lazy_resolve__<x>() => new Lazy<x>(() => this.Provider.Resolve_<x>());
@@ -70,6 +75,7 @@ namespace WCloud.Core
             this.lazy_user_info = __lazy_resolve__<WCloudUserInfo>();
             this.lazy_publisher = __lazy_resolve__<IMessagePublisher>();
             this.lazy_cache_key = __lazy_resolve__<ICacheKeyManager>();
+            this.lazy_cache_provider = __lazy_resolve__<ICacheProvider>();
             this.lazy_string_array_serializer = __lazy_resolve__<IStringArraySerializer>();
             this.lazy_object_mapper = __lazy_resolve__<IDataMapper>();
             this.lazy_entity_validator = __lazy_resolve__<IEntityValidationHelper>();
@@ -78,6 +84,7 @@ namespace WCloud.Core
         public void Dispose()
         {
 #if DEBUG
+            //todo 这里可能有问题，在销毁的时候获取logger
             this.Logger.LogInformation("wcloud context disposed");
 #endif
         }

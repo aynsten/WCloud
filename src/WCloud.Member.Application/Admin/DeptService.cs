@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Lib.helper;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +52,9 @@ namespace WCloud.Member.Application.Service.impl
 
             query = query.WhereIf(ValidateHelper.IsNotEmpty(group), x => x.GroupKey == group);
 
-            var res = await query.Take(5000).ToListAsync();
+            var res = query.Take(5000).ToList();
+
+            await Task.CompletedTask;
 
             return res;
         }

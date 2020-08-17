@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Lib.extension;
 using Lib.helper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -32,7 +31,9 @@ namespace WCloud.Member.Application.Service.impl
 
             query = query.WhereIf(ValidateHelper.IsNotEmpty(parent), x => x.ParentUID == parent);
 
-            var list = await query.OrderByDescending(x => x.CreateTimeUtc).Take(5000).ToListAsync();
+            var list = query.OrderByDescending(x => x.CreateTimeUtc).Take(5000).ToList();
+
+            await Task.CompletedTask;
 
             return list;
         }

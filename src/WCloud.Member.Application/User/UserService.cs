@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.Database.Abstractions.Service;
-using WCloud.Framework.Database.EntityFrameworkCore;
 using WCloud.Member.Domain.User;
 
 namespace WCloud.Member.Application.Service.impl
@@ -171,7 +170,9 @@ namespace WCloud.Member.Application.Service.impl
                 }
             }
 
-            var data = await query.ToPagedListAsync(page, pagesize, x => x.CreateTimeUtc, desc: false);
+            var data = query.ToPagedList(page, pagesize, x => x.CreateTimeUtc, desc: false);
+
+            await Task.CompletedTask;
 
             return data;
         }

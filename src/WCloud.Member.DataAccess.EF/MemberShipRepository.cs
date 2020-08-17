@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading.Tasks;
 using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.EntityFrameworkCore.Repository;
 using WCloud.Member.Domain;
+using WCloud.Member.Shared.Helper;
 
 namespace WCloud.Member.DataAccess.EF
 {
@@ -26,5 +29,19 @@ namespace WCloud.Member.DataAccess.EF
         where T : EntityBase, IMemberShipDBTable
     {
         public MemberShipRepository(IServiceProvider provider) : base(provider) { }
+    }
+
+    public class MemberDatabaseHelper : IDatabaseHelper
+    {
+        private readonly IServiceProvider provider;
+        public MemberDatabaseHelper(IServiceProvider provider)
+        {
+            this.provider = provider;
+        }
+
+        public async Task CreateDatabase()
+        {
+            await provider.Resolve_<MemberShipDbContext>().Database.EnsureCreatedAsync();
+        }
     }
 }

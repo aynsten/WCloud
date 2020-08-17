@@ -1,16 +1,14 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.cache;
 using Lib.extension;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using WCloud.CommonService.Application.FileUpload;
 using WCloud.Core.Cache;
 using WCloud.Core.MessageBus;
-using WCloud.Member.DataAccess.EF;
 using WCloud.Member.Domain.User;
 using WCloud.Member.Shared.MessageBody;
 
@@ -36,10 +34,9 @@ namespace WCloud.Admin.Consumer.Consumers
 
                 var user_uid = context.Message.UserUID;
 
-                var repo = provider.Resolve_<IMSRepository<UserEntity>>();
-                var db = repo.Database;
+                var repo = provider.Resolve_<IUserRepository>();
 
-                var user = await db.Set<UserEntity>().FirstOrDefaultAsync(x => x.Id == user_uid);
+                var user = await repo.QueryOneAsync(x => x.Id == user_uid);
                 user.Should().NotBeNull();
 
                 var client = provider.Resolve_<IHttpClientFactory>().CreateClient("copy_avatar_client");
@@ -48,7 +45,7 @@ namespace WCloud.Admin.Consumer.Consumers
 
                 user.UserImg = await this.__download_and_upload__(client, fileUploadService, context.Message.AvatarUrl);
 
-                await db.SaveChangesAsync();
+                await repo.UpdateAsync(user);
 
                 var cache = provider.ResolveDistributedCache_();
                 var keyManager = provider.Resolve_<ICacheKeyManager>();

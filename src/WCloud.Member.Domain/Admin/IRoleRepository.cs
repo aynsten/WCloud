@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WCloud.Member.Domain.Admin
 {
@@ -9,5 +10,7 @@ namespace WCloud.Member.Domain.Admin
         /// 用户->角色->权限
         /// </summary>
         Task<string[]> QueryMyPermission(string subject_id);
+
+        Task<IEnumerable<AdminRoleEntity>> QueryAdminRoleEntity(string role_id, int page, int pagesize);
     }
 }

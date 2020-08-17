@@ -1,11 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.extension;
 using Lib.helper;
 using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using WCloud.Core;
 using WCloud.Core.Storage;
 using WCloud.Framework.Database.Abstractions.Extension;
 
@@ -13,20 +14,17 @@ namespace WCloud.CommonService.Application.FileUpload
 {
     public class FileUploadService : IFileUploadService
     {
-        private readonly ILogger _logger;
+        private readonly IWCloudContext _context;
         private readonly ICommonServiceRepository<FileUploadEntity> _uploadRepo;
-        private readonly ICommonServiceRepository<FileOwnerEntity> _fileOwnerRepo;
         private readonly IUploadHelper _uploadHelper;
 
         public FileUploadService(
-            ILogger<FileUploadService> _logger,
+            IWCloudContext<FileUploadService> context,
             ICommonServiceRepository<FileUploadEntity> _uploadRepo,
-            ICommonServiceRepository<FileOwnerEntity> _fileOwnerRepo,
             IUploadHelper uploadHelper)
         {
-            this._logger = _logger;
+            this._context = context;
             this._uploadRepo = _uploadRepo;
-            this._fileOwnerRepo = _fileOwnerRepo;
             this._uploadHelper = uploadHelper;
         }
 
@@ -111,7 +109,7 @@ namespace WCloud.CommonService.Application.FileUpload
 
             var model = this.__map__(file_name, bs, catalog);
             //如果之前有人上传过就直接返回
-            var previous_uploaded = await this._uploadRepo.QueryOneAsNoTrackAsync(x =>
+            var previous_uploaded = await this._uploadRepo.QueryOneAsync(x =>
             x.FileHash == model.FileHash &&
             x.Catalog == model.Catalog &&
             x.StorageProvider == model.StorageProvider);
@@ -120,12 +118,12 @@ namespace WCloud.CommonService.Application.FileUpload
             {
                 if (await this.__file_exist_in_qiniu__(previous_uploaded.QiniuKey))
                 {
-                    this._logger.LogInformation($"文件{previous_uploaded.ToJson()}已经在服务器存在，直接返回数据");
+                    this._context.Logger.LogInformation($"文件{previous_uploaded.ToJson()}已经在服务器存在，直接返回数据");
                     return res.SetSuccessData(previous_uploaded);
                 }
                 else
                 {
-                    this._logger.LogWarning($"文件{previous_uploaded.ToJson()}已经在服务器存在，但是不存在于七牛，将删除记录并重新上传");
+                    this._context.Logger.LogWarning($"文件{previous_uploaded.ToJson()}已经在服务器存在，但是不存在于七牛，将删除记录并重新上传");
                     await this._uploadRepo.DeleteByIds(new string[] { previous_uploaded.Id });
                 }
             }

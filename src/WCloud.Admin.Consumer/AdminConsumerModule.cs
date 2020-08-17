@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
@@ -10,8 +11,8 @@ using WCloud.Core.MessageBus;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
 using WCloud.Member.Application;
-using WCloud.Member.DataAccess.EF;
 using WCloud.Member.Initialization;
+using WCloud.Member.Shared.Helper;
 
 namespace WCloud.Admin.Consumer
 {
@@ -89,15 +90,16 @@ namespace WCloud.Admin.Consumer
                 db.Database.EnsureCreated();
             }
 
-            using (var db = s.ServiceProvider.Resolve_<MemberShipDbContext>())
+            //尝试创建初始账户
+            Task.Run(async () =>
             {
-                db.Database.EnsureCreated();
-                //尝试创建初始账户
-                app.ApplicationServices.InitAdminRoles()
-                   .InitAdminUsers()
-                   .InitOrgInfo()
-                   .AddRandomUserAndJoinOrg();
-            }
+                var s = app.ApplicationServices;
+                await s.Resolve_<IDatabaseHelper>().CreateDatabase();
+                await s.InitAdminRoles()
+                   ; await s.InitAdminUsers()
+                     ; await s.InitOrgInfo()
+                       ; await s.AddRandomUserAndJoinOrg();
+            }).Wait();
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Lib.extension;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WCloud.Core;
@@ -50,6 +52,17 @@ namespace WCloud.Member.DataAccess.EF.Admin
                 .ToArrayAsync();
 
             return res.SelectMany(x => this._context.StringArraySerializer.Deserialize(x.PermissionJson)).Distinct().ToArray();
+        }
+
+        public async Task<IEnumerable<AdminRoleEntity>> QueryAdminRoleEntity(string role_id, int page, int pagesize)
+        {
+            var query = this.Database.Set<AdminRoleEntity>().AsNoTracking()
+                .Where(x => x.RoleUID == role_id)
+                .OrderByDescending(x => x.CreateTimeUtc)
+                .QueryPage(page, pagesize);
+
+            var res = await query.ToArrayAsync();
+            return res;
         }
     }
 }

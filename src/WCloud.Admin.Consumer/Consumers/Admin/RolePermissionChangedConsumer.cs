@@ -1,15 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Lib.cache;
+﻿using Lib.cache;
 using Lib.extension;
 using Lib.helper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using WCloud.Core.Cache;
 using WCloud.Core.MessageBus;
-using WCloud.Member.DataAccess.EF;
 using WCloud.Member.Domain.Admin;
 using WCloud.Member.Shared.MessageBody;
 
@@ -33,19 +31,15 @@ namespace WCloud.Admin.MessageConsumers
 
                 var cache = provider.ResolveDistributedCache_();
                 var keyManager = provider.Resolve_<ICacheKeyManager>();
-                var repo = provider.Resolve_<IMSRepository<AdminRoleEntity>>();
-                var query = repo.NoTrackingQueryable;
+                var repo = provider.Resolve_<IRoleRepository>();
+                var query = repo.Queryable;
 
                 var page = 1;
                 var page_size = 500;
 
                 while (true)
                 {
-                    var list = await query
-                        .Where(x => x.RoleUID == role_id)
-                        .OrderBy(x => x.CreateTimeUtc)
-                        .QueryPage(page, page_size)
-                        .ToArrayAsync();
+                    var list = await repo.QueryAdminRoleEntity(role_id, page, page_size);
 
                     if (!list.Any())
                     {

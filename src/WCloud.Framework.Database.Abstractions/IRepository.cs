@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Lib.data;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Lib.data;
 
 namespace WCloud.Framework.Database.Abstractions
 {
@@ -11,16 +12,35 @@ namespace WCloud.Framework.Database.Abstractions
         //
     }
 
-    public interface IQueryableRepository<T> : IDisposable where T : IDBTable
+    public interface IQueryableRepository<T> : IBasicRepository<T> where T : IDBTable
     {
         IQueryable<T> Queryable { get; }
+    }
+
+    public interface IQueryByKeyRepository<T, KEY> : IBasicRepository<T> where T : IDBTable
+    {
+        T QueryOneByKey(KEY key);
+
+        Task<T> QueryOneByKeyAsync(KEY key);
+    }
+
+    public interface IQueryByKeyRepository<T> : IQueryByKeyRepository<T, string> where T : IDBTable
+    {
+        //
+    }
+
+    public interface IBulkInsertRepository<T> : IBasicRepository<T> where T : IDBTable
+    {
+        int InsertBulk(IEnumerable<T> models);
+
+        Task<int> InsertBulkAsync(IEnumerable<T> models);
     }
 
     /// <summary>
     /// 仓储接口
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IRepository<T> : IDisposable where T : IDBTable
+    public interface IRepository<T> : IBasicRepository<T> where T : IDBTable
     {
         #region 添加
         /// <summary>
@@ -128,4 +148,7 @@ namespace WCloud.Framework.Database.Abstractions
         Task<bool> ExistAsync(Expression<Func<T, bool>> where);
         #endregion
     }
+
+    public interface IBasicRepository<T> : IDisposable where T : IDBTable
+    { }
 }

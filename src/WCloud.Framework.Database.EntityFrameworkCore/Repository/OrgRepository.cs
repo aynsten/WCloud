@@ -18,6 +18,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
     /// 可能存在不确定性，需要长期测试
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [Obsolete]
     public interface IOrgRepository__<T> : IEFRepository<T> where T : class, IDBTable, IOrgRow
     {
         /// <summary>
@@ -26,12 +27,13 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
         string OrgUID { get; }
     }
 
-    public abstract class OrgRepository<T, DbContextType> : WCloudEFRepository<T, DbContextType>, IOrgRepository__<T>
+    [Obsolete]
+    public abstract class OrgRepository__<T, DbContextType> : EFRepository<T, DbContextType>, IOrgRepository__<T>
         where T : EntityBase, IDBTable, IOrgRow
         where DbContextType : DbContext
     {
         public string OrgUID { get; private set; }
-        public OrgRepository(IServiceProvider provider, WCloudUserInfo user) : base(provider)
+        public OrgRepository__(IServiceProvider provider, WCloudUserInfo user) : base(provider)
         {
             this.OrgUID = user.Org?.Id;
             this.OrgUID.Should().NotBeNullOrEmpty("租户仓储无法获取当前租户上下文");
@@ -84,20 +86,6 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
             var query = this.__get_query__(this.NoTrackingQueryable);
             query = query.WhereIfNotNull(where);
             return await query.CountAsync();
-        }
-
-        public override T GetByKeys(string key)
-        {
-            var query = this.__get_query__(this.TrakingQueryable);
-            var res = query.Where(x => x.Id == key).FirstOrDefault();
-            return res;
-        }
-
-        public override async Task<T> GetByKeysAsync(string key)
-        {
-            var query = this.__get_query__(this.TrakingQueryable);
-            var res = await query.Where(x => x.Id == key).FirstOrDefaultAsync();
-            return res;
         }
 
         public override T QueryOne(Expression<Func<T, bool>> where)

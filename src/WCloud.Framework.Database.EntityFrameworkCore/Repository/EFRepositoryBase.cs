@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using WCloud.Core;
 using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
@@ -18,11 +19,23 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="DbContextType"></typeparam>
-    public class WCloudEFRepository<T, DbContextType> : EFRepository<T, DbContextType>
+    public abstract class EFRepository<T, DbContextType> : EFRepositoryBase<T>
         where T : EntityBase
         where DbContextType : DbContext
     {
-        public WCloudEFRepository(IServiceProvider provider) : base(provider) { }
+        private readonly IWCloudContext _context;
+        public EFRepository(IServiceProvider provider) : base(() => provider.Resolve_<DbContextType>())
+        {
+            this._context = provider.Resolve_<IWCloudContext<EFRepository<T, DbContextType>>>();
+        }
+        public EFRepository(IWCloudContext<EFRepository<T, DbContextType>> _context) : base(() => _context.Provider.Resolve_<DbContextType>())
+        {
+            this._context = _context;
+        }
+        public EFRepository(IWCloudContext _context) : base(() => _context.Provider.Resolve_<DbContextType>())
+        {
+            this._context = _context;
+        }
 
         protected override EntityEntry<T> __update__(ref DbContext db, T model)
         {
@@ -32,16 +45,6 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
             tracker.Property(x => x.CreateTimeUtc).IsModified = false;
 
             return tracker;
-        }
-    }
-
-    public class EFRepository<T, DbContextType> : EFRepositoryBase<T>
-        where T : class, IDBTable
-        where DbContextType : DbContext
-    {
-        public EFRepository(IServiceProvider provider) : base(() => provider.Resolve_<DbContextType>())
-        {
-            //
         }
     }
 
@@ -228,14 +231,14 @@ namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
 
         #region 查询
 
-        public virtual T GetByKeys(string key)
+        public virtual T QueryOneByKey(string key)
         {
             key.Should().NotBeNullOrEmpty("参数为空");
 
             return this.Table.Find(key);
         }
 
-        public virtual async Task<T> GetByKeysAsync(string key)
+        public virtual async Task<T> QueryOneByKeyAsync(string key)
         {
             key.Should().NotBeNullOrEmpty("参数为空");
 

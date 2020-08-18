@@ -38,7 +38,7 @@ namespace WCloud.Framework.Database.MongoDB
             this._collection = this._db.GetCollection<T>(collection_name);
         }
 
-        public List<T> QueryNearBy(Expression<Func<T, bool>> where, int page, int pagesize,
+        public virtual List<T> QueryNearBy(Expression<Func<T, bool>> where, int page, int pagesize,
             Expression<Func<T, object>> field, GeoInfo point,
             double? max_distance = null, double? min_distance = null)
         {
@@ -52,7 +52,7 @@ namespace WCloud.Framework.Database.MongoDB
             return this._collection.Find(condition).QueryPage(page, pagesize).ToList();
         }
 
-        public int Insert(T model)
+        public virtual int Insert(T model)
         {
             model.Should().NotBeNull();
 
@@ -60,7 +60,7 @@ namespace WCloud.Framework.Database.MongoDB
             return 1;
         }
 
-        public async Task<int> InsertAsync(T model)
+        public virtual async Task<int> InsertAsync(T model)
         {
             model.Should().NotBeNull();
 
@@ -68,7 +68,25 @@ namespace WCloud.Framework.Database.MongoDB
             return 1;
         }
 
-        public int Delete(T model)
+        public virtual int InsertBulk(IEnumerable<T> models)
+        {
+            models.Should().NotBeNullOrEmpty();
+
+            this._collection.InsertMany(models);
+
+            return models.Count();
+        }
+
+        public virtual async Task<int> InsertBulkAsync(IEnumerable<T> models)
+        {
+            models.Should().NotBeNullOrEmpty();
+
+            await this._collection.InsertManyAsync(models);
+
+            return models.Count();
+        }
+
+        public virtual int Delete(T model)
         {
             model.Should().NotBeNull();
 
@@ -76,7 +94,7 @@ namespace WCloud.Framework.Database.MongoDB
             return (int)this._collection.DeleteMany(filter).DeletedCount;
         }
 
-        public async Task<int> DeleteAsync(T model)
+        public virtual async Task<int> DeleteAsync(T model)
         {
             model.Should().NotBeNull();
 
@@ -84,55 +102,55 @@ namespace WCloud.Framework.Database.MongoDB
             return (int)(await this._collection.DeleteManyAsync(filter)).DeletedCount;
         }
 
-        public int DeleteWhere(Expression<Func<T, bool>> where)
+        public virtual int DeleteWhere(Expression<Func<T, bool>> where)
         {
             where.Should().NotBeNull();
 
             return (int)this._collection.DeleteMany(where).DeletedCount;
         }
 
-        public async Task<int> DeleteWhereAsync(Expression<Func<T, bool>> where)
+        public virtual async Task<int> DeleteWhereAsync(Expression<Func<T, bool>> where)
         {
             where.Should().NotBeNull();
 
             return (int)(await this._collection.DeleteManyAsync(where)).DeletedCount;
         }
 
-        public bool Exist(Expression<Func<T, bool>> where)
+        public virtual bool Exist(Expression<Func<T, bool>> where)
         {
             where.Should().NotBeNull();
             return this._collection.Find(where).Take(1).FirstOrDefault() != null;
         }
 
-        public async Task<bool> ExistAsync(Expression<Func<T, bool>> where)
+        public virtual async Task<bool> ExistAsync(Expression<Func<T, bool>> where)
         {
             where.Should().NotBeNull();
             return (await this._collection.FindAsync(where)).FirstOrDefault() != null;
         }
 
-        public int QueryCount(Expression<Func<T, bool>> where)
+        public virtual int QueryCount(Expression<Func<T, bool>> where)
         {
             where.Should().NotBeNull();
             return (int)this._collection.CountDocuments(where);
         }
 
-        public async Task<int> QueryCountAsync(Expression<Func<T, bool>> where)
+        public virtual async Task<int> QueryCountAsync(Expression<Func<T, bool>> where)
         {
             where.Should().NotBeNull();
             return (int)(await this._collection.CountDocumentsAsync(where));
         }
 
-        public T QueryOne(Expression<Func<T, bool>> where)
+        public virtual T QueryOne(Expression<Func<T, bool>> where)
         {
             return this.QueryMany<object>(where, 1).FirstOrDefault();
         }
 
-        public async Task<T> QueryOneAsync(Expression<Func<T, bool>> where)
+        public virtual async Task<T> QueryOneAsync(Expression<Func<T, bool>> where)
         {
             return (await this.QueryManyAsync<object>(where, 1)).FirstOrDefault();
         }
 
-        IFindFluent<T, T> __query_many__<OrderByColumnType>(Expression<Func<T, bool>> where,
+        protected virtual IFindFluent<T, T> __query_many__<OrderByColumnType>(Expression<Func<T, bool>> where,
             Expression<Func<T, OrderByColumnType>> orderby = null, bool Desc = true,
             int? start = null, int? count = null)
         {
@@ -160,7 +178,7 @@ namespace WCloud.Framework.Database.MongoDB
             return query;
         }
 
-        public int Update(T model)
+        public virtual int Update(T model)
         {
             model.Should().NotBeNull();
 
@@ -168,7 +186,7 @@ namespace WCloud.Framework.Database.MongoDB
             return (int)set.ReplaceOne(x => x.Id == model.Id, model).ModifiedCount;
         }
 
-        public async Task<int> UpdateAsync(T model)
+        public virtual async Task<int> UpdateAsync(T model)
         {
             model.Should().NotBeNull();
 
@@ -176,14 +194,14 @@ namespace WCloud.Framework.Database.MongoDB
             return (int)(await set.ReplaceOneAsync(x => x.Id == model.Id, model)).ModifiedCount;
         }
 
-        public T GetByKeys(string key)
+        public virtual T QueryOneByKey(string key)
         {
             key.Should().NotBeNull();
 
             return this._collection.Find(x => x.Id == key).FirstOrDefault();
         }
 
-        public async Task<T> GetByKeysAsync(string key)
+        public virtual async Task<T> QueryOneByKeyAsync(string key)
         {
             key.Should().NotBeNull();
 
@@ -192,14 +210,14 @@ namespace WCloud.Framework.Database.MongoDB
 
         public virtual void Dispose() { }
 
-        public T[] QueryMany<OrderByColumn>(Expression<Func<T, bool>> where, int? count = null, int? skip = null, Expression<Func<T, OrderByColumn>> order_by = null, bool desc = true)
+        public virtual T[] QueryMany<OrderByColumn>(Expression<Func<T, bool>> where, int? count = null, int? skip = null, Expression<Func<T, OrderByColumn>> order_by = null, bool desc = true)
         {
             var query = this.__query_many__(where, order_by, desc, skip, count);
             var res = query.ToList().ToArray();
             return res;
         }
 
-        public async Task<T[]> QueryManyAsync<OrderByColumn>(Expression<Func<T, bool>> where, int? count = null, int? skip = null, Expression<Func<T, OrderByColumn>> order_by = null, bool desc = true)
+        public virtual async Task<T[]> QueryManyAsync<OrderByColumn>(Expression<Func<T, bool>> where, int? count = null, int? skip = null, Expression<Func<T, OrderByColumn>> order_by = null, bool desc = true)
         {
             var query = this.__query_many__(where, order_by, desc, skip, count);
             var res = await query.ToListAsync();

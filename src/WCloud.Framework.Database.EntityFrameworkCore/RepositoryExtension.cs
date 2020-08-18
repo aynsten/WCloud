@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WCloud.Framework.Database.Abstractions.Entity;
 
-namespace WCloud.Framework.Database.EntityFrameworkCore.Repository
+namespace WCloud.Framework.Database.EntityFrameworkCore
 {
     public static class RepositoryExtension
     {

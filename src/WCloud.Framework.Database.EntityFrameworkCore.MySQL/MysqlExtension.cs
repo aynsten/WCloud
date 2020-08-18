@@ -1,9 +1,9 @@
-﻿using System;
-using System.Data;
-using System.Linq;
-using Lib.extension;
+﻿using Lib.extension;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Data;
+using System.Linq;
 using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore

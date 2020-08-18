@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using WCloud.Framework.Database.EntityFrameworkCore.Repository;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore
 {

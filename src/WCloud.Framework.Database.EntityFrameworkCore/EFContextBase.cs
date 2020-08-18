@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using Lib.data;
-using Lib.helper;
+﻿using Lib.data;
 using Microsoft.EntityFrameworkCore;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore

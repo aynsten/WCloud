@@ -216,21 +216,6 @@ namespace WCloud.Member.Application.Service.impl
             await this.userAccountRepository.AddVadlidationCode(model);
         }
 
-        bool __valid_phone__(string phone, out string msg)
-        {
-            msg = string.Empty;
-
-            phone.Should().NotBeNullOrEmpty("validate phone phone");
-
-            if (phone.Length != 11)
-            {
-                msg = "手机号长度必须为11位";
-                return false;
-            }
-
-            return true;
-        }
-
         public async Task<UserEntity> GetUserByPhone(string phone)
         {
             phone.Should().NotBeNullOrEmpty("get user by phone,phone");
@@ -266,35 +251,6 @@ namespace WCloud.Member.Application.Service.impl
             var res = await this.userAccountRepository.SaveExternalProviderMapping(model);
 
             return res;
-
-            /*
-             var res = new _<ExternalLoginMapEntity>();
-
-            model.InitEntity();
-            if (!model.IsValid(out var msg))
-            {
-                return res.SetErrorMsg(msg);
-            }
-
-            var db = this.userAccountRepository.Database;
-            var table = db.Set<ExternalLoginMapEntity>();
-
-            //删除之前的绑定
-            var old = await table.Where(x =>
-            x.ProviderKey == model.ProviderKey &&
-            x.UserID == model.UserID &&
-            x.Id != model.Id).ToArrayAsync();
-
-            if (old.Any())
-            {
-                table.RemoveRange(old);
-            }
-            table.Add(model);
-
-            await db.SaveChangesAsync();
-
-            return res.SetSuccessData(model);
-             */
         }
 
         public async Task<ExternalLoginMapEntity> FindExternalLoginByUserID(string provider, string user_uid)
@@ -321,16 +277,6 @@ namespace WCloud.Member.Application.Service.impl
             provider.Should().NotBeNullOrEmpty("remove external login provider");
 
             await this.userAccountRepository.RemoveExternalLogin(user_uid, provider);
-            /*
-             
-            var db = this.userAccountRepository.Database;
-
-            var set = db.Set<ExternalLoginMapEntity>();
-
-            set.RemoveRange(set.Where(x => x.UserID == user_uid && provider.Contains(x.ProviderKey)));
-
-            await db.SaveChangesAsync();
-             */
         }
 
         public async Task<bool> IsPhoneExist(string phone)
@@ -354,58 +300,10 @@ namespace WCloud.Member.Application.Service.impl
 
             var res = await this.userAccountRepository.SetPhone(uid, phone);
             return res;
-
-            /*
-             
-            var res = new _<UserPhoneEntity>();
-
-            if (!this.__valid_phone__(phone, out var msg))
-            {
-                return res.SetErrorMsg(msg);
-            }
-
-            if (await this.IsPhoneExist(phone))
-            {
-                return res.SetErrorMsg("手机号已存在");
-            }
-
-            var db = this.userAccountRepository.Database;
-
-            var set = db.Set<UserPhoneEntity>();
-
-            var data = await set.Where(x => x.UserUID == uid).ToArrayAsync();
-            if (data.Any())
-                set.RemoveRange(data);
-
-            var map = new UserPhoneEntity()
-            {
-                UserUID = uid,
-                Phone = phone
-            };
-
-            map.InitEntity();
-
-            set.Add(map);
-
-            await db.SaveChangesAsync();
-
-            return res.SetSuccessData(map);
-             */
         }
 
         public async Task<ValidationCodeEntity> GetValidationCode(Expression<Func<ValidationCodeEntity, bool>> where)
         {
-            /*
-             * 
-            var db = this.userAccountRepository.Database;
-
-            var data = await db.Set<ValidationCodeEntity>().AsNoTracking()
-                .Where(where)
-                .OrderByDescending(x => x.CreateTimeUtc)
-                .FirstOrDefaultAsync();
-
-            return data;
-             */
             var res = await this.userAccountRepository.GetValidationCode(where);
             return res;
         }

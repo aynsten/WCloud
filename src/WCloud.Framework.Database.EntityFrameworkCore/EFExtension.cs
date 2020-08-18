@@ -144,7 +144,8 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
         /// 自动分页
         /// </summary>
         public static async Task<PagerData<T>> ToPagedListAsync<T, SortColumn>(this IQueryable<T> query,
-            int page, int pagesize, Expression<Func<T, SortColumn>> orderby, bool desc = true)
+            int page, int pagesize,
+            Expression<Func<T, SortColumn>> orderby, bool desc = true)
         {
             var data = new PagerData<T>()
             {

@@ -65,27 +65,6 @@ namespace WCloud.Member.Application.PermissionValidator
 
         public async Task<string[]> LoadAllOrgPermission(string org_uid, string subject_id)
         {
-            /*
-            async Task<string[]> QueryMyPermission(string org_uid, string subject_id)
-            {
-                var db = this._repo.Database;
-
-                var user_role_map = db.Set<OrgMemberRoleEntity>().AsNoTracking();
-                var role_query = db.Set<OrgRoleEntity>().AsNoTracking();
-
-                var roles = from user_role in user_role_map.Where(x => x.OrgUID == org_uid && x.UserUID == subject_id)
-
-                            join role_permission in role_query
-                            on user_role.RoleUID equals role_permission.Id
-
-                            select role_permission;
-
-                var res = await roles.ToArrayAsync();
-
-                return res.SelectMany(x => this.permissionSerializer.Deserialize(x.PermissionJson)).Distinct().ToArray();
-            }
-             */
-
             if (this.__permissions__ == null)
             {
                 var cache_key = this._context.CacheKeyManager.UserOrgPermission(org_uid, subject_id);

@@ -1,16 +1,16 @@
 // Copyright (c) Winton. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENCE in the project root for license information.
 
+using Lib.extension;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using org.apache.zookeeper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Lib.data;
-using Lib.extension;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using org.apache.zookeeper;
+using WCloud.Core.DataSerializer;
 using WCloud.Framework.Zookeeper.watcher;
 
 namespace WCloud.Framework.Zookeeper.configuration
@@ -21,17 +21,17 @@ namespace WCloud.Framework.Zookeeper.configuration
 
         private readonly ZKConfigurationOption _option;
         private readonly AlwaysOnZooKeeperClient _client;
-        private readonly ISerializeProvider _serializer;
+        private readonly IDataSerializer _serializer;
         private readonly Encoding _encoding;
         private readonly Watcher _node_watcher;
 
         public ZKConfigurationProvider(ZKConfigurationOption option, AlwaysOnZooKeeperClient client,
-            ISerializeProvider serializeProvider = null,
+            IDataSerializer serializeProvider = null,
             Encoding encoding = null)
         {
             this._option = option;
             this._client = client;
-            this._serializer = serializeProvider ?? new DefaultSerializeProvider();
+            this._serializer = serializeProvider;
             this._encoding = encoding ?? Encoding.UTF8;
 
             this._node_watcher = new CallBackWatcher(this.NodeWatchCallback);

@@ -96,7 +96,7 @@ namespace WCloud.Member.Application.Service.impl
             var model = await this.roleRepository.QueryOneAsync(x => x.Id == role_uid);
             model.Should().NotBeNull("set role permission");
 
-            if (!this._context.StringArraySerializer.Deserialize(model.PermissionJson).AllEqual(permissions))
+            if (!this._context.DataSerializer.DeserializeArray(model.PermissionJson).AllEqual(permissions))
             {
                 model.PermissionJson = permissions.ToJson();
                 await this.roleRepository.UpdateAsync(model);

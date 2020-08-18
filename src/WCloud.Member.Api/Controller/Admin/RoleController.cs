@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
 using WCloud.Core.Cache;
-using WCloud.Core.Helper;
+using WCloud.Core.DataSerializer;
 using WCloud.Core.MessageBus;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Framework.MVC;
@@ -30,14 +30,14 @@ namespace WCloud.Member.Api.Controller
         private readonly IRoleService _roleService;
         private readonly ICacheKeyManager _cacheKey;
         private readonly IMessagePublisher _publisher;
-        private readonly IStringArraySerializer permissionSerializer;
+        private readonly IDataSerializer permissionSerializer;
 
         public AdminRoleController(
             ICacheProvider cache,
             IRoleService _roleService,
             ICacheKeyManager cacheKey,
             IMessagePublisher publisher,
-            IStringArraySerializer permissionSerializer)
+            IDataSerializer permissionSerializer)
         {
             this._cache = cache;
             this._roleService = _roleService;
@@ -56,7 +56,7 @@ namespace WCloud.Member.Api.Controller
                 x.RoleDescription,
                 x.ParentUID,
                 x.Level,
-                PermissionUIDs = this.permissionSerializer.Deserialize(x.PermissionJson)
+                PermissionUIDs = this.permissionSerializer.DeserializeArray(x.PermissionJson)
             };
         }
 

@@ -1,5 +1,6 @@
 ﻿using Lib.distributed;
 using Lib.helper;
+using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using StackExchange.Redis;
 using System;
@@ -23,13 +24,14 @@ namespace WCloud.Framework.Redis.distributelock
         private readonly TimeSpan _expired;
         private readonly AsyncPolicy _retryAsync;
 
-        public RedisDistributedLock(IConnectionMultiplexer connection, int db,
+        public RedisDistributedLock(
+            IServiceProvider provider, IConnectionMultiplexer connection, int db,
             string source_name, TimeSpan? expired = null, int retryCount = 50, Func<int, TimeSpan> interval = null)
         {
             this._key = source_name ?? throw new ArgumentNullException(nameof(source_name));
             this._value = Guid.NewGuid().ToByteArray();
 
-            this._redis = new RedisHelper(connection, db);
+            this._redis = new RedisHelper(connection, db, provider.ResolveSerializer());
             interval = interval ?? (i => TimeSpan.FromMilliseconds(100 * i));
             this._retryAsync = Policy.Handle<Exception>().WaitAndRetryAsync(retryCount, interval);
             this._expired = expired ?? TimeSpan.FromMinutes(10);

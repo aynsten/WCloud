@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Lib.cache;
 using Lib.extension;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
@@ -20,9 +21,9 @@ namespace WCloud.Framework.Redis.cache
 
         public ILogger Logger => this._logger;
 
-        public RedisCacheProvider_(RedisConnectionWrapper con, int db, ILogger<RedisCacheProvider_> logger)
+        public RedisCacheProvider_(IServiceProvider provider, RedisConnectionWrapper con, int db, ILogger<RedisCacheProvider_> logger)
         {
-            this._redis = new RedisHelper(con.Connection, db);
+            this._redis = new RedisHelper(con.Connection, db, provider.ResolveSerializer());
             this._db = this._redis.Database;
             this._logger = logger;
         }

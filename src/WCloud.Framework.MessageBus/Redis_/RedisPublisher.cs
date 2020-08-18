@@ -1,8 +1,8 @@
-﻿using Lib.data;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using WCloud.Core.DataSerializer;
 using WCloud.Core.MessageBus;
 
 namespace WCloud.Framework.MessageBus.Redis_
@@ -10,9 +10,9 @@ namespace WCloud.Framework.MessageBus.Redis_
     public class RedisMessagePublisher : IMessagePublisher
     {
         private readonly IRedisDatabaseSelector redisDatabaseSelector;
-        private readonly ISerializeProvider serializeProvider;
+        private readonly IDataSerializer serializeProvider;
         private readonly IReadOnlyCollection<ConsumerDescriptor> mapping;
-        public RedisMessagePublisher(IRedisDatabaseSelector redisDatabaseSelector, ISerializeProvider serializeProvider,
+        public RedisMessagePublisher(IRedisDatabaseSelector redisDatabaseSelector, IDataSerializer serializeProvider,
             IReadOnlyCollection<ConsumerDescriptor> mapping)
         {
             this.redisDatabaseSelector = redisDatabaseSelector;

@@ -10,7 +10,7 @@ namespace WCloud.Framework.Redis
         {
             var stop = false;
             {
-                var redis = new RedisHelper(null, 1);
+                var redis = new RedisHelper(null, 1, null);
                 var db = redis.Database;
                 while (true)
                 {

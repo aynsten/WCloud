@@ -51,7 +51,7 @@ namespace WCloud.Member.DataAccess.EF.Admin
                 .Where(x => roles.Contains(x.Id))
                 .ToArrayAsync();
 
-            return res.SelectMany(x => this._context.StringArraySerializer.Deserialize(x.PermissionJson)).Distinct().ToArray();
+            return res.SelectMany(x => this._context.DataSerializer.DeserializeArray(x.PermissionJson)).Distinct().ToArray();
         }
 
         public async Task<IEnumerable<AdminRoleEntity>> QueryAdminRoleEntity(string role_id, int page, int pagesize)

@@ -50,7 +50,7 @@ namespace WCloud.Framework.Redis
             {
                 var redis_wrapper = provider.GetRedisClientWrapper();
                 var kv_db = (int)ConfigSet.Redis.KV存储;
-                var serializer = provider.Resolve_<ISerializeProvider>();
+                var serializer = provider.ResolveSerializer();
                 var helper = new RedisHelper(redis_wrapper.Connection, kv_db, serializer);
                 return helper;
             });

@@ -1,19 +1,50 @@
-﻿using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.core;
 using Lib.extension;
 using Lib.helper;
+using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 
-namespace Lib.data
+namespace WCloud.Core.DataSerializer
 {
-    /// <summary>
-    /// 序列化和反序列化
-    /// </summary>
-    public class DefaultSerializeProvider : ISerializeProvider
+
+    public class DefaultDataSerializer : IDataSerializer
     {
+        private readonly ILogger _logger;
+
+        public DefaultDataSerializer(ILogger<DefaultDataSerializer> logger)
+        {
+            this._logger = logger;
+        }
+
+        public string[] DeserializeArray(string data)
+        {
+            try
+            {
+                data ??= "[]";
+                var res = data.JsonToEntity<string[]>();
+                return res;
+            }
+            catch (Exception e)
+            {
+                this._logger.AddWarningLog(msg: $"反序列化失败,{data}=>{typeof(string[]).FullName}", e: e);
+
+                return new string[] { };
+            }
+        }
+
+        public string SerializeArray(string[] permissions)
+        {
+            permissions.Should().NotBeNull();
+
+            var res = permissions.ToJson();
+
+            return res;
+        }
+
         private Encoding _encoding => ConfigHelper.Instance.SystemEncoding;
 
         public virtual byte[] Serialize(object item)

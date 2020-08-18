@@ -1,10 +1,10 @@
-﻿using Lib.data;
-using Lib.extension;
+﻿using Lib.extension;
 using Lib.helper;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WCloud.Core.DataSerializer;
 
 namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
 {
@@ -20,9 +20,9 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
     public class RabbitMqProducer : IRabbitMqProducer
     {
         private readonly IConnection _connection;
-        private readonly ISerializeProvider _serializer;
+        private readonly IDataSerializer _serializer;
 
-        public RabbitMqProducer(IConnection _connection, ISerializeProvider _serializer)
+        public RabbitMqProducer(IConnection _connection, IDataSerializer _serializer)
         {
             this._connection = _connection;
             this._serializer = _serializer;

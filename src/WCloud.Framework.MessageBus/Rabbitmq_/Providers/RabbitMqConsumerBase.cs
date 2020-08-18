@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Lib.core;
-using Lib.data;
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -9,6 +8,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Threading.Tasks;
+using WCloud.Core.DataSerializer;
 using WCloud.Core.MessageBus;
 
 namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
@@ -20,7 +20,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
     {
         protected readonly IServiceProvider provider;
         protected readonly ILogger logger;
-        protected readonly ISerializeProvider _serializer;
+        protected readonly IDataSerializer _serializer;
         protected readonly ConsumeOption _option;
 
         protected readonly IModel _channel;

@@ -20,8 +20,6 @@ namespace WCloud.Framework.Zookeeper.ServiceManager
         protected readonly int _service_path_level;
         protected readonly int _endpoint_path_level;
 
-        protected readonly DefaultSerializeProvider _serializer = new DefaultSerializeProvider();
-
         public ServiceManageBase(ILogger logger, string host) : this(logger, host, "/QPL/WCF") { }
 
         public ServiceManageBase(ILogger logger, string host, string path) : base(logger, host)

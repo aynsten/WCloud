@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using WCloud.Core.Authentication.Model;
 using WCloud.Core.Cache;
-using WCloud.Core.Helper;
+using WCloud.Core.DataSerializer;
 using WCloud.Core.Mapper;
 using WCloud.Core.MessageBus;
 using WCloud.Core.Validator;
@@ -26,7 +26,7 @@ namespace WCloud.Core
         IMessagePublisher MessagePublisher { get; }
         ICacheProvider CacheProvider { get; }
         ICacheKeyManager CacheKeyManager { get; }
-        IStringArraySerializer StringArraySerializer { get; }
+        IDataSerializer DataSerializer { get; }
         IDataMapper ObjectMapper { get; }
         IEntityValidationHelper EntityValidator { get; }
     }
@@ -49,8 +49,8 @@ namespace WCloud.Core
         private readonly Lazy<ICacheKeyManager> lazy_cache_key;
         public ICacheKeyManager CacheKeyManager => this.lazy_cache_key.Value;
 
-        private readonly Lazy<IStringArraySerializer> lazy_string_array_serializer;
-        public IStringArraySerializer StringArraySerializer => this.lazy_string_array_serializer.Value;
+        private readonly Lazy<IDataSerializer> lazy_data_serializer;
+        public IDataSerializer DataSerializer => this.lazy_data_serializer.Value;
 
         private readonly Lazy<IDataMapper> lazy_object_mapper;
         public IDataMapper ObjectMapper => this.lazy_object_mapper.Value;
@@ -76,7 +76,7 @@ namespace WCloud.Core
             this.lazy_publisher = __lazy_resolve__<IMessagePublisher>();
             this.lazy_cache_key = __lazy_resolve__<ICacheKeyManager>();
             this.lazy_cache_provider = __lazy_resolve__<ICacheProvider>();
-            this.lazy_string_array_serializer = __lazy_resolve__<IStringArraySerializer>();
+            this.lazy_data_serializer = __lazy_resolve__<IDataSerializer>();
             this.lazy_object_mapper = __lazy_resolve__<IDataMapper>();
             this.lazy_entity_validator = __lazy_resolve__<IEntityValidationHelper>();
         }

@@ -67,7 +67,7 @@ namespace WCloud.Member.Application.Service.impl
             var model = await this._orgRoleRepo.QueryOneAsync(x => x.Id == org_role_uid && x.OrgUID == org_uid);
             model.Should().NotBeNull("org role");
 
-            if (!this._context.StringArraySerializer.Deserialize(model.PermissionJson).AllEqual(permissions))
+            if (!this._context.DataSerializer.DeserializeArray(model.PermissionJson).AllEqual(permissions))
             {
                 model.PermissionJson = permissions.ToJson();
                 await this._orgRoleRepo.UpdateAsync(model);

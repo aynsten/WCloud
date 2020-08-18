@@ -1,10 +1,12 @@
 ﻿using Lib.extension;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using org.apache.zookeeper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WCloud.Core.DataSerializer;
 
 namespace WCloud.Framework.Zookeeper.ServiceManager
 {
@@ -15,9 +17,11 @@ namespace WCloud.Framework.Zookeeper.ServiceManager
     {
         private readonly Func<List<ContractModel>> _contracts;
 
-        public ServiceRegister(ILogger logger, string host, Func<List<ContractModel>> _contracts) : base(logger, host)
+        private readonly IDataSerializer _serializer;
+        public ServiceRegister(IServiceProvider provider, ILogger logger, string host, Func<List<ContractModel>> _contracts) : base(logger, host)
         {
             this._contracts = _contracts ?? throw new ArgumentNullException(nameof(_contracts));
+            this._serializer = provider.ResolveSerializer();
 
             //链接成功后调用注册
             this.OnConnectedAsync += this.Reg;
@@ -34,7 +38,7 @@ namespace WCloud.Framework.Zookeeper.ServiceManager
             catch (Exception e)
             {
                 var err = new Exception("注册服务失败", e);
-                this.logger.AddErrorLog(err.Message,err);
+                this.logger.AddErrorLog(err.Message, err);
             }
         }
 

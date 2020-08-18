@@ -1,7 +1,7 @@
-﻿using Lib.data;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
+using WCloud.Core.DataSerializer;
 
 namespace WCloud.Framework.Redis.implement
 {
@@ -14,16 +14,16 @@ namespace WCloud.Framework.Redis.implement
     {
         private readonly IConnectionMultiplexer _conn;
         private readonly IDatabase _database;
-        private readonly ISerializeProvider _serializer;
+        private readonly IDataSerializer _serializer;
 
         public IConnectionMultiplexer Connection => this._conn;
         public IDatabase Database => this._database;
 
-        public RedisHelper(IConnectionMultiplexer conn, int db, ISerializeProvider serializeProvider = null)
+        public RedisHelper(IConnectionMultiplexer conn, int db, IDataSerializer serializeProvider)
         {
             this._conn = conn;
             this._database = this._conn.SelectDatabase(db);
-            this._serializer = serializeProvider ?? new DefaultSerializeProvider();
+            this._serializer = serializeProvider;
         }
 
         public const string DeleteKeyWithValueScript =

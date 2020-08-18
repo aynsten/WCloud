@@ -31,7 +31,7 @@ namespace WCloud.Member.DataAccess.EF.Tenant
 
             var roles_data = await roles.ToArrayAsync();
 
-            var res = roles_data.SelectMany(x => this._context.StringArraySerializer.Deserialize(x.PermissionJson)).Distinct().ToArray();
+            var res = roles_data.SelectMany(x => this._context.DataSerializer.DeserializeArray(x.PermissionJson)).Distinct().ToArray();
 
             return res;
         }

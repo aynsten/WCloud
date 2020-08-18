@@ -1,9 +1,24 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 
-namespace Lib.data
+namespace WCloud.Core.DataSerializer
 {
-    public interface ISerializeProvider
+    public interface IDataSerializer : IAutoRegistered
     {
+        /// <summary>
+        /// 序列化数组
+        /// </summary>
+        /// <param name="permissions"></param>
+        /// <returns></returns>
+        string SerializeArray(string[] permissions);
+
+        /// <summary>
+        /// 反序列化为数组
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        string[] DeserializeArray(string data);
+
         /// <summary>
         /// 序列化
         /// </summary>

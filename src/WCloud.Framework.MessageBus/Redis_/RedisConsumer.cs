@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Lib.data;
 using Lib.extension;
 using Lib.helper;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using WCloud.Core.DataSerializer;
 using WCloud.Core.MessageBus;
 
 namespace WCloud.Framework.MessageBus.Redis_
@@ -24,14 +24,14 @@ namespace WCloud.Framework.MessageBus.Redis_
         private readonly IServiceProvider provider;
         private readonly CancellationTokenSource cancellationToken;
         private readonly IRedisDatabaseSelector redisDatabaseSelector;
-        private readonly ISerializeProvider serializeProvider;
+        private readonly IDataSerializer serializeProvider;
         private readonly ILogger<RedisConsumer<T>> logger;
 
         private readonly QueueConfigAttribute config;
 
         public RedisConsumer(IServiceProvider provider,
             IRedisDatabaseSelector redisDatabaseSelector,
-            ISerializeProvider serializeProvider,
+            IDataSerializer serializeProvider,
             ILogger<RedisConsumer<T>> logger)
         {
             this.provider = provider;

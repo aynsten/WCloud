@@ -1,11 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Lib.core;
+﻿using Lib.core;
 using Lib.extension;
 using Lib.helper;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using org.apache.zookeeper;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using WCloud.Core.DataSerializer;
 using WCloud.Framework.Zookeeper.watcher;
 
 namespace WCloud.Framework.Zookeeper.ServiceManager
@@ -20,8 +22,11 @@ namespace WCloud.Framework.Zookeeper.ServiceManager
         public event Func<Task> OnServiceChangedAsync;
         public event Func<Task> OnSubscribeFinishedAsync;
 
-        public ServiceSubscribe(ILogger logger,string host) : base(logger,host)
+        private readonly IDataSerializer _serializer;
+
+        public ServiceSubscribe(IServiceProvider provider, ILogger logger, string host) : base(logger, host)
         {
+            this._serializer = provider.ResolveSerializer();
             this._node_watcher = new CallBackWatcher(e => this.WatchNodeChanges(e));
 
             //链接上了就获取服务信息
@@ -125,7 +130,7 @@ namespace WCloud.Framework.Zookeeper.ServiceManager
             }
             catch (Exception e)
             {
-                this.logger.AddErrorLog($"订阅节点{path}失败",e);
+                this.logger.AddErrorLog($"订阅节点{path}失败", e);
             }
         }
 

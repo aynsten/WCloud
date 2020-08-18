@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Lib.cache;
-using Lib.data;
 using Lib.extension;
 using Lib.helper;
 using Microsoft.AspNetCore.Builder;
@@ -22,6 +21,7 @@ using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Volo.Abp.VirtualFileSystem;
 using WCloud.Core.Cache;
+using WCloud.Core.DataSerializer;
 using WCloud.Core.PollyExtension;
 using WCloud.Framework.Common.Validator;
 using WCloud.Framework.Filters;
@@ -58,7 +58,7 @@ namespace WCloud.Framework.MVC
             collection.AddHttpClient();
 
             //基础注册项
-            collection.AddSingleton<ISerializeProvider, DefaultSerializeProvider>();
+            collection.AddSingleton<IDataSerializer, DefaultDataSerializer>();
             collection.AddSingleton<IStrategyFactory, StrategyFactory>();
             collection.AddSingleton<ICommonExceptionHandler, CommonExceptionHandler>();
             //dto验证
@@ -89,7 +89,7 @@ namespace WCloud.Framework.MVC
             var config = collection.GetConfiguration();
             var env = collection.GetHostingEnvironment();
 
-            if (collection.Where(x => x.ServiceType == typeof(ISerializeProvider)).IsEmpty_())
+            if (collection.Where(x => x.ServiceType == typeof(IDataSerializer)).IsEmpty_())
             {
                 AddBasicNoDependencyServices(collection);
             }

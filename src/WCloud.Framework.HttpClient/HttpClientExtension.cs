@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace Lib.net
+namespace WCloud.Framework.HttpClient_
 {
     public static class HttpClientExtension
     {

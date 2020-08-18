@@ -4,9 +4,8 @@ using System.Linq;
 using System.Reflection;
 using FluentAssertions;
 using Lib.core;
-using Lib.data;
 using Lib.extension;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -44,6 +43,13 @@ namespace Microsoft.Extensions.DependencyInjection
             foreach (var t in all_types)
             {
                 var ifs = t.GetInterfaces().Where(x => !ignore_interfaces.Contains(x)).ToArray();
+
+                //删除之前的注册项目
+                collection.RemoveAll(t);
+                foreach (var i in ifs)
+                {
+                    collection.RemoveAll(i);
+                }
 
                 /*
                 var lifetime = ServiceLifetime.Transient;

@@ -1,7 +1,6 @@
 ﻿using Lib.core;
 using Lib.extension;
 using Lib.helper;
-using Lib.io;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -11,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using WCloud.Framework.IO;
 
 namespace WCloud.Framework.MVC.Extension
 {

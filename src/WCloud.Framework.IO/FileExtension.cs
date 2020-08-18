@@ -2,7 +2,7 @@
 using Lib.helper;
 using System.IO;
 
-namespace Lib.io
+namespace WCloud.Framework.IO
 {
     public static class FileExtension
     {

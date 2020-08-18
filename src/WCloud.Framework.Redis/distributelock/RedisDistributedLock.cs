@@ -1,10 +1,10 @@
-﻿using Lib.distributed;
-using Lib.helper;
+﻿using Lib.helper;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
+using WCloud.Core.Distributed;
 using WCloud.Framework.Redis.implement;
 
 namespace WCloud.Framework.Redis.distributelock

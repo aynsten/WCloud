@@ -1,4 +1,4 @@
-﻿using Lib.data;
+﻿using Lib.core;
 using Microsoft.Extensions.DependencyInjection;
 using WCloud.Framework.Database.Abstractions;
 

@@ -65,7 +65,7 @@ namespace WCloud.Framework.Database.EntityFrameworkCore
         public static void AutoApplyEntityConfigurationForMySQL<DbContextType>(this DbContextType db, ModelBuilder modelBuilder)
             where DbContextType : DbContext
         {
-            AutoApplyEntityConfigurationForMySQL<DbContextType, Lib.data.IDBTable>(db, modelBuilder);
+            AutoApplyEntityConfigurationForMySQL<DbContextType, Lib.core.IDBTable>(db, modelBuilder);
         }
 
         /// <summary>

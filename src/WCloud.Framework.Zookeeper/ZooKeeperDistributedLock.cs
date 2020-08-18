@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Lib.distributed;
-using Lib.extension;
+﻿using Lib.extension;
 using Lib.helper;
 using Microsoft.Extensions.Logging;
 using org.apache.zookeeper;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using WCloud.Core.Distributed;
 using WCloud.Framework.Zookeeper.watcher;
 
 namespace WCloud.Framework.Zookeeper

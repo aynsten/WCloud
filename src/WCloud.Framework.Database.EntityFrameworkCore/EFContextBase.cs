@@ -1,4 +1,4 @@
-﻿using Lib.data;
+﻿using Lib.core;
 using Microsoft.EntityFrameworkCore;
 
 namespace WCloud.Framework.Database.EntityFrameworkCore

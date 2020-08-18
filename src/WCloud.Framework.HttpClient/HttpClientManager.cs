@@ -1,7 +1,7 @@
 ﻿using Lib.core;
 using System.Net.Http;
 
-namespace Lib.net
+namespace WCloud.Framework.HttpClient_
 {
     public class HttpClientManager : StaticClientManager<HttpClient>
     {

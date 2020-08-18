@@ -29,7 +29,7 @@ namespace WCloud.Test
         }
 
         public class Repo<T> : EFRepositoryFromNew<T, db_context>
-            where T : class, Lib.data.IDBTable
+            where T : class, Lib.core.IDBTable
         { }
 
         [TestMethod]

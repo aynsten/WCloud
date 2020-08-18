@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Lib.net
+namespace WCloud.Framework.Email
 {
     public class EmailModel
     {

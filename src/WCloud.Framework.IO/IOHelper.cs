@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Lib.helper;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Lib.helper;
 
-namespace Lib.io
+namespace WCloud.Framework.IO
 {
     /// <summary>
     /// IO帮助类

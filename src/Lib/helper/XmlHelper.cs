@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Lib.extension;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using Lib.extension;
-using Lib.io;
 
 namespace Lib.helper
 {
@@ -16,7 +15,9 @@ namespace Lib.helper
         public static bool SaveXmlFromStream(Stream stream, string path, string filename, bool autoDispose = true)
         {
             if (stream == null) { return false; }
-            IOHelper.CreatePathIfNotExist(path);
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
             var dom = new XmlDocument();
             dom.Load(stream);
             dom.Save(path + filename);

@@ -1,12 +1,12 @@
 ﻿using Lib.extension;
 using Lib.helper;
-using Lib.io;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
+using WCloud.Framework.IO;
 
 namespace WCloud.Framework.Logging
 {

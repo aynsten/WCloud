@@ -1,5 +1,5 @@
 ﻿using Nest;
-using Lib.data;
+using Lib.core;
 
 namespace WCloud.Framework.Elasticsearch
 {

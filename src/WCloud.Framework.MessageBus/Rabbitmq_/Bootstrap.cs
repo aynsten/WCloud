@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Lib.data;
+using Lib.core;
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,4 +1,4 @@
-﻿using Lib.data;
+﻿using Lib.core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WCloud.Framework.Database.Abstractions.Entity;

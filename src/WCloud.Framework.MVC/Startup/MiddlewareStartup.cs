@@ -64,7 +64,7 @@ namespace WCloud.Framework.Startup
             if (ValidateHelper.IsEmpty(ass))
                 throw new ArgumentNullException(nameof(ass));
 
-            var models = ass.GetAllTypes().Where(x => x.IsNormalClass() && x.IsAssignableTo_<Lib.data.IDBTable>()).ToArray();
+            var models = ass.GetAllTypes().Where(x => x.IsNormalClass() && x.IsAssignableTo_<Lib.core.IDBTable>()).ToArray();
 
             var dict = models.ToDictionary_(x => x.FullName, x => Activator.CreateInstance(x));
             var json = dict.ToJson();

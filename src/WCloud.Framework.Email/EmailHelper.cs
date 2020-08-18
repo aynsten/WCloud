@@ -4,7 +4,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lib.net
+namespace WCloud.Framework.Email
 {
     /*
     <add key="SmptServer" value="smtp.epcservices.com.cn" />

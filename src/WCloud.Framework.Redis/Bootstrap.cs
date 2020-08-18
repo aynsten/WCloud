@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Lib.data;
+using Lib.core;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;

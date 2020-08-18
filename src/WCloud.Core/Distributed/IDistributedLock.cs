@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Lib.distributed
+namespace WCloud.Core.Distributed
 {
     public interface IDistributedLock : IDisposable
     {

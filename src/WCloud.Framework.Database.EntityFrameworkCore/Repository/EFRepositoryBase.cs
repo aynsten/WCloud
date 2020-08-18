@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Lib.data;
+using Lib.core;
 using Lib.extension;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

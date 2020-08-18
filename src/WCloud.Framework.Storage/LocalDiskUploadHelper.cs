@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using FluentAssertions;
+using Lib.extension;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentAssertions;
-using Lib.extension;
-using Lib.io;
-using Microsoft.Extensions.Configuration;
 using WCloud.Core.Storage;
+using WCloud.Framework.IO;
 
 namespace WCloud.Framework.Storage.Qiniu_
 {

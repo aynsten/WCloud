@@ -141,11 +141,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Member.InternalApi.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.Member.Startup", "WCloud.Member.Startup\WCloud.Member.Startup.csproj", "{CE461F3A-7ED5-43D7-B8CF-E45547627413}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.CommonService.Domain", "WCloud.CommonService.Domain\WCloud.CommonService.Domain.csproj", "{AE94A2BF-FDC3-464D-A4F6-9A2F5915CC9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.CommonService.Domain", "WCloud.CommonService.Domain\WCloud.CommonService.Domain.csproj", "{AE94A2BF-FDC3-464D-A4F6-9A2F5915CC9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.CommonService.DataAccess.EF", "WCloud.CommonService.DataAccess.EF\WCloud.CommonService.DataAccess.EF.csproj", "{C4A3D701-13DD-41E9-910D-C7BDEA65B7A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.CommonService.DataAccess.EF", "WCloud.CommonService.DataAccess.EF\WCloud.CommonService.DataAccess.EF.csproj", "{C4A3D701-13DD-41E9-910D-C7BDEA65B7A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.CommonService.DataAccess.MongoDB", "WCloud.CommonService.DataAccess.MongoDB\WCloud.CommonService.DataAccess.MongoDB.csproj", "{6F65A133-7FDD-4F2F-8F81-479A0007E09C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCloud.CommonService.DataAccess.MongoDB", "WCloud.CommonService.DataAccess.MongoDB\WCloud.CommonService.DataAccess.MongoDB.csproj", "{6F65A133-7FDD-4F2F-8F81-479A0007E09C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCloud.Framework.Email", "WCloud.Framework.Email\WCloud.Framework.Email.csproj", "{B7C0D2FE-D056-46A0-A25C-50F9834F9372}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -373,6 +375,10 @@ Global
 		{6F65A133-7FDD-4F2F-8F81-479A0007E09C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F65A133-7FDD-4F2F-8F81-479A0007E09C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F65A133-7FDD-4F2F-8F81-479A0007E09C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7C0D2FE-D056-46A0-A25C-50F9834F9372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7C0D2FE-D056-46A0-A25C-50F9834F9372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7C0D2FE-D056-46A0-A25C-50F9834F9372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7C0D2FE-D056-46A0-A25C-50F9834F9372}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -440,6 +446,7 @@ Global
 		{AE94A2BF-FDC3-464D-A4F6-9A2F5915CC9E} = {F526440A-EA68-44F3-B3DB-A371545D19CA}
 		{C4A3D701-13DD-41E9-910D-C7BDEA65B7A1} = {F526440A-EA68-44F3-B3DB-A371545D19CA}
 		{6F65A133-7FDD-4F2F-8F81-479A0007E09C} = {F526440A-EA68-44F3-B3DB-A371545D19CA}
+		{B7C0D2FE-D056-46A0-A25C-50F9834F9372} = {7E00E916-5955-4B39-BCA8-0753BC7FB296}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BCE6D6AC-1FCF-437D-87BD-EA135E67597C}

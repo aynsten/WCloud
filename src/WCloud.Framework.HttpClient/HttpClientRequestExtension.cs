@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Lib.net
+namespace WCloud.Framework.HttpClient_
 {
     public static class HttpClientRequestExtension
     {

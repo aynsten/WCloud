@@ -18,7 +18,6 @@
 		<ProjectReference Include="..\WCloud.Framework.Apm\WCloud.Framework.Apm.csproj" />
 		<ProjectReference Include="..\WCloud.Framework.MVC\WCloud.Framework.MVC.csproj" />
 		<ProjectReference Include="..\WCloud.Framework.Wechat\WCloud.Framework.Wechat.csproj" />
-		<ProjectReference Include="..\WCloud.Member.Application\WCloud.Member.Application.csproj" />
 		<ProjectReference Include="..\WCloud.Framework.MessageBus\WCloud.Framework.MessageBus.csproj" />
 		<ProjectReference Include="..\WCloud.Framework.Redis\WCloud.Framework.Redis.csproj" />
 		<ProjectReference Include="..\WCloud.Framework.Socket\WCloud.Framework.Socket.csproj" />
@@ -26,6 +25,7 @@
 		<ProjectReference Include="..\WCloud.Identity.Providers\WCloud.Identity.Providers.csproj" />
 		<ProjectReference Include="..\Lib\Lib.csproj" />
 		<ProjectReference Include="..\WCloud.Member.Authentication\WCloud.Member.Authentication.csproj" />
+		<ProjectReference Include="..\WCloud.Member.Startup\WCloud.Member.Startup.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -11,14 +11,14 @@
   
   <ItemGroup>
     <Folder Include="FileUpload\" />
-    <Folder Include="Infrastructure\" />
+    <Folder Include="Queue\" />
     <Folder Include="Message\" />
     <Folder Include="Menu\" />
     <Folder Include="KVStore\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WCloud.CommonService.Domain\WCloud.CommonService.Domain.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Storage\WCloud.Framework.Storage.csproj" />
-    <ProjectReference Include="..\WCloud.CommonService.Shared\WCloud.CommonService.Shared.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Common\WCloud.Framework.Common.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Database.EntityFrameworkCore.MySQL\WCloud.Framework.Database.EntityFrameworkCore.MySQL.csproj" />
   </ItemGroup>

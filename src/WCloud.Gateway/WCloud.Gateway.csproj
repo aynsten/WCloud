@@ -10,8 +10,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WCloud.Framework.Apm\WCloud.Framework.Apm.csproj" />
-    <ProjectReference Include="..\WCloud.Member.Application\WCloud.Member.Application.csproj" />
     <ProjectReference Include="..\WCloud.Member.Authentication\WCloud.Member.Authentication.csproj" />
+    <ProjectReference Include="..\WCloud.Member.Startup\WCloud.Member.Startup.csproj" />
   </ItemGroup>
 
   <ItemGroup>

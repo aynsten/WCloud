@@ -17,14 +17,14 @@ using WCloud.Framework.Apm;
 using WCloud.Framework.MVC;
 using WCloud.Framework.Startup;
 using WCloud.Gateway.Middlewares;
-using WCloud.Member.Application;
 using WCloud.Member.Authentication;
+using WCloud.Member.Startup;
 
 namespace WCloud.Gateway
 {
     [DependsOn(
         typeof(CoreModule),
-        typeof(MemberApplicationModule),
+        typeof(MemberStartupModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),
         typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),
         typeof(Volo.Abp.AspNetCore.Mvc.AbpAspNetCoreMvcModule)

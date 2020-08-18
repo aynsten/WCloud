@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WCloud.CommonService.Application.FileUpload;
-using WCloud.CommonService.Application.Infrastructure;
 using WCloud.CommonService.Application.KVStore;
 using WCloud.CommonService.Application.Message;
+using WCloud.CommonService.Application.Queue;
 using WCloud.CommonService.Application.Tag;
 using WCloud.Framework.Database.EntityFrameworkCore;
 using WCloud.Framework.Database.EntityFrameworkCore.AbpDatabase;

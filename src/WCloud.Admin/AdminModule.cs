@@ -1,10 +1,10 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Modularity;
@@ -14,15 +14,15 @@ using WCloud.Framework.Apm;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
 using WCloud.Framework.Startup;
-using WCloud.Member.Application;
 using WCloud.Member.Authentication;
 using WCloud.Member.Domain;
+using WCloud.Member.Startup;
 
 namespace WCloud.Admin
 {
     [DependsOn(
         typeof(CoreModule),
-        typeof(MemberApplicationModule),
+        typeof(MemberStartupModule),
         typeof(CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),
         typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),

@@ -2,7 +2,7 @@
 using System;
 using WCloud.Framework.Database.Abstractions.Service;
 
-namespace WCloud.CommonService.Application.Infrastructure
+namespace WCloud.CommonService.Application.Queue
 {
     public class QueueJobService : BasicService<QueueJobEntity>, IQueueJobService
     {

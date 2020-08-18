@@ -11,18 +11,18 @@ using WCloud.Core;
 using WCloud.Framework.Apm;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
+using WCloud.Framework.Redis;
 using WCloud.Framework.Startup;
 using WCloud.Framework.Wechat.Login;
 using WCloud.Framework.Wechat.Models;
-using WCloud.Member.Application;
 using WCloud.Member.Authentication;
-using WCloud.Framework.Redis;
+using WCloud.Member.Startup;
 
 namespace WCloud.Member.Api
 {
     [DependsOn(
         typeof(CoreModule),
-        typeof(MemberApplicationModule),
+        typeof(MemberStartupModule),
         typeof(CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),
         typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),

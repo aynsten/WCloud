@@ -15,12 +15,13 @@ using WCloud.Framework.Wechat.Login;
 using WCloud.Framework.Wechat.Models;
 using WCloud.Identity.Providers;
 using WCloud.Member.Authentication;
+using WCloud.Member.Startup;
 
 namespace WCloud.Identity
 {
     [DependsOn(
         typeof(CoreModule),
-        typeof(WCloud.Member.Application.MemberApplicationModule),
+        typeof(MemberStartupModule),
         typeof(WCloud.CommonService.Application.CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),
         typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),

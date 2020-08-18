@@ -10,15 +10,15 @@ using WCloud.Core;
 using WCloud.Core.MessageBus;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
-using WCloud.Member.Application;
 using WCloud.Member.Initialization;
 using WCloud.Member.Shared.Helper;
+using WCloud.Member.Startup;
 
 namespace WCloud.Admin.Consumer
 {
     [DependsOn(
         typeof(CoreModule),
-        typeof(MemberApplicationModule),
+        typeof(MemberStartupModule),
         typeof(MemberInitiallizationModule),
         typeof(CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),

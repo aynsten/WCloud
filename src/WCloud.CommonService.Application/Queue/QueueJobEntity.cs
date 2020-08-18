@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.EntityFrameworkCore;
 
-namespace WCloud.CommonService.Application.Infrastructure
+namespace WCloud.CommonService.Application.Queue
 {
     public class QueueJobEntityDto : DtoBase
     {

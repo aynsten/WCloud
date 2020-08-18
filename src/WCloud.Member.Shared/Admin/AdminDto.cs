@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WCloud.Member.Shared.Dto.Admin
+namespace WCloud.Member.Shared.Admin
 {
     public class AdminDto
     {

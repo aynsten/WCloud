@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WCloud.CommonService.Domain\WCloud.CommonService.Domain.csproj" />
+    <ProjectReference Include="..\WCloud.Framework.Database.MongoDB\WCloud.Framework.Database.MongoDB.csproj" />
+  </ItemGroup>
+
+</Project>

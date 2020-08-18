@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Threading.Tasks;
-using Hangfire;
+﻿using Hangfire;
 using Hangfire.AspNetCore;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
@@ -12,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Reflection;
+using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
@@ -21,14 +21,14 @@ using WCloud.Framework.Jobs;
 using WCloud.Framework.MVC;
 using WCloud.Framework.Socket;
 using WCloud.Framework.Startup;
-using WCloud.Member.Application;
 using WCloud.Member.Authentication;
+using WCloud.Member.Startup;
 
 namespace WCloud.IM.Server
 {
     [DependsOn(
         typeof(CoreModule),
-        typeof(MemberApplicationModule),
+        typeof(MemberStartupModule),
         typeof(CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),
         typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),

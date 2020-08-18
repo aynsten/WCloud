@@ -24,10 +24,8 @@
     <ProjectReference Include="..\WCloud.Framework.Storage\WCloud.Framework.Storage.csproj" />
     <ProjectReference Include="..\WCloud.Identity.Providers\WCloud.Identity.Providers.csproj" />
     <ProjectReference Include="..\WCloud.Member.Authentication\WCloud.Member.Authentication.csproj" />
-    <ProjectReference Include="..\WCloud.Member.Application\WCloud.Member.Application.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
     <ProjectReference Include="..\WCloud.Member.Initialization\WCloud.Member.Initialization.csproj" />
+    <ProjectReference Include="..\WCloud.Member.Startup\WCloud.Member.Startup.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.json">

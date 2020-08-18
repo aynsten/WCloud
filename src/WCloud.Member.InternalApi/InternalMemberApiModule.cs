@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Volo.Abp;
@@ -13,16 +11,13 @@ using WCloud.Framework.Apm;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
 using WCloud.Framework.Startup;
-using WCloud.Framework.Wechat.Login;
-using WCloud.Framework.Wechat.Models;
-using WCloud.Member.Application;
-using WCloud.Member.Authentication;
+using WCloud.Member.Startup;
 
 namespace WCloud.Member.InternalApi
 {
     [DependsOn(
         typeof(CoreModule),
-        typeof(MemberApplicationModule),
+        typeof(MemberStartupModule),
         typeof(CommonServiceModule),
         typeof(Volo.Abp.Autofac.AbpAutofacModule),
         typeof(Volo.Abp.Uow.AbpUnitOfWorkModule),

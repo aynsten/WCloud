@@ -1,4 +1,4 @@
-﻿namespace WCloud.CommonService.Application.Infrastructure
+﻿namespace WCloud.CommonService.Shared.Queue
 {
     public enum QueueStatusEnum : int
     {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using WCloud.CommonService.Application.Infrastructure;
+using WCloud.CommonService.Application.Queue;
 using WCloud.Framework.MVC.BaseController;
 
 namespace WCloud.CommonService.Api.Controller

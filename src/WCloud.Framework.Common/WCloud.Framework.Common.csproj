@@ -1,23 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-  
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-  
-    <PackageReference Include="FluentValidation" Version="8.6.2" />
-    
-    <PackageReference Include="Volo.Abp.ObjectMapping" Version="3.0.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+		<PackageReference Include="FluentValidation" Version="8.6.2" />
+		<PackageReference Include="Volo.Abp.ObjectMapping" Version="3.0.3" />
+		<PackageReference Include="Volo.Abp.AutoMapper" Version="3.0.3" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validator\" />
-    <Folder Include="Validator\FluentValidatorImpl\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Validator\" />
+		<Folder Include="Validator\FluentValidatorImpl\" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\WCloud.Core\WCloud.Core.csproj" />
+	</ItemGroup>
 </Project>

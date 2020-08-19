@@ -68,6 +68,12 @@ namespace WCloud.Framework.Database.MongoDB
             }));
             set.Indexes.DropOne("p");
             set.Indexes.DropAll();
+            /*
+             { "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "mydb.test" }
+             { "v" : 1, "key" : { "i" : 1 }, "name" : "i_1", "ns" : "mydb.test" }
+             */
+            set.Indexes.List().ToList().Any(x => x["name"] == "123");
+
 
             //agg
             var filter = Builders<T>.Filter.Where(x => x.Id == null);

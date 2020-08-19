@@ -2,11 +2,6 @@
 
 namespace WCloud.Member.Domain.Permission
 {
-    public class PermissionEntityDto : DtoBase
-    {
-
-    }
-
     public enum PermissionSide : int
     {
         Both = 0,

@@ -4,10 +4,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Volo.Abp.AutoMapper" Version="3.0.2" />
-  </ItemGroup>
   
   <ItemGroup>
     <Folder Include="FileUpload\" />

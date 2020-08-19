@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization;
+using System;
+using System.Linq;
+using System.Reflection;
 using WCloud.Framework.Database.Abstractions.Entity;
 
 namespace WCloud.Framework.Database.MongoDB.Mapping
@@ -43,6 +43,7 @@ namespace WCloud.Framework.Database.MongoDB.Mapping
             {
                 collection.AddSingleton(m.MappingType);
                 collection.AddSingleton(m.MappingInterface, m.MappingType);
+                collection.AddSingleton(typeof(IMongoEntityMapping), m.MappingType);
 
                 var entity_type = m.MappingInterface.GetGenericArguments().FirstOrDefault();
                 entity_type.Should().NotBeNull();
@@ -71,8 +72,7 @@ namespace WCloud.Framework.Database.MongoDB.Mapping
             return res;
         }
 
-        public static void BasicConfig<T>(this BsonClassMap<T> config)
-            where T : EntityBase
+        public static void BasicConfig<T>(this BsonClassMap<T> config) where T : EntityBase
         {
             config.MapIdProperty(x => x.Id);
         }

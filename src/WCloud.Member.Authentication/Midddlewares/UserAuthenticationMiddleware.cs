@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.cache;
 using Lib.core;
 using Lib.extension;
@@ -10,14 +6,17 @@ using Lib.helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using WCloud.Member.InternalApi.Client.Login;
 using WCloud.Core.Authentication.Model;
 using WCloud.Core.Cache;
 using WCloud.Framework.Middleware;
-using WCloud.Member.Application.Login;
-using WCloud.Member.Application.Service;
 using WCloud.Member.Authentication.OrgSelector;
-using WCloud.Member.Domain.Tenant;
-using WCloud.Member.Domain.User;
+using WCloud.Member.Shared.Org;
+using WCloud.Member.Shared.User;
 
 namespace WCloud.Member.Authentication.Midddlewares
 {
@@ -31,8 +30,8 @@ namespace WCloud.Member.Authentication.Midddlewares
         /// </summary>
         class LoginDataWrapper
         {
-            public UserEntity User { get; set; }
-            public OrgMemberEntity OrgMember { get; set; }
+            public UserDto User { get; set; }
+            public OrgMemberDto OrgMember { get; set; }
         }
 
         public UserAuthenticationMiddleware(RequestDelegate next) : base(next) { }
@@ -40,7 +39,7 @@ namespace WCloud.Member.Authentication.Midddlewares
         async Task<LoginDataWrapper> __load_login_data__(IServiceProvider provider, string subject_id, DateTime login_time)
         {
             var res = new LoginDataWrapper();
-            var userLoginService = provider.Resolve_<IUserLoginService>();
+            var userLoginService = provider.Resolve_<UserLoginServiceClient>();
 
             var user_model = await userLoginService.GetUserByUID(subject_id);
             if (user_model == null)
@@ -52,7 +51,7 @@ namespace WCloud.Member.Authentication.Midddlewares
             res.User = user_model;
 
             var org_selector = provider.Resolve_<ICurrentOrgSelector>();
-            var org_service = provider.Resolve_<IOrgService>();
+            var org_service = provider.Resolve_<OrgServiceClient>();
 
             var my_orgs = await org_service.GetMyOrgMap(subject_id);
 
@@ -98,7 +97,7 @@ namespace WCloud.Member.Authentication.Midddlewares
 
                 if (data == null)
                     throw new MsgException("缓存读取登录信息不存在");
-                data.User.Should().NotBeNull(nameof(UserEntity));
+                data.User.Should().NotBeNull(nameof(UserDto));
 
                 var user_model = data.User;
 

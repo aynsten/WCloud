@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Reflection;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using IdentityModel;
 using IdentityModel.Client;
 using Lib.extension;
@@ -16,11 +9,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Reflection;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using WCloud.Core.Authentication.Model;
-using WCloud.Member.Application.Service;
 using WCloud.Member.Authentication.Filters;
-using WCloud.Member.Domain;
+using WCloud.Member.Shared;
 
 namespace WCloud.Member.Authentication
 {
@@ -156,11 +154,6 @@ namespace WCloud.Member.Authentication
         /// <summary>
         /// 先删除，再添加
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="model"></param>
-        /// <param name="claim_type"></param>
-        /// <param name="data"></param>
-        /// <returns></returns>
         public static T SetOrReplaceClaim_<T>(this T model, string claim_type, string data) where T : ClaimsIdentity
         {
             var matched = model.FindAll(x => x.Type == claim_type).ToArray();
@@ -175,11 +168,6 @@ namespace WCloud.Member.Authentication
         /// <summary>
         /// 添加claim
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="model"></param>
-        /// <param name="claim_type"></param>
-        /// <param name="data"></param>
-        /// <returns></returns>
         public static T AddClaim_<T>(this T model, string claim_type, string data) where T : ClaimsIdentity
         {
             model.AddClaim(new Claim(claim_type, data));
@@ -189,8 +177,6 @@ namespace WCloud.Member.Authentication
         /// <summary>
         /// 获取bearer token
         /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
         public static string GetBearerToken(this HttpContext context)
         {
             var bearer = "Bearer" + ' '.ToString();
@@ -229,18 +215,16 @@ namespace WCloud.Member.Authentication
             return data;
         }
 
-        public static IApplicationBuilder UseUndefinedPermission(this IApplicationBuilder app, Assembly[] ass)
+        public static IApplicationBuilder UseAttributePermission(this IApplicationBuilder app, Assembly[] ass)
         {
             ass.Should().NotBeNullOrEmpty();
             var data = ass.SelectMany(x => x.ScanAllAssignedPermissionOnThisAssembly().Values.SelectMany(d => d)).ToArray();
 
-            app.Map("/permission-define", option =>
+            app.Map("/attr-permission", option =>
             {
                 option.Run(async context =>
                 {
-                    var all_permissions = context.RequestServices.Resolve_<IPermissionService>().AllPermissions();
-
-                    var not_define = data.Except(all_permissions).ToJson();
+                    var not_define = data.ToJson();
 
                     context.Response.StatusCode = 200;
                     context.Response.ContentType = "application/json";

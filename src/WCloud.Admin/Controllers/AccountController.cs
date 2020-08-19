@@ -5,17 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Volo.Abp.Settings;
 using WCloud.Core;
 using WCloud.Framework.MVC;
 using WCloud.Framework.MVC.BaseController;
 using WCloud.Member.Application;
-using WCloud.Member.Application.Service;
 using WCloud.Member.Authentication;
 using WCloud.Member.Authentication.ControllerExtensions;
-using WCloud.Member.Authentication.CustomAuth;
 using WCloud.Member.Authentication.Filters;
 using WCloud.Member.Domain.Admin;
 using WCloud.Member.Shared.Localization;
@@ -138,21 +135,6 @@ namespace WCloud.Admin.Controllers
             }
 
             return l[key ?? "contact"] ?? "?";
-        }
-
-        async Task<IActionResult> __signin__([FromServices] IAuthTokenService authTokenService, string user_uid)
-        {
-            var token = await authTokenService.CreateAccessTokenAsync($"user:{user_uid}");
-
-            var identity = new ClaimsIdentity(authenticationType: ConfigSet.Identity.AdminLoginScheme);
-
-            identity.SetToken(token.AccessToken);
-
-            var principal = new ClaimsPrincipal(identity);
-
-            await this.HttpContext.SignInAsync(principal);
-
-            return SuccessJson(token);
         }
 #endif
 

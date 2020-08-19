@@ -1,16 +1,18 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using WCloud.Member.Shared.Admin;
 
 namespace WCloud.Member.InternalApi.Client.Login
 {
-    public class LoginServiceClient : IAutoRegistered
+    public class AdminLoginServiceClient : IAutoRegistered
     {
         private readonly HttpClient httpClient;
-        public LoginServiceClient(IServiceProvider provider)
+        public AdminLoginServiceClient(IServiceProvider provider)
         {
             this.httpClient = provider.GetMemberInternalApiHttpClient();
         }
@@ -26,6 +28,16 @@ namespace WCloud.Member.InternalApi.Client.Login
             res.ThrowIfNotSuccess();
 
             return res.Data;
+        }
+
+        public async Task<bool> HasAllPermission(string subject_id, IEnumerable<string> permissions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<AdminDto> GetUserByUID(string subject_id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

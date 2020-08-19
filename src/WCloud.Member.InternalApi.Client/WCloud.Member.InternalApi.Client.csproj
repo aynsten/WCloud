@@ -9,7 +9,4 @@
     <ProjectReference Include="..\WCloud.Member.Shared\WCloud.Member.Shared.csproj" />
     <ProjectReference Include="..\WCloud.Framework.HttpClient\WCloud.Framework.HttpClient.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Login\" />
-  </ItemGroup>
 </Project>

@@ -1,19 +1,18 @@
-﻿using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using FluentAssertions;
-using Lib.cache;
+﻿using Lib.cache;
 using Lib.core;
 using Lib.extension;
 using Lib.helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using WCloud.Core.Authentication.Model;
 using WCloud.Core.Cache;
 using WCloud.Framework.Middleware;
-using WCloud.Member.Application.Login;
-using WCloud.Member.Domain.Admin;
+using WCloud.Member.InternalApi.Client.Login;
+using WCloud.Member.Shared.Admin;
 
 namespace WCloud.Member.Authentication.Midddlewares
 {
@@ -24,7 +23,7 @@ namespace WCloud.Member.Authentication.Midddlewares
         /// </summary>
         class LoginDataWrapper
         {
-            public AdminEntity User { get; set; }
+            public AdminDto User { get; set; }
         }
         public AdminAuthenticationMiddleware(RequestDelegate next) : base(next)
         {
@@ -33,7 +32,7 @@ namespace WCloud.Member.Authentication.Midddlewares
         async Task<LoginDataWrapper> __load_login_data__(IServiceProvider provider, string subject_id, DateTime login_time)
         {
             var res = new LoginDataWrapper();
-            var userLoginService = provider.Resolve_<IAdminLoginService>();
+            var userLoginService = provider.Resolve_<AdminLoginServiceClient>();
 
             var user_model = await userLoginService.GetUserByUID(subject_id);
             if (user_model == null)

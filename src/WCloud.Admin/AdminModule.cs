@@ -69,7 +69,7 @@ namespace WCloud.Admin
 
                 app.UseConfigAsKV();
                 app.UseDbTableAsJson(new Assembly[] { typeof(IMemberShipDBTable).Assembly });
-                app.UseUndefinedPermission(new Assembly[] { this.__this_ass__ });
+                app.UseAttributePermission(new Assembly[] { this.__this_ass__ });
             }
 
             if (_config.SwaggerEnabled() || _env.IsDevelopment())

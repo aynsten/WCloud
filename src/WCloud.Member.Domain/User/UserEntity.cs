@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Member.Domain.Login;
+using WCloud.Member.Shared;
 
 namespace WCloud.Member.Domain.User
 {

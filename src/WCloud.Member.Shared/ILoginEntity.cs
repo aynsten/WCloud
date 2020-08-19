@@ -1,7 +1,7 @@
 ﻿using System;
 using WCloud.Framework.Database.Abstractions.Entity;
 
-namespace WCloud.Member.Domain
+namespace WCloud.Member.Shared
 {
     public interface ILoginEntity : ILogicalDeletion, IUpdateTime
     {

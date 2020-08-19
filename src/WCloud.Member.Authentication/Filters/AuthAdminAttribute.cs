@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Lib.extension;
+﻿using Lib.extension;
 using Lib.helper;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Framework.MVC.Attribute_;
 using WCloud.Framework.MVC.Extension;
-using WCloud.Member.Application.PermissionValidator;
+using WCloud.Member.InternalApi.Client.Login;
 
 namespace WCloud.Member.Authentication.Filters
 {
@@ -73,7 +73,7 @@ namespace WCloud.Member.Authentication.Filters
 
             if (ValidateHelper.IsNotEmpty(pers))
             {
-                var permissionService = context.HttpContext.RequestServices.Resolve_<IPermissionValidatorService>();
+                var permissionService = context.HttpContext.RequestServices.Resolve_<AdminLoginServiceClient>();
                 //有全部权限
                 if (!await permissionService.HasAllPermission(loginuser.UserID, pers))
                 {

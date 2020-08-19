@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using Lib.helper;
+﻿using Lib.helper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Core.Authentication.Model;
-using WCloud.Member.Application.PermissionValidator;
 using WCloud.Member.Authentication.OrgSelector;
+using WCloud.Member.InternalApi.Client.Login;
 
 namespace WCloud.Member.Authentication.ControllerExtensions
 {
@@ -67,7 +67,7 @@ namespace WCloud.Member.Authentication.ControllerExtensions
 
             if (ValidateHelper.IsNotEmpty(permissions))
             {
-                var validator = controller.HttpContext.RequestServices.Resolve_<IOrgPermissionValidatorService>();
+                var validator = controller.HttpContext.RequestServices.Resolve_<UserLoginServiceClient>();
                 if (!await validator.HasAllOrgPermission(loginuser.Org.Id, loginuser.UserID, permissions))
                     throw new NoPermissionInOrgException();
             }

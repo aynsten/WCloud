@@ -1,18 +1,9 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using WCloud.Framework.Database.Abstractions.Entity;
-using WCloud.Member.Shared;
 
-namespace WCloud.Member.Domain.Admin
+namespace WCloud.Member.Shared.User
 {
-    public class AdminDto : DtoBase
-    {
-
-    }
-
-    [Table("tb_admin")]
-    public class AdminEntity : EntityBase, IMemberShipDBTable, ILogicalDeletion, IUpdateTime, ILoginEntity
+    public class UserDto : DtoBase, ILoginEntity
     {
         /// <summary>
         /// 用于登陆，唯一标志
@@ -29,24 +20,28 @@ namespace WCloud.Member.Domain.Admin
         /// </summary>
         public virtual string PassWord { get; set; }
 
+        public virtual string CurrentLoginPhone { get; set; }
+
         /// <summary>
         /// 头像链接
         /// </summary>
-        [StringLength(1000)]
         public virtual string UserImg { get; set; }
 
-        public virtual string ContactPhone { get; set; }
+        public virtual string IdCard { get; set; }
 
-        public virtual string ContactEmail { get; set; }
+        public virtual string RealName { get; set; }
+
+        public virtual int IdCardConfirmed { get; set; }
 
         public virtual DateTime? LastPasswordUpdateTimeUtc { get; set; }
 
-        public virtual int Sex { get; set; }
+        /// <summary>
+        /// 性别
+        /// </summary>
+        public virtual int UserSex { get; set; } = (int)SexEnum.Unknow;
 
         public virtual int IsDeleted { get; set; }
 
-        [NotMapped]
-        public virtual RoleEntity[] Roles { get; set; }
         public virtual DateTime? UpdateTimeUtc { get; set; }
     }
 }

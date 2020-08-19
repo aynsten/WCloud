@@ -1,8 +1,8 @@
-﻿using System;
-using System.Net.Http;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
+using System;
+using System.Net.Http;
 
 namespace WCloud.Member.InternalApi.Client
 {
@@ -15,9 +15,11 @@ namespace WCloud.Member.InternalApi.Client
             var api_gateway_address = config.GetInternalApiGatewayAddressOrThrow();
             var timeout = Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(3));
 
+            var member_service_address = $"{api_gateway_address.TrimEnd('/', '\\')}/internal-api/member";
+
             services.AddHttpClient(HTTP_CLIENT_NAME, option =>
             {
-                option.BaseAddress = new Uri(api_gateway_address);
+                option.BaseAddress = new Uri(member_service_address);
             }).AddPolicyHandler(timeout);
             return services;
         }

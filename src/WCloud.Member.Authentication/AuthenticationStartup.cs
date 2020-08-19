@@ -6,36 +6,11 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using WCloud.Core;
-using WCloud.Member.Authentication.Cookies;
-using WCloud.Member.Authentication.CustomAuth;
-using WCloud.Member.Domain.Admin;
-using WCloud.Member.Domain.User;
 
 namespace WCloud.Member.Authentication
 {
     public static class AuthenticationStartup
     {
-        /// <summary>
-        /// 使用自己生成的token
-        /// </summary>
-        /// <param name="collection"></param>
-        /// <returns></returns>
-        static IServiceCollection AddMyTokenAuthentication(this IServiceCollection collection)
-        {
-            var scheme = ConfigSet.Identity.UserLoginScheme;
-
-            var authBuilder = collection.AddAuthentication(option =>
-            {
-                option.DefaultScheme = scheme;
-            });
-            authBuilder.AddScheme<MyTokenAuthOption, MyTokenAuthHanlder<UserEntity>>(scheme, option =>
-            {
-                option.CookieOption.Expiration = TimeSpan.FromDays(30);
-                option.CookieOption.Name = $"my_token_auth_{scheme}";
-            });
-            return collection;
-        }
-
         [Obsolete("for test")]
         static IServiceCollection AddJwtAuthentication(this IServiceCollection collection)
         {
@@ -93,15 +68,7 @@ namespace WCloud.Member.Authentication
 
         public static IServiceCollection AddIdentityServerTokenValidation(this IServiceCollection collection, IConfiguration config)
         {
-            var use_identity = true;
-            if (use_identity)
-            {
-                AddIdentityServerTokenAuthentication(collection, config);
-            }
-            else
-            {
-                AddMyTokenAuthentication(collection);
-            }
+            AddIdentityServerTokenAuthentication(collection, config);
             return collection;
         }
 
@@ -168,31 +135,6 @@ namespace WCloud.Member.Authentication
                 option.ExpireTimeSpan = TimeSpan.FromMinutes(10);
             });
             return authBuilder;
-        }
-
-        [Obsolete]
-        static IServiceCollection __________________________(IServiceCollection services)
-        {
-            services.AddAuthentication(option =>
-            {
-                option.DefaultScheme = "admin";
-                option.AddScheme<MyTokenAuthHanlder<AdminEntity>>(name: "admin", displayName: "管理员");
-                option.AddScheme<MyTokenAuthHanlder<AdminEntity>>(name: "_", displayName: "_");
-            })
-            .AddScheme<MyTokenAuthOption, MyTokenAuthHanlder<UserEntity>>("auth_type", option =>
-            {
-                //
-            })
-            .AddCookie("user", option =>
-            {
-                option.Cookie.Name = "user_login";
-                option.Cookie.Expiration = TimeSpan.FromDays(100);
-                option.TicketDataFormat = new MySecureDataFormat();//用来加密解密数据
-                option.Events = new MyCookieAuthenticationEvents();
-                option.CookieManager = new MyCookieManager(option.Cookie.Name);
-            });
-
-            throw new NotImplementedException();
         }
     }
 }

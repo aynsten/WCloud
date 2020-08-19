@@ -13,6 +13,7 @@
     <ProjectReference Include="..\WCloud.Framework.Wechat\WCloud.Framework.Wechat.csproj" />
     <ProjectReference Include="..\WCloud.Framework.MessageBus\WCloud.Framework.MessageBus.csproj" />
     <ProjectReference Include="..\WCloud.CommonService.Application\WCloud.CommonService.Application.csproj" />
+    <ProjectReference Include="..\WCloud.Member.Application.Contracts\WCloud.Member.Application.Contracts.csproj" />
     <ProjectReference Include="..\WCloud.Member.Authentication\WCloud.Member.Authentication.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Database.MongoDB\WCloud.Framework.Database.MongoDB.csproj" />
   </ItemGroup>

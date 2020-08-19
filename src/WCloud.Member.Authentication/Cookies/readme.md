@@ -1,12 +1,91 @@
-﻿using FluentAssertions;
+# cookie handler
+
+### data format
+```csharp
+using Microsoft.AspNetCore.Authentication;
+using System;
+
+namespace WCloud.Member.Authentication.Cookies
+{
+    [Obsolete("unsafe for now")]
+    public class MySecureDataFormat : ISecureDataFormat<AuthenticationTicket>
+    {
+        public string Protect(AuthenticationTicket data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Protect(AuthenticationTicket data, string purpose)
+        {
+            throw new NotImplementedException();
+        }
+
+        public AuthenticationTicket Unprotect(string protectedText)
+        {
+            throw new NotImplementedException();
+        }
+
+        public AuthenticationTicket Unprotect(string protectedText, string purpose)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+```
+
+### cookie manager
+```csharp
+using Lib.helper;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using System;
+using WCloud.Framework.MVC.Extension;
+
+namespace WCloud.Member.Authentication.Cookies
+{
+    public class MyCookieManager : ICookieManager
+    {
+        /// <summary>
+        /// 存储关键数据的key
+        /// </summary>
+        private readonly string _key;
+        public MyCookieManager(string _key)
+        {
+            this._key = _key ?? throw new ArgumentNullException(nameof(_key));
+        }
+
+        public void AppendResponseCookie(HttpContext context, string key, string value, CookieOptions options)
+        {
+            context.Response.Cookies.SetCookie_(key, value, option: options);
+        }
+
+        public void DeleteCookie(HttpContext context, string key, CookieOptions options)
+        {
+            context.Response.Cookies.DeleteCookie_(key, option: options);
+        }
+
+        public string GetRequestCookie(HttpContext context, string key)
+        {
+            var value = context.Request.Cookies.GetCookie_(key, string.Empty);
+            if (key == this._key && ValidateHelper.IsEmpty(value))
+                return "这个字符串不能为空，如果为空就不会走到auth handler里的authentication方法了";
+
+            return value;
+        }
+    }
+}
+```
+### authentication handler
+``` csharp
+using FluentAssertions;
 using Lib.cache;
 using Lib.core;
 using Lib.extension;
 using Lib.helper;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -18,9 +97,6 @@ using WCloud.Core;
 using WCloud.Core.Authentication.Model;
 using WCloud.Core.Cache;
 using WCloud.Framework.MVC.Helper;
-using WCloud.Member.Application;
-using WCloud.Member.Application.Service;
-using WCloud.Member.Domain.User;
 
 namespace WCloud.Member.Authentication.Cookies
 {
@@ -225,3 +301,5 @@ namespace WCloud.Member.Authentication.Cookies
         }
     }
 }
+
+```

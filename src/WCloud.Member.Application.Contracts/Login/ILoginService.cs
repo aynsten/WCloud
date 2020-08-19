@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
-using WCloud.Member.Domain;
+using WCloud.Member.Shared;
 
 namespace WCloud.Member.Application
 {

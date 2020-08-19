@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WCloud.Framework.MVC\WCloud.Framework.MVC.csproj" />
-    <ProjectReference Include="..\WCloud.Member.Application.Contracts\WCloud.Member.Application.Contracts.csproj" />
+    <ProjectReference Include="..\WCloud.Member.InternalApi.Client\WCloud.Member.InternalApi.Client.csproj" />
   </ItemGroup>
 
 </Project>

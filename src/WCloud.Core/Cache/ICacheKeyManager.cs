@@ -7,13 +7,13 @@ namespace WCloud.Core.Cache
 
         string AdminLoginInfo(string admin_uid);
 
-        string AdminInfo(string admin_uid);
+        string AdminProfile(string admin_uid);
 
         string AuthHttpItemKey(string auth_type);
 
         string AuthToken(string token);
 
-        string UserInfo(string user_uid);
+        string UserProfile(string user_uid);
 
         string UserLoginInfo(string user_uid);
 

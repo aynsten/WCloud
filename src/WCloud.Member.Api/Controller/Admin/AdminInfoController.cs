@@ -209,7 +209,7 @@ namespace WCloud.Member.Api.Controller
 
             await this._adminService.UpdateUser(model);
 
-            var key = this._keyManager.AdminInfo(model.Id);
+            var key = this._keyManager.AdminProfile(model.Id);
             await this._cache.RemoveAsync(key);
 
             return SuccessJson();

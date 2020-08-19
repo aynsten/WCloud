@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Core.Authentication.Model;
 using WCloud.Member.Authentication.OrgSelector;
+using WCloud.Member.Authentication.User;
 using WCloud.Member.InternalApi.Client.Login;
 
 namespace WCloud.Member.Authentication.ControllerExtensions
@@ -41,8 +42,10 @@ namespace WCloud.Member.Authentication.ControllerExtensions
             var loginuser = user_context.CurrentUserInfo;
 
             if (!loginuser.IsAuthed())
+            {
                 //没有登录
                 throw new NoLoginException();
+            }
 
             return await Task.FromResult(loginuser);
         }
@@ -54,22 +57,33 @@ namespace WCloud.Member.Authentication.ControllerExtensions
             var loginuser = await GetLoginUserAsync(controller);
 
             if (loginuser.Org == null)
+            {
                 throw new NotInCurrentOrgException();
+            }
             if (ValidateHelper.IsEmpty(loginuser.Org.Id))
+            {
                 throw new NoOrgException();
+            }
 
             if (flag != null)
             {
                 //组织所有人或者角色允许
                 if (!(loginuser.Org.IsOwner || loginuser.HasRoleInOrg(flag.Value)))
+                {
                     throw new NoPermissionInOrgException();
+                }
             }
 
             if (ValidateHelper.IsNotEmpty(permissions))
             {
-                var validator = controller.HttpContext.RequestServices.Resolve_<UserLoginServiceClient>();
+                var user_context = controller.HttpContext.RequestServices.Resolve_<IWCloudContext<T>>();
+                user_context.CacheKeyManager.UserOrgPermission("", "");
+
+                var validator = controller.HttpContext.RequestServices.Resolve_<IUserAuthService>();
                 if (!await validator.HasAllOrgPermission(loginuser.Org.Id, loginuser.UserID, permissions))
+                {
                     throw new NoPermissionInOrgException();
+                }
             }
 
             return loginuser;

@@ -102,7 +102,7 @@ namespace WCloud.Member.Application.Service.impl
             var keys = new List<string>();
 
             keys.AddList_(data.TokenUID?.Select(x => this._context.CacheKeyManager.AuthToken(x)));
-            keys.AddList_(data.UserUID?.Select(x => this._context.CacheKeyManager.UserInfo(x)));
+            keys.AddList_(data.UserUID?.Select(x => this._context.CacheKeyManager.UserProfile(x)));
 
             foreach (var key in keys.Where(x => x?.Length > 0).Distinct())
             {

@@ -50,7 +50,7 @@ namespace WCloud.Member.Api
 
             services.AddIdentityServerTokenValidation(_config);
 
-            services.AddScopedLoginContext();
+            services.AddMemberAuthentication();
 
             services.AddMessageBus_(_config);
 

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Framework.MVC.Attribute_;
 using WCloud.Framework.MVC.Extension;
+using WCloud.Member.Authentication.Admin;
 using WCloud.Member.InternalApi.Client.Login;
 
 namespace WCloud.Member.Authentication.Filters
@@ -73,7 +74,7 @@ namespace WCloud.Member.Authentication.Filters
 
             if (ValidateHelper.IsNotEmpty(pers))
             {
-                var permissionService = context.HttpContext.RequestServices.Resolve_<AdminLoginServiceClient>();
+                var permissionService = context.HttpContext.RequestServices.Resolve_<IAdminAuthService>();
                 //有全部权限
                 if (!await permissionService.HasAllPermission(loginuser.UserID, pers))
                 {

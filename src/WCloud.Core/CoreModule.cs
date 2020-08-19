@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Volo.Abp;
 using Volo.Abp.Modularity;
 
 namespace WCloud.Core
@@ -12,11 +11,8 @@ namespace WCloud.Core
             var deft = typeof(DefaultWCloudContext<>).MakeGenericType(typeof(CoreModule));
             context.Services.AddScoped(typeof(IWCloudContext), deft);
             context.Services.AddScoped(typeof(IWCloudContext<>), typeof(DefaultWCloudContext<>));
-        }
 
-        public override void OnApplicationInitialization(ApplicationInitializationContext context)
-        {
-            base.OnApplicationInitialization(context);
+            context.Services.AutoRegister(new[] { this.GetType().Assembly });
         }
     }
 }

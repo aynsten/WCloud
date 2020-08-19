@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using Lib.cache;
+﻿using Lib.cache;
 using Lib.core;
 using Lib.extension;
 using Lib.helper;
@@ -10,11 +9,11 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using WCloud.Member.InternalApi.Client.Login;
+using WCloud.Core;
 using WCloud.Core.Authentication.Model;
-using WCloud.Core.Cache;
-using WCloud.Framework.Middleware;
+using WCloud.Framework.MVC.Middleware;
 using WCloud.Member.Authentication.OrgSelector;
+using WCloud.Member.InternalApi.Client.Login;
 using WCloud.Member.Shared.Org;
 using WCloud.Member.Shared.User;
 
@@ -23,7 +22,7 @@ namespace WCloud.Member.Authentication.Midddlewares
     /// <summary>
     /// 预加载登陆信息和租户信息
     /// </summary>
-    public class UserAuthenticationMiddleware : _BaseMiddleware
+    public class UserAuthenticationMiddleware : MiddlewareBase
     {
         /// <summary>
         /// 不要修改结构
@@ -67,7 +66,7 @@ namespace WCloud.Member.Authentication.Midddlewares
         public override async Task Invoke(HttpContext context)
         {
             var provider = context.RequestServices;
-            var logger = provider.Resolve_<ILogger<UserAuthenticationMiddleware>>();
+            var __context = provider.Resolve_<IWCloudContext<UserAuthenticationMiddleware>>();
             try
             {
                 if (!context.__login_required__())
@@ -84,45 +83,40 @@ namespace WCloud.Member.Authentication.Midddlewares
                 if (login_time == null)
                     throw new MsgException("login time is not availabe");
 
-                var user = provider.Resolve_<WCloudUserInfo>();
-                var cacheProvider = provider.ResolveDistributedCache_();
-                var cacheKeyPrvoder = provider.Resolve_<ICacheKeyManager>();
+                var key = __context.CacheKeyManager.UserLoginInfo(subject_id);
 
-                var key = cacheKeyPrvoder.UserLoginInfo(subject_id);
-
-                var data = await cacheProvider.GetOrSetAsync_(key,
+                var data = await __context.CacheProvider.GetOrSetAsync_(key,
                     () => this.__load_login_data__(provider, subject_id, login_time.Value),
                     expire: TimeSpan.FromMinutes(10),
-                    cache_when: x => x != null && x.User != null);
+                    cache_when: x => x != null);
 
-                if (data == null)
+                if (data?.User == null)
                     throw new MsgException("缓存读取登录信息不存在");
-                data.User.Should().NotBeNull(nameof(UserDto));
 
                 var user_model = data.User;
 
-                user.UserID = user_model.Id;
-                user.NickName = user_model.NickName;
-                user.UserName = user_model.NickName;
-                user.UserImg = user_model.UserImg;
+                __context.CurrentUserInfo.UserID = user_model.Id;
+                __context.CurrentUserInfo.NickName = user_model.NickName;
+                __context.CurrentUserInfo.UserName = user_model.NickName;
+                __context.CurrentUserInfo.UserImg = user_model.UserImg;
 
                 var selected_org = data.OrgMember;
                 if (selected_org != null)
                 {
-                    user.Org ??= new OrgInfo();
-                    user.Org.Id = selected_org.OrgUID;
-                    user.Org.IsOwner = selected_org.IsOwner > 0;
+                    __context.CurrentUserInfo.Org ??= new OrgInfo();
+                    __context.CurrentUserInfo.Org.Id = selected_org.OrgUID;
+                    __context.CurrentUserInfo.Org.IsOwner = selected_org.IsOwner > 0;
                 }
             }
             catch (MsgException e)
             {
 #if DEBUG
-                logger.LogDebug(e.Message);
+                __context.Logger.LogDebug(e.Message);
 #endif
             }
             catch (Exception e)
             {
-                logger.AddErrorLog("在中间件中加载登陆用户抛出异常", e);
+                __context.Logger.AddErrorLog("在中间件中加载登陆用户抛出异常", e);
             }
             finally
             {

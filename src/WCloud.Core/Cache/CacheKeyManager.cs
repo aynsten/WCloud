@@ -30,7 +30,7 @@ namespace WCloud.Core.Cache
             return res;
         }
 
-        public string UserInfo(string user_uid)
+        public string UserProfile(string user_uid)
         {
             var res = $"user.info.{user_uid}".WithPrefix(this._prefix);
             return res;
@@ -61,7 +61,7 @@ namespace WCloud.Core.Cache
             return $"html.path.{path_fingle_print}".WithPrefix(this._prefix);
         }
 
-        public string AdminInfo(string admin_uid)
+        public string AdminProfile(string admin_uid)
         {
             var res = $"admin.info.{admin_uid}".WithPrefix(this._prefix);
             return res;

@@ -1,13 +1,13 @@
 ﻿using Lib.extension;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
-using WCloud.Framework.Middleware;
+using WCloud.Framework.MVC.Middleware;
 
 namespace WCloud.Framework.Filters
 {
-    public class ExceptionMsgHandlerMiddleware : _BaseMiddleware
+    public class ExceptionMsgHandlerMiddleware : MiddlewareBase
     {
         public ExceptionMsgHandlerMiddleware(RequestDelegate next) : base(next)
         { }

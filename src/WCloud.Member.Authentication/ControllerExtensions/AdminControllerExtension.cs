@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Core.Authentication.Model;
-using WCloud.Member.InternalApi.Client.Login;
+using WCloud.Member.Authentication.Admin;
 
 namespace WCloud.Member.Authentication.ControllerExtensions
 {
@@ -15,12 +15,14 @@ namespace WCloud.Member.Authentication.ControllerExtensions
         static async Task __validate_login_context__(ControllerBase controller, WCloudAdminInfo loginuser, string[] permissions)
         {
             if (!loginuser.IsAuthed())
+            {
                 //没有登录
                 throw new NoLoginException();
+            }
 
             if (ValidateHelper.IsNotEmpty(permissions))
             {
-                var validator = controller.HttpContext.RequestServices.Resolve_<AdminLoginServiceClient>();
+                var validator = controller.HttpContext.RequestServices.Resolve_<IAdminAuthService>();
                 if (!await validator.HasAllPermission(loginuser.UserID, permissions))
                 {
                     throw new NoPermissionException();

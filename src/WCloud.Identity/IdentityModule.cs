@@ -48,7 +48,7 @@ namespace WCloud.Identity
                 option.ClientSecret = "2b6444fef59038cd9cfbfb27f683b97e81a03fc9";
             });
             //上下文
-            services.AddScopedLoginContext();
+            services.AddMemberAuthentication();
 
             services.Configure<WxConfig>(_config.GetSection("wx"));
             services.AddSingleton(provider => provider.Resolve_<IOptions<WxConfig>>().Value);

@@ -122,7 +122,7 @@ namespace WCloud.Admin
             //认证配置
             services.AddAdminAuth();
             //上下文
-            services.AddScopedLoginContext();
+            services.AddMemberAuthentication();
         }
 
         void __add_message_bus__(IServiceCollection services, IConfiguration _config)

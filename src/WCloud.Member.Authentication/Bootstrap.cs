@@ -30,13 +30,15 @@ namespace WCloud.Member.Authentication
         /// </summary>
         /// <param name="collection"></param>
         /// <returns></returns>
-        public static IServiceCollection AddScopedLoginContext(this IServiceCollection collection)
+        public static IServiceCollection AddMemberAuthentication(this IServiceCollection collection)
         {
             collection.AddScoped<ICurrentOrgSelector, MyCurrentOrgSelector>();
 
             collection.AddScoped<WCloudAdminInfo>(provider => new WCloudAdminInfo());
             collection.AddScoped<WCloudUserInfo>(provider => new WCloudUserInfo());
             collection.AddScoped<OrgInfo>(provider => provider.Resolve_<WCloudUserInfo>().Org ?? new OrgInfo());
+
+            collection.AutoRegister(new[] { typeof(Bootstrap).Assembly });
 
             return collection;
         }

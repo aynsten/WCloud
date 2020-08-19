@@ -49,6 +49,9 @@ namespace WCloud.Core
         private readonly Lazy<ICacheKeyManager> lazy_cache_key;
         public ICacheKeyManager CacheKeyManager => this.lazy_cache_key.Value;
 
+        private readonly Lazy<ICacheProvider> lazy_cache_provider;
+        public ICacheProvider CacheProvider => this.lazy_cache_provider.Value;
+
         private readonly Lazy<IDataSerializer> lazy_data_serializer;
         public IDataSerializer DataSerializer => this.lazy_data_serializer.Value;
 
@@ -60,9 +63,6 @@ namespace WCloud.Core
 
         private readonly Lazy<IEntityValidationHelper> lazy_entity_validator;
         public IEntityValidationHelper EntityValidator => this.lazy_entity_validator.Value;
-
-        private readonly Lazy<ICacheProvider> lazy_cache_provider;
-        public ICacheProvider CacheProvider => this.lazy_cache_provider.Value;
 
         public DefaultWCloudContext(IServiceProvider provider)
         {

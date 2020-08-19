@@ -6,11 +6,6 @@ using WCloud.Member.Shared;
 
 namespace WCloud.Member.Domain.Admin
 {
-    public class AdminDto : DtoBase
-    {
-
-    }
-
     [Table("tb_admin")]
     public class AdminEntity : EntityBase, IMemberShipDBTable, ILogicalDeletion, IUpdateTime, ILoginEntity
     {

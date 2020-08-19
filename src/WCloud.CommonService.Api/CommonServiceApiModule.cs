@@ -36,9 +36,7 @@ namespace WCloud.CommonService.Api
 
             services.AddBasicServices();
 
-            services.AddIdentityServerTokenValidation(_config);
-
-            services.AddScopedLoginContext();
+            services.AddMemberAuthentication().AddIdentityServerTokenValidation(_config);
 
             services.AddMessageBus_(_config);
 

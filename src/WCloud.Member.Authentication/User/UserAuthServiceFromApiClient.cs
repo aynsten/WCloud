@@ -1,13 +1,23 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
+using WCloud.Core;
+using WCloud.Member.InternalApi.Client.Login;
 using WCloud.Member.Shared.User;
 
-namespace WCloud.Member.InternalApi.Client.Login
+namespace WCloud.Member.Authentication.User
 {
-    public class UserLoginServiceClient : IAutoRegistered
+    public class UserAuthServiceFromApiClient : IUserAuthService
     {
+        private readonly IWCloudContext _context;
+        private readonly UserLoginServiceClient _client;
+        public UserAuthServiceFromApiClient(IWCloudContext<UserAuthServiceFromApiClient> _context, UserLoginServiceClient _client)
+        {
+            this._context = _context;
+            this._client = _client;
+        }
+
         public async Task<string[]> GetMyOrgPermission(string org_id, string subject_id)
         {
             throw new NotImplementedException();

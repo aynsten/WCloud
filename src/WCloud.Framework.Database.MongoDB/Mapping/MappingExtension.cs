@@ -2,6 +2,7 @@
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -55,26 +56,38 @@ namespace WCloud.Framework.Database.MongoDB.Mapping
             return collection;
         }
 
-        public static string GetMongoEntityCollectionName<T>(this IServiceProvider provider)
+        public static string TryGetMongoEntityCollectionName<T>(this IServiceProvider provider)
         {
-            var res = GetMongoEntityCollectionName(provider, typeof(T));
+            var res = TryGetMongoEntityCollectionName(provider, typeof(T));
             return res;
         }
 
-        public static string GetMongoEntityCollectionName(this IServiceProvider provider, Type type)
+        public static string TryGetMongoEntityCollectionName(this IServiceProvider provider, Type type)
         {
             var mapping_type = typeof(IMongoEntityMapping<>).MakeGenericType(type);
-
-            var instance = (IMongoEntityMapping)provider.GetRequiredService(mapping_type);
-
-            var res = instance.CollectionName;
-            res.Should().NotBeNullOrEmpty();
-            return res;
+            var service = provider.GetService(mapping_type);
+            if (service != null && service is IMongoEntityMapping instance)
+            {
+                var res = instance.CollectionName;
+                res.Should().NotBeNullOrEmpty();
+                return res;
+            }
+            else
+            {
+                return type.Name;
+            }
         }
 
         public static void BasicConfig<T>(this BsonClassMap<T> config) where T : EntityBase
         {
             config.MapIdProperty(x => x.Id);
+        }
+
+        public static IMongoCollection<T> GetCollection<T>(this IMongoDatabase db, IServiceProvider provider)
+        {
+            var collection_name = provider.TryGetMongoEntityCollectionName<T>();
+            var res = db.GetCollection<T>(collection_name);
+            return res;
         }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using FluentAssertions;
+using System.Threading.Tasks;
 
 namespace WCloud.Framework.Database.MongoDB
 {
@@ -77,6 +78,21 @@ namespace WCloud.Framework.Database.MongoDB
         {
             var range = PagerHelper.GetQueryRange(page, pagesize);
             var res = finder.Skip(range.skip).Take(range.take);
+            return res;
+        }
+
+        public static string[] GetAllIndexNames<T>(this IMongoCollection<T> collection)
+        {
+            /*
+             { "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "mydb.test" }
+             { "v" : 1, "key" : { "i" : 1 }, "name" : "i_1", "ns" : "mydb.test" }
+             */
+            var res = collection.Indexes.List().ToList().Select(x => (string)x["name"]).ToArray();
+            if (res.Any())
+            {
+                res.All(x => x?.Length > 0).Should().BeTrue();
+            }
+
             return res;
         }
     }

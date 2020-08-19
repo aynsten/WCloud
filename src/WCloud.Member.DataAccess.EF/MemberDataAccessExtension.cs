@@ -31,7 +31,7 @@ namespace WCloud.Member.DataAccess.EF
 
             collection.AddAbpDbContext<MemberShipDbContext>(builder => { });
             collection.AddScoped(typeof(IMemberRepository<>), typeof(MemberShipRepository<>));
-            collection.AddScoped(typeof(IMSRepository<>), typeof(MemberShipRepository<>));
+            collection.AddScoped(typeof(IMemberEFRepository<>), typeof(MemberShipRepository<>));
 
             return collection;
         }

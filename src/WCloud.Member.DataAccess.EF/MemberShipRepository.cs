@@ -17,8 +17,7 @@ namespace WCloud.Member.DataAccess.EF
     /// 只使用repo做数据操作不显示，约束很多
     /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     /// </summary>
-    [Obsolete("使用通用repo")]
-    public interface IMSRepository<T> : IEFRepository<T>, IMemberRepository<T> where T : class, IMemberShipDBTable
+    public interface IMemberEFRepository<T> : IEFRepository<T>, IMemberRepository<T> where T : class, IMemberShipDBTable
     {
         //
     }
@@ -26,7 +25,7 @@ namespace WCloud.Member.DataAccess.EF
     /// <summary>
     /// 会员中心仓储实现
     /// </summary>
-    public class MemberShipRepository<T> : EFRepository<T, MemberShipDbContext>, IMemberRepository<T>, IMSRepository<T>
+    public class MemberShipRepository<T> : EFRepository<T, MemberShipDbContext>, IMemberRepository<T>, IMemberEFRepository<T>
         where T : EntityBase, IMemberShipDBTable
     {
         public MemberShipRepository(IServiceProvider provider) : base(provider) { }

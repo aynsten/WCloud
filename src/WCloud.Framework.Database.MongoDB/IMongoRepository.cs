@@ -10,6 +10,10 @@ namespace WCloud.Framework.Database.MongoDB
 {
     public interface IMongoRepository<T> : ILinqRepository<T>, IBulkInsertRepository<T>, IQueryByKeyRepository<T> where T : EntityBase
     {
+        IMongoClient Client { get; }
+
+        IMongoDatabase Database { get; }
+
         IMongoCollection<T> Collection { get; }
 
         List<T> QueryNearBy(

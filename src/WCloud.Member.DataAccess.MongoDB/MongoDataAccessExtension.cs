@@ -25,6 +25,7 @@ namespace WCloud.Member.DataAccess.MongoDB
             collection.AddMongoMapping(new[] { typeof(MemberDataAccessMongoDBModule).Assembly });
 
             collection.AddScoped(typeof(IMemberRepository<>), typeof(MemberShipMongoRepository<>));
+            collection.AddScoped(typeof(IMemberMongoRepository<>), typeof(MemberShipMongoRepository<>));
 
             return collection;
         }

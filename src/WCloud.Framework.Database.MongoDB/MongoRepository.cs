@@ -24,6 +24,10 @@ namespace WCloud.Framework.Database.MongoDB
         public IQueryable<T> Queryable => this._collection.AsQueryable();
         public IMongoCollection<T> Collection => this._collection;
 
+        public IMongoClient Client => this._client;
+
+        public IMongoDatabase Database => this._db;
+
         public MongoRepository(IServiceProvider provider) : this(provider, provider.Resolve_<ConnectionWrapper>())
         { }
 
@@ -34,8 +38,7 @@ namespace WCloud.Framework.Database.MongoDB
 
             this._db = this._client.GetDatabase(wrapper.DatabaseName);
 
-            var collection_name = this.provider.GetMongoEntityCollectionName<T>();
-            this._collection = this._db.GetCollection<T>(collection_name);
+            this._collection = this._db.GetCollection<T>(this.provider);
         }
 
         public virtual List<T> QueryNearBy(Expression<Func<T, bool>> where, int page, int pagesize,

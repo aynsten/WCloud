@@ -7,7 +7,7 @@ namespace WCloud.Member.Application.PermissionValidator
     /// <summary>
     /// 再租户内是否有权限
     /// </summary>
-    public interface IOrgPermissionValidatorService : IAutoRegistered
+    public interface IOrgPermissionService : IAutoRegistered
     {
         Task<bool> HasOrgPermission(string org_uid, string subject_id, string permission_uid);
 

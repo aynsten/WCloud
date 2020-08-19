@@ -17,27 +17,22 @@ namespace WCloud.Member.InternalApi.Client.Login
             this.httpClient = provider.GetMemberInternalApiHttpClient();
         }
 
-        public async Task<string> GetAdminLoginInfo(string admin_id)
+        public async Task<IEnumerable<string>> GetAdminPermissions(string admin_id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<AdminDto> GetUserByUID(string admin_id)
         {
             var p = new { admin_id = admin_id };
             using var response = await this.httpClient.PostAsJsonAsync("account/get-admin-login-info", p);
 
             var data = await response.Content.ReadAsStringAsync();
             data.Should().NotBeNullOrEmpty();
-            var res = data.JsonToEntity<_<string>>();
+            var res = data.JsonToEntity<_<AdminDto>>();
             res.ThrowIfNotSuccess();
 
             return res.Data;
-        }
-
-        public async Task<bool> HasAllPermission(string subject_id, IEnumerable<string> permissions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<AdminDto> GetUserByUID(string subject_id)
-        {
-            throw new NotImplementedException();
         }
     }
 }

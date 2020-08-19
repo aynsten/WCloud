@@ -27,7 +27,7 @@ namespace WCloud.Member.Authentication.Midddlewares
             var res = new _<AdminDto>();
             var userLoginService = provider.Resolve_<IAdminAuthService>();
 
-            var user_model = await userLoginService.GetUserByUID(subject_id);
+            var user_model = await userLoginService.GetAdminLoginInfoById(subject_id);
             if (user_model == null)
             {
                 throw new MsgException("no user found in database");

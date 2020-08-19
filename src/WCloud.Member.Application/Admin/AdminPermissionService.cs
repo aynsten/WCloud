@@ -11,15 +11,15 @@ using WCloud.Member.Domain.Admin;
 namespace WCloud.Member.Application.PermissionValidator
 {
     [ScopedInstance]
-    public class PermissionValidatorService : IPermissionValidatorService
+    public class AdminPermissionService : IAdminPermissionService
     {
         private readonly TimeSpan _cache_timeout = TimeSpan.FromMinutes(10);
 
         private readonly IWCloudContext _context;
         private readonly IRoleRepository _repo;
 
-        public PermissionValidatorService(
-            IWCloudContext<PermissionValidatorService> _context,
+        public AdminPermissionService(
+            IWCloudContext<AdminPermissionService> _context,
             IRoleRepository _repo)
         {
             this._context = _context;

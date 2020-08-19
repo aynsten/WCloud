@@ -75,8 +75,9 @@ namespace WCloud.Member.Authentication.Filters
             if (ValidateHelper.IsNotEmpty(pers))
             {
                 var permissionService = context.HttpContext.RequestServices.Resolve_<IAdminAuthService>();
+                var my_permission = await permissionService.GetAdminPermission(loginuser.UserID);
                 //有全部权限
-                if (!await permissionService.HasAllPermission(loginuser.UserID, pers))
+                if (pers.Except(my_permission).Any())
                 {
                     throw new NoPermissionException();
                 }

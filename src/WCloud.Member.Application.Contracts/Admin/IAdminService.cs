@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WCloud.Member.Domain.Admin;
+using WCloud.Member.Shared.Admin;
 
 namespace WCloud.Member.Application.Service
 {

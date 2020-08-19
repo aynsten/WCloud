@@ -11,15 +11,15 @@ using WCloud.Member.Domain.Tenant;
 namespace WCloud.Member.Application.PermissionValidator
 {
     [ScopedInstance]
-    public class OrgPermissionValidatorService : IOrgPermissionValidatorService
+    public class OrgPermissionService : IOrgPermissionService
     {
         private readonly TimeSpan _cache_timeout = TimeSpan.FromMinutes(10);
 
         private readonly IWCloudContext _context;
         private readonly IOrgRoleRepository _repo;
 
-        public OrgPermissionValidatorService(
-            IWCloudContext<OrgPermissionValidatorService> _context,
+        public OrgPermissionService(
+            IWCloudContext<OrgPermissionService> _context,
             IOrgRoleRepository _repo)
         {
             this._context = _context;

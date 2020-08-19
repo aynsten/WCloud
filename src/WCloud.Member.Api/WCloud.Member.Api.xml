@@ -161,7 +161,7 @@
             移除管理员
             </summary>
         </member>
-        <member name="M:WCloud.Member.Api.Controller.AdminPermissionController.MyPermissions(WCloud.Member.Application.PermissionValidator.IPermissionValidatorService)">
+        <member name="M:WCloud.Member.Api.Controller.AdminPermissionController.MyPermissions(WCloud.Member.Application.PermissionValidator.IAdminPermissionService)">
             <summary>
             查询我的权限
             </summary>

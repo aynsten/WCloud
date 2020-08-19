@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using FluentAssertions;
 using Lib.core;
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -36,8 +36,8 @@ namespace Microsoft.Extensions.DependencyInjection
             var all_types = search_in_assembly
             .GetAllTypes()
             .Where(x => x.IsNormalClass())
-            .Where(x => x.CanRegIoc())
             .Where(x => x.IsAssignableTo_<IAutoRegistered>())
+            .Where(x => x.CanRegIoc())
             .ToArray();
 
             foreach (var t in all_types)
@@ -91,6 +91,24 @@ namespace Microsoft.Extensions.DependencyInjection
             return collection;
         }
 
+        public static Type GetImplementType(this ServiceDescriptor d)
+        {
+            d.ServiceType.Should().NotBeNull();
+            if (d.ImplementationType != null)
+            {
+                return d.ImplementationType;
+            }
+            if (d.ImplementationInstance != null)
+            {
+                return d.ImplementationInstance.GetType();
+            }
+            if (d.ImplementationFactory != null)
+            {
+                return d.ImplementationFactory.Method.ReturnType;
+            }
+            throw new Exception($"{d.ServiceType.FullName}:找不到实现");
+        }
+
         /// <summary>
         /// 检查是否有不允许重复注册的service，如果有就抛出异常
         /// </summary>
@@ -98,23 +116,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection ThrowWhenRepeatRegister(this IServiceCollection collection)
         {
-            string GetImplementName(ServiceDescriptor d)
-            {
-                if (d.ImplementationType != null)
-                    return d.ImplementationType.FullName;
-                if (d.ImplementationInstance != null)
-                    return d.ImplementationInstance.GetType().FullName;
-                if (d.ImplementationFactory != null)
-                {
-                    var func = d.ImplementationFactory;
-                    return func.Method?.ReturnType?.FullName ?? func.ToString();
-                }
-                return "未知实现";
-            }
-
             var bad_reg = new Dictionary<string, string[]>();
 
-            var items = collection.GroupBy(x => x.ServiceType).Where(x => x.Key.CheckRepeatRequired())
+            var items = collection.Where(x => x.ServiceType.CheckRepeatRequired())
+                .GroupBy(x => x.ServiceType)
                 .Select(x => new { x.Key, Impl = x.ToArray() });
 
             foreach (var m in items)
@@ -122,7 +127,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 if (m.Impl.Length > 1)
                 {
                     var serviceType = m.Key.FullName;
-                    var impls = m.Impl.Select(x => GetImplementName(x)).ToArray();
+                    var impls = m.Impl.Select(x => x.GetImplementType().FullName).ToArray();
 
                     bad_reg[serviceType] = impls;
                 }

@@ -12,8 +12,9 @@ using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Core.Authentication.Model;
 using WCloud.Framework.MVC.Middleware;
+using WCloud.Member.Authentication.Org;
 using WCloud.Member.Authentication.OrgSelector;
-using WCloud.Member.InternalApi.Client.Login;
+using WCloud.Member.Authentication.User;
 using WCloud.Member.Shared.Org;
 using WCloud.Member.Shared.User;
 
@@ -38,19 +39,23 @@ namespace WCloud.Member.Authentication.Midddlewares
         async Task<LoginDataWrapper> __load_login_data__(IServiceProvider provider, string subject_id, DateTime login_time)
         {
             var res = new LoginDataWrapper();
-            var userLoginService = provider.Resolve_<UserLoginServiceClient>();
+            var userLoginService = provider.Resolve_<IUserAuthService>();
 
             var user_model = await userLoginService.GetUserByUID(subject_id);
             if (user_model == null)
+            {
                 throw new MsgException("no user found in database");
+            }
 
             if (user_model.LastPasswordUpdateTimeUtc != null && user_model.LastPasswordUpdateTimeUtc.Value > login_time)
+            {
                 throw new MsgException("password has been changed,pls relogin");
+            }
 
             res.User = user_model;
 
             var org_selector = provider.Resolve_<ICurrentOrgSelector>();
-            var org_service = provider.Resolve_<OrgServiceClient>();
+            var org_service = provider.Resolve_<IOrgAuthService>();
 
             var my_orgs = await org_service.GetMyOrgMap(subject_id);
 
@@ -70,18 +75,26 @@ namespace WCloud.Member.Authentication.Midddlewares
             try
             {
                 if (!context.__login_required__())
+                {
                     throw new MsgException("不需要登陆");
+                }
                 var claims = context.User?.Claims ?? new Claim[] { };
                 var subject_id = claims.GetSubjectID();
                 var login_type = claims.GetAccountType();
                 var login_time = claims.GetCreateTimeUtc();
 
                 if (ValidateHelper.IsEmpty(subject_id))
+                {
                     throw new MsgException("subject id is not found");
+                }
                 if (login_type != "user")
+                {
                     throw new MsgException("account type is not user");
+                }
                 if (login_time == null)
+                {
                     throw new MsgException("login time is not availabe");
+                }
 
                 var key = __context.CacheKeyManager.UserLoginInfo(subject_id);
 

@@ -34,7 +34,7 @@ namespace WCloud.Member.Api.Controller
         /// <param name="_validator"></param>
         /// <returns></returns>
         [HttpPost, ApiRoute]
-        public async Task<IActionResult> MyPermissions([FromServices]IPermissionValidatorService _validator)
+        public async Task<IActionResult> MyPermissions([FromServices]IAdminPermissionService _validator)
         {
             var loginuser = await this.GetLoginAdminAsync();
 

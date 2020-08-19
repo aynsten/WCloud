@@ -8,7 +8,7 @@ namespace WCloud.Member.Application.PermissionValidator
     /// <summary>
     /// 检查主体是否具有权限
     /// </summary>
-    public interface IPermissionValidatorService : IAutoRegistered
+    public interface IAdminPermissionService : IAutoRegistered
     {
         /// <summary>
         /// 拥有权限

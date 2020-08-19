@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Framework.Database.Abstractions.Extension;
 using WCloud.Member.Domain.Admin;
+using WCloud.Member.Shared.Admin;
 
 namespace WCloud.Member.Application.Service.impl
 {

@@ -1,6 +1,7 @@
 ﻿using Lib.helper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Core.Authentication.Model;
@@ -23,7 +24,8 @@ namespace WCloud.Member.Authentication.ControllerExtensions
             if (ValidateHelper.IsNotEmpty(permissions))
             {
                 var validator = controller.HttpContext.RequestServices.Resolve_<IAdminAuthService>();
-                if (!await validator.HasAllPermission(loginuser.UserID, permissions))
+                var my_permission = await validator.GetAdminPermission(loginuser.UserID);
+                if (permissions.Except(my_permission).Any())
                 {
                     throw new NoPermissionException();
                 }

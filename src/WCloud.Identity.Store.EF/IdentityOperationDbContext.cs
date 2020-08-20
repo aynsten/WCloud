@@ -2,8 +2,9 @@
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using WCloud.Identity.Providers;
 
-namespace WCloud.Identity.Providers
+namespace WCloud.Identity.Store.EF
 {
     public class IdentityOperationDbContext : PersistedGrantDbContext<IdentityOperationDbContext>
     {

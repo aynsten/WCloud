@@ -3,8 +3,9 @@ using IdentityServer4.EntityFramework.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using WCloud.Identity.Providers;
 
-namespace WCloud.Identity.Providers
+namespace WCloud.Identity.Store.EF
 {
     [Obsolete("现阶段使用写死的配置信息")]
     public class IdentityConfigurationDbContext : ConfigurationDbContext<IdentityConfigurationDbContext>

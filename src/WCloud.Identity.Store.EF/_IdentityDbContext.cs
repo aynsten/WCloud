@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace WCloud.Identity.Providers
+namespace WCloud.Identity.Store.EF
 {
     [Obsolete]
     public class _IdentityDbContext : DbContext,

@@ -2,6 +2,7 @@
 
 ## Projects
 
+- api网关
 - 授权服务器
 - 会员体系
 - 公共服务
@@ -15,6 +16,14 @@ docker network create xx
 docker-compose -f ./docker-compose.preview.yml up -d
 ```
 
+## databases
+- entity framework core (mysql)
+- mongodb
+
+## authorization
+- jwt
+- reference token
+
 ## api-gateways
 
 - Ocelot
@@ -24,11 +33,11 @@ docker-compose -f ./docker-compose.preview.yml up -d
 
 ## public apis
 
-/api/service-name/request-path
+`/api/service-name/request-path`
 
 ## internal apis
 
-/internal-api/service-name/request-path
+`/internal-api/service-name/request-path`
 
 ## api call among micro-services
 
@@ -37,6 +46,7 @@ docker-compose -f ./docker-compose.preview.yml up -d
 
 ## devops
 
+- github actions
 - Todo
 
 ## cloud-native

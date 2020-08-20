@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace Lib.cache
+namespace WCloud.Core.Cache
 {
     /// <summary>
     /// 带是否成功标志位的结果

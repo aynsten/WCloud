@@ -78,7 +78,7 @@ namespace WCloud.Member.Authentication.Cookies
 ### authentication handler
 ``` csharp
 using FluentAssertions;
-using Lib.cache;
+using WCloud.Core.Cache;
 using Lib.core;
 using Lib.extension;
 using Lib.helper;

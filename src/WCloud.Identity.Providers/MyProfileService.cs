@@ -1,6 +1,6 @@
 ﻿using IdentityServer4.Models;
 using IdentityServer4.Services;
-using Lib.cache;
+using WCloud.Core.Cache;
 using Lib.core;
 using Lib.extension;
 using Lib.helper;

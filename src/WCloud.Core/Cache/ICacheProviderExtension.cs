@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
-namespace Lib.cache
+namespace WCloud.Core.Cache
 {
     public static class ICacheProviderExtension
     {

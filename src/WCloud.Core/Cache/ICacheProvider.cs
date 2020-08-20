@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Lib.cache
+namespace WCloud.Core.Cache
 {
     public interface ICacheProvider
     {

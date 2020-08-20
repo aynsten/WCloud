@@ -1,7 +1,7 @@
 ﻿using Lib.core;
 using System;
 
-namespace Lib.cache
+namespace WCloud.Core.Cache
 {
     public class CacheException : BaseException
     {

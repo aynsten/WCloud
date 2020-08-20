@@ -50,7 +50,7 @@ namespace WCloud.Member.Authentication.CustomAuth
 
 ``` csharp
 using FluentAssertions;
-using Lib.cache;
+using WCloud.Core.Cache;
 using Lib.core;
 using Lib.helper;
 using Microsoft.AspNetCore.Authentication;

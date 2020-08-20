@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Lib.cache;
+using WCloud.Core.Cache;
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

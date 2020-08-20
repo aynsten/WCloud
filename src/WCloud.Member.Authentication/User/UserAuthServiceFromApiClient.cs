@@ -1,4 +1,4 @@
-﻿using Lib.cache;
+﻿using WCloud.Core.Cache;
 using System;
 using System.Threading.Tasks;
 using WCloud.Core;

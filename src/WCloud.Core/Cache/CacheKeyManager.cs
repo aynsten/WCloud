@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using Lib.cache;
+using WCloud.Core.Cache;
 using Microsoft.Extensions.Configuration;
 
 namespace WCloud.Core.Cache

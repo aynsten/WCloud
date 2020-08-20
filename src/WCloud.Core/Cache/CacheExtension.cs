@@ -1,6 +1,6 @@
 ﻿using Lib.helper;
 
-namespace Lib.cache
+namespace WCloud.Core.Cache
 {
     public static class CacheExtension
     {

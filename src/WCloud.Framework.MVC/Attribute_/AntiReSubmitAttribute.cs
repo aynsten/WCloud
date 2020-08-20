@@ -1,4 +1,4 @@
-﻿using Lib.cache;
+﻿using WCloud.Core.Cache;
 using Lib.core;
 using Lib.extension;
 using Microsoft.Extensions.DependencyInjection;

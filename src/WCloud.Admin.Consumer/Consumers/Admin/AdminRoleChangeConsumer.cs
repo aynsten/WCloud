@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Lib.cache;
+using WCloud.Core.Cache;
 using Microsoft.Extensions.DependencyInjection;
 using WCloud.Core.Cache;
 using WCloud.Core.MessageBus;

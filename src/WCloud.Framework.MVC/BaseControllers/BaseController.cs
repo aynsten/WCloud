@@ -41,7 +41,7 @@ namespace WCloud.Framework.MVC.BaseController
         protected virtual ActionResult SuccessJson(object data = null)
         {
             var res = data == null ?
-                new _().SetSuccessData(string.Empty) :
+                new _().SetSuccessData(new { }) :
                 new _().SetSuccessData(data);
 
             return GetJson(res);

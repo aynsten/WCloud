@@ -8,5 +8,6 @@ namespace WCloud.Member.Authentication.Org
     public interface IOrgAuthService : IAutoRegistered
     {
         Task<IEnumerable<OrgMemberDto>> GetMyOrgMap(string subject_id);
+        Task RemoveMyOrgMappingCacheKey(string user_id);
     }
 }

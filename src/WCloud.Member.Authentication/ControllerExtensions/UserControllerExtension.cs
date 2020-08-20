@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Core.Authentication.Model;
@@ -80,7 +81,8 @@ namespace WCloud.Member.Authentication.ControllerExtensions
                 user_context.CacheKeyManager.UserOrgPermission("", "");
 
                 var validator = controller.HttpContext.RequestServices.Resolve_<IUserAuthService>();
-                if (!await validator.HasAllOrgPermission(loginuser.Org.Id, loginuser.UserID, permissions))
+                var my_permissions = await validator.GetMyOrgPermission(loginuser.Org.Id, loginuser.UserID);
+                if (permissions.Except(my_permissions).Any())
                 {
                     throw new NoPermissionInOrgException();
                 }

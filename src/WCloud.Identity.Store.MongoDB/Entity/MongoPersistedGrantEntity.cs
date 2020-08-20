@@ -3,7 +3,7 @@ using System;
 using WCloud.Framework.Database.Abstractions.Entity;
 using WCloud.Framework.Database.MongoDB.Mapping;
 
-namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
+namespace WCloud.Identity.Store.MongoDB.Entity
 {
     public class MongoPersistedGrantEntityMapping : IMongoEntityMapping<MongoPersistedGrantEntity>
     {
@@ -23,11 +23,7 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
         /// <value>
         /// The key.
         /// </value>
-        public string Key
-        {
-            get;
-            set;
-        }
+        public string Key { get; set; }
 
         /// <summary>
         /// Gets the type.
@@ -35,11 +31,7 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
         /// <value>
         /// The type.
         /// </value>
-        public string Type
-        {
-            get;
-            set;
-        }
+        public string Type { get; set; }
 
         /// <summary>
         /// Gets the subject identifier.
@@ -47,11 +39,7 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
         /// <value>
         /// The subject identifier.
         /// </value>
-        public string SubjectId
-        {
-            get;
-            set;
-        }
+        public string SubjectId { get; set; }
 
         /// <summary>
         /// Gets the session identifier.
@@ -59,11 +47,7 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
         /// <value>
         /// The session identifier.
         /// </value>
-        public string SessionId
-        {
-            get;
-            set;
-        }
+        public string SessionId { get; set; }
 
         /// <summary>
         /// Gets the client identifier.
@@ -71,11 +55,7 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
         /// <value>
         /// The client identifier.
         /// </value>
-        public string ClientId
-        {
-            get;
-            set;
-        }
+        public string ClientId { get; set; }
 
         /// <summary>
         /// Gets the description the user assigned to the device being authorized.
@@ -83,11 +63,7 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
         /// <value>
         /// The description.
         /// </value>
-        public string Description
-        {
-            get;
-            set;
-        }
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the creation time.
@@ -95,11 +71,7 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
         /// <value>
         /// The creation time.
         /// </value>
-        public DateTime CreationTime
-        {
-            get;
-            set;
-        }
+        public DateTime CreationTime { get; set; }
 
         /// <summary>
         /// Gets or sets the expiration.
@@ -107,11 +79,7 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
         /// <value>
         /// The expiration.
         /// </value>
-        public DateTime? Expiration
-        {
-            get;
-            set;
-        }
+        public DateTime? Expiration { get; set; }
 
         /// <summary>
         /// Gets or sets the consumed time.
@@ -119,11 +87,7 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
         /// <value>
         /// The consumed time.
         /// </value>
-        public DateTime? ConsumedTime
-        {
-            get;
-            set;
-        }
+        public DateTime? ConsumedTime { get; set; }
 
         /// <summary>
         /// Gets or sets the data.
@@ -131,10 +95,6 @@ namespace WCloud.Identity.Providers.MongoStoreProvider.Entity
         /// <value>
         /// The data.
         /// </value>
-        public string Data
-        {
-            get;
-            set;
-        }
+        public string Data { get; set; }
     }
 }

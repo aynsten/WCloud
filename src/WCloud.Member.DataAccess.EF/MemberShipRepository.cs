@@ -31,7 +31,7 @@ namespace WCloud.Member.DataAccess.EF
         public MemberShipRepository(IServiceProvider provider) : base(provider) { }
     }
 
-    public class MemberDatabaseHelper : IDatabaseHelper
+    public class MemberDatabaseHelper : IMemberDatabaseHelper
     {
         private readonly IServiceProvider provider;
         public MemberDatabaseHelper(IServiceProvider provider)

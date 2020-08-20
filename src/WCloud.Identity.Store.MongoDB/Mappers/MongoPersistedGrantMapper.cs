@@ -1,9 +1,8 @@
-﻿using System;
-using AutoMapper;
-using WCloud.Identity.Providers.MongoStoreProvider.Entity;
+﻿using AutoMapper;
 using IdentityServer4.Models;
+using WCloud.Identity.Store.MongoDB.Entity;
 
-namespace WCloud.Identity.Providers.MongoStoreProvider.Mappers
+namespace WCloud.Identity.Store.MongoDB.Mappers
 {
     public class MongoPersistedGrantMapper:Profile
     {

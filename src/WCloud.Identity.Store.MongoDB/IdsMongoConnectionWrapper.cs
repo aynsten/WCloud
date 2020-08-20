@@ -1,8 +1,7 @@
-﻿using System;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using WCloud.Framework.Database.MongoDB;
 
-namespace WCloud.Identity.Providers.MongoStoreProvider
+namespace WCloud.Identity.Store.MongoDB
 {
     public class IdsMongoConnectionWrapper : MongoConnectionWrapper
     {

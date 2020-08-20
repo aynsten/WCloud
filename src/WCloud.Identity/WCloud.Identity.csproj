@@ -21,13 +21,9 @@
     <ProjectReference Include="..\WCloud.Framework.Apm\WCloud.Framework.Apm.csproj" />
     <ProjectReference Include="..\WCloud.Framework.MessageBus\WCloud.Framework.MessageBus.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Redis\WCloud.Framework.Redis.csproj" />
-    <ProjectReference Include="..\WCloud.Framework.Socket\WCloud.Framework.Socket.csproj" />
     <ProjectReference Include="..\WCloud.Framework.Storage\WCloud.Framework.Storage.csproj" />
-    <ProjectReference Include="..\WCloud.Identity.Providers\WCloud.Identity.Providers.csproj" />
-    <ProjectReference Include="..\Lib\Lib.csproj" />
-    <ProjectReference Include="..\WCloud.CommonService.Application\WCloud.CommonService.Application.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
+    <ProjectReference Include="..\WCloud.CommonService.Application\WCloud.CommonService.Application.csproj"/>
+    <ProjectReference Include="..\WCloud.Identity.Store.EF\WCloud.Identity.Store.EF.csproj" />
     <ProjectReference Include="..\WCloud.Member.Startup\WCloud.Member.Startup.csproj" />
   </ItemGroup>
   <ItemGroup>

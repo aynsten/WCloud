@@ -2,9 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MongoDB.Driver;
-using WCloud.Identity.Providers.MongoStoreProvider.StoreProvider;
+using WCloud.Identity.Providers;
+using WCloud.Identity.Store.MongoDB.StoreProvider;
 
-namespace WCloud.Identity.Providers.MongoStoreProvider
+namespace WCloud.Identity.Store.MongoDB
 {
     public static class MongoStoreExtension
     {
@@ -14,8 +15,10 @@ namespace WCloud.Identity.Providers.MongoStoreProvider
             builder.Services.AddDisposableSingleInstanceService(new IdsMongoConnectionWrapper(client, database_name));
             builder.Services.AddTransient(typeof(IIdsRepository<>), typeof(IdsRepository<>));
 
+            builder.Services.AddTransient<IIdentityServerDatabaseHelper, IdsMongoDatabaseHelper>();
             builder.Services.RemoveAll<IPersistedGrantStore>();
             builder.AddPersistedGrantStore<MongoPersistedGrantStore>();
+
             return builder;
         }
     }

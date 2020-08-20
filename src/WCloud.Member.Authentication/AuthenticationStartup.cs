@@ -112,7 +112,7 @@ namespace WCloud.Member.Authentication
         /// </summary>
         /// <param name="collection"></param>
         /// <returns></returns>
-        public static AuthenticationBuilder AddIdentityServerAuthentication_(this IServiceCollection collection)
+        public static AuthenticationBuilder AddOAuthServerCookieAuthentication_(this IServiceCollection collection)
         {
             var cookie_scheme = ConfigSet.Identity.UserLoginScheme;
             var cookie_external_scheme = ConfigSet.Identity.ExternalLoginScheme;

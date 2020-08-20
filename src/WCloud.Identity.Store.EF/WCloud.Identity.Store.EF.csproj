@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\common.props" />
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="IdentityServer4.EntityFramework" Version="4.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\WCloud.Framework.Database.EntityFrameworkCore.MySQL\WCloud.Framework.Database.EntityFrameworkCore.MySQL.csproj" />
+	  <ProjectReference Include="..\WCloud.Identity.Providers\WCloud.Identity.Providers.csproj" />
+	</ItemGroup>
+</Project>

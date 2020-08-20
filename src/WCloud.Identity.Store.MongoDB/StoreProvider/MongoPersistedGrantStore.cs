@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using IdentityServer4.Models;
 using IdentityServer4.Stores;
 using Lib.helper;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using WCloud.Core;
 using WCloud.Framework.Database.MongoDB;
-using WCloud.Identity.Providers.MongoStoreProvider.Entity;
+using WCloud.Identity.Store.MongoDB.Entity;
 
-namespace WCloud.Identity.Providers.MongoStoreProvider.StoreProvider
+namespace WCloud.Identity.Store.MongoDB.StoreProvider
 {
     public class MongoPersistedGrantStore : IPersistedGrantStore
     {

@@ -14,6 +14,7 @@ using WCloud.Framework.MVC;
 using WCloud.Framework.Wechat.Login;
 using WCloud.Framework.Wechat.Models;
 using WCloud.Identity.Providers;
+using WCloud.Identity.Store.EF;
 using WCloud.Member.Authentication;
 using WCloud.Member.Startup;
 
@@ -38,9 +39,10 @@ namespace WCloud.Identity
             //基础配置
             services.AddBasicServices();
             //ids配置
-            services.AddIdentityServer_(_env, _config);
+            services.AddIdentityServer_(_env, _config).AddEFOperationDbContext();
             //认证配置
-            var authBuilder = services.AddIdentityServerAuthentication_();
+            var authBuilder = services.AddOAuthServerCookieAuthentication_();
+            //开启第三方登录
             authBuilder.AddGitHub(option =>
             {
                 option.SignInScheme = ConfigSet.Identity.ExternalLoginScheme;

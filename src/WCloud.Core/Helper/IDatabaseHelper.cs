@@ -8,4 +8,9 @@ namespace WCloud.Core.Helper
 
         Task InitSeedData();
     }
+
+    public interface IDatabaseHelper
+    {
+        Task CreateDatabase();
+    }
 }

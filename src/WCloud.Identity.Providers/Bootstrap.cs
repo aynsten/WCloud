@@ -15,8 +15,10 @@ namespace WCloud.Identity.Providers
         /// </summary>
         /// <param name="collection"></param>
         /// <returns></returns>
-        public static IServiceCollection AddIdentityServer_(this IServiceCollection collection, IWebHostEnvironment env, IConfiguration config)
+        public static IIdentityServerBuilder AddIdentityServer_(this IServiceCollection collection, IWebHostEnvironment env, IConfiguration config)
         {
+            //使用通用的idistributedcache
+            collection.AddTransient(typeof(IdentityServer4.Services.ICache<>), typeof(IdentityServerDistributedCache<>));
             var identityBuilder = collection.AddIdentityServer(option =>
             {
                 //option.UserInteraction.ErrorUrl = "";
@@ -32,7 +34,6 @@ namespace WCloud.Identity.Providers
             });
 
             //identityBuilder.AddDeveloperSigningCredential();
-
             var pfx = Path.Combine(env.ContentRootPath, "idsrv4.pfx");
             File.Exists(pfx).Should().BeTrue($"ids证书不存在:{pfx}");
 
@@ -41,11 +42,6 @@ namespace WCloud.Identity.Providers
             //identityBuilder.AddConfigurationStore<IdentityConfigurationDbContext>(option => { });
             //使用写死的数据
             identityBuilder.AddConstantConfiguationStore();
-            identityBuilder.AddOperationalStore<IdentityOperationDbContext>(option =>
-            {
-                //自动清理无用token
-                option.EnableTokenCleanup = true;
-            });
 
             //微信授权登陆
             identityBuilder.AddExtensionGrantValidator<MyWechatGrantTypeValidator>();
@@ -67,10 +63,8 @@ namespace WCloud.Identity.Providers
              */
             //identityBuilder.AddClientStoreCache();
             identityBuilder.AddInMemoryCaching();
-            //使用通用的idistributedcache
-            collection.AddTransient(typeof(IdentityServer4.Services.ICache<>), typeof(IdentityServerDistributedCache<>));
 
-            return collection;
+            return identityBuilder;
         }
     }
 }

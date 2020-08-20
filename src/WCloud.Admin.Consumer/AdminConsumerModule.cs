@@ -94,7 +94,7 @@ namespace WCloud.Admin.Consumer
             Task.Run(async () =>
             {
                 var s = app.ApplicationServices;
-                await s.Resolve_<IDatabaseHelper>().CreateDatabase();
+                await s.Resolve_<IMemberDatabaseHelper>().CreateDatabase();
                 await s.InitAdminRoles()
                    ; await s.InitAdminUsers()
                      ; await s.InitOrgInfo()

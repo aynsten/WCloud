@@ -1,18 +1,15 @@
 ﻿using FluentAssertions;
-using Lib.core;
 using Lib.extension;
 using Lib.helper;
 using Microsoft.Extensions.Logging;
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace WCloud.Core.DataSerializer
 {
-
     public class DefaultDataSerializer : IDataSerializer
     {
+        private readonly Encoding _encoding = Encoding.UTF8;
         private readonly ILogger _logger;
 
         public DefaultDataSerializer(ILogger<DefaultDataSerializer> logger)
@@ -25,90 +22,98 @@ namespace WCloud.Core.DataSerializer
             try
             {
                 data ??= "[]";
-                var res = data.JsonToEntity<string[]>();
+                var res = this.DeserializeFromString<string[]>(data);
                 return res;
             }
             catch (Exception e)
             {
-                this._logger.AddWarningLog(msg: $"反序列化失败,{data}=>{typeof(string[]).FullName}", e: e);
+                this._logger.AddErrorLog("序列化错误，异常只做记录，不会抛出", e);
 
                 return new string[] { };
             }
         }
 
-        public string SerializeArray(string[] permissions)
+        public virtual byte[] SerializeToBytes(object item)
         {
-            permissions.Should().NotBeNull();
+            var jsonString = this.SerializeToString(item);
 
-            var res = permissions.ToJson();
+            var res = this._encoding.GetBytes(jsonString);
 
             return res;
         }
 
-        private Encoding _encoding => ConfigHelper.Instance.SystemEncoding;
-
-        public virtual byte[] Serialize(object item)
-        {
-            item.Should().NotBeNull();
-
-            var jsonString = item.ToJson();
-            return this._encoding.GetBytes(jsonString);
-        }
-
-        public virtual T Deserialize<T>(byte[] serializedObject)
+        public virtual T DeserializeFromBytes<T>(byte[] serializedObject)
         {
             serializedObject.Should().NotBeNullOrEmpty();
 
             var json = this._encoding.GetString(serializedObject);
-            return JsonHelper.JsonToEntity<T>(json);
+
+            var res = this.DeserializeFromString<T>(json);
+
+            return res;
         }
 
-        public object Deserialize(byte[] serializedObject, Type target)
+        public object DeserializeFromBytes(byte[] serializedObject, Type target)
+        {
+            serializedObject.Should().NotBeNullOrEmpty();
+
+            var json = this._encoding.GetString(serializedObject);
+
+            var obj = this.DeserializeFromString(json, target);
+
+            return obj;
+        }
+
+        public string SerializeToString(object item)
+        {
+            item.Should().NotBeNull();
+            var res = JsonHelper.ObjectToJson(item);
+            return res;
+        }
+
+        public T DeserializeFromString<T>(string serializedObject)
+        {
+            serializedObject.Should().NotBeNullOrEmpty();
+
+            try
+            {
+                var res = JsonHelper.JsonToEntity<T>(serializedObject);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"反序列化失败,{serializedObject}=>{typeof(T).FullName}", e);
+            }
+        }
+
+        public object DeserializeFromString(string serializedObject, Type target)
         {
             serializedObject.Should().NotBeNullOrEmpty();
             target.Should().NotBeNull();
 
-            var json = this._encoding.GetString(serializedObject);
-            var obj = JsonHelper.JsonToEntity(json, target);
-            return obj;
-        }
-
-        #region binary formatter
-
-        public virtual byte[] BinaryFormatterSerialize(object obj)
-        {
-            obj.Should().NotBeNull();
-
-            using (var ms = new MemoryStream())
+            try
             {
-                var formartter = new BinaryFormatter();
-                formartter.Serialize(ms, obj);
-
-                ms.Position = 0;
-                return ms.ToArray();
+                var res = JsonHelper.JsonToEntity(serializedObject, target);
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"反序列化失败,{serializedObject}=>{target.FullName}", e);
             }
         }
 
-        public virtual T BinaryFormatterDeserialize<T>(byte[] bs)
+        public T DeserializeFromStringOrDefault<T>(string serializedObject)
         {
-            var obj = this.BinaryFormatterDeserialize(bs);
-
-            return (T)obj;
-        }
-
-        public object BinaryFormatterDeserialize(byte[] bs)
-        {
-            bs.Should().NotBeNullOrEmpty();
-
-            using (var ms = new MemoryStream(bs))
+            try
             {
-                var formatter = new BinaryFormatter();
-
-                var obj = formatter.Deserialize(ms);
-                obj.Should().NotBeNull();
-                return obj;
+                var res = this.DeserializeFromString<T>(serializedObject);
+                return res;
+            }
+            catch (Exception e)
+            {
+                this._logger.AddErrorLog(e.Message, e);
+                return default;
             }
         }
-        #endregion
     }
 }

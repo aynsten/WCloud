@@ -2,6 +2,7 @@
 using Lib.extension;
 using Lib.helper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Linq;
@@ -37,7 +38,11 @@ namespace WCloud.Framework.MVC
         {
             try
             {
-                return json?.JsonToEntityOrDefault<T>() ?? throw new ArgumentException();
+                var context = controller.HttpContext.RequestServices.ResolveWCloudContext<ControllerBase>();
+
+                var entity = context.DataSerializer.DeserializeFromStringOrDefault<T>(json);
+
+                return entity ?? throw new ArgumentException();
             }
             catch (Exception err)
             {

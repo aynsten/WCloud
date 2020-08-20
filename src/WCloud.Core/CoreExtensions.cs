@@ -1,11 +1,19 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Lib.extension;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using WCloud.Core;
 
 namespace Microsoft.Extensions.Configuration
 {
-    public static class ConfigurationExtensions
+    public static class CoreExtensions
     {
+        public static IWCloudContext<T> ResolveWCloudContext<T>(this IServiceProvider provider)
+        {
+            var res = provider.Resolve_<IWCloudContext<T>>();
+            return res;
+        }
+
         public static string GetAppName(this IConfiguration config) => config["app_name"];
 
         public static bool InitDatabaseRequired(this IConfiguration config)

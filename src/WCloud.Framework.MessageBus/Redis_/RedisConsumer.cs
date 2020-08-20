@@ -59,7 +59,7 @@ namespace WCloud.Framework.MessageBus.Redis_
             var bs = (byte[])await this.redisDatabaseSelector.Database.ListRightPopAsync(this.config.QueueName);
 
             var model = ValidateHelper.IsNotEmpty(bs) ?
-                this.serializeProvider.Deserialize<T>(bs) :
+                this.serializeProvider.DeserializeFromBytes<T>(bs) :
                 null;
 
             if (model == null)

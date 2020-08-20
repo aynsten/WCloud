@@ -81,7 +81,7 @@ namespace WCloud.Member.Authentication.Midddlewares
                 var claims = context.User?.Claims ?? new Claim[] { };
                 var subject_id = claims.GetSubjectID();
                 var login_type = claims.GetAccountType();
-                var login_time = claims.GetCreateTimeUtc();
+                var login_time = claims.GetCreateTimeUtc(__context.DataSerializer);
 
                 if (ValidateHelper.IsEmpty(subject_id))
                 {

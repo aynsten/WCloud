@@ -21,7 +21,7 @@ namespace WCloud.Framework.Redis.implement
         /// <param name="value"></param>
         public void ListRemove(string key, object value)
         {
-            this.Database.ListRemove(key, this._serializer.Serialize(value));
+            this.Database.ListRemove(key, this._serializer.SerializeToBytes(value));
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace WCloud.Framework.Redis.implement
         public IEnumerable<T> ListRange<T>(string key)
         {
             var values = this.Database.ListRange(key);
-            return values.Where(x => x.HasValue).Select(x => this._serializer.Deserialize<T>(x)).ToList();
+            return values.Where(x => x.HasValue).Select(x => this._serializer.DeserializeFromString<T>(x)).ToList();
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace WCloud.Framework.Redis.implement
         /// <param name="value"></param>
         public void ListRightPush(string key, object value)
         {
-            this.Database.ListRightPush(key, this._serializer.Serialize(value));
+            this.Database.ListRightPush(key, this._serializer.SerializeToBytes(value));
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace WCloud.Framework.Redis.implement
         public T ListRightPop<T>(string key)
         {
             var value = this.Database.ListRightPop(key);
-            return this._serializer.Deserialize<T>(value);
+            return this._serializer.DeserializeFromString<T>(value);
         }
 
         /*
@@ -84,7 +84,7 @@ namespace WCloud.Framework.Redis.implement
                 var value = await func.Invoke(this.Database);
                 if (value.HasValue)
                 {
-                    var res = this._serializer.Deserialize<T>(value);
+                    var res = this._serializer.DeserializeFromString<T>(value);
                     return res;
                 }
 
@@ -106,7 +106,7 @@ namespace WCloud.Framework.Redis.implement
         /// </summary>
         public long ListLeftPush(string key, object value)
         {
-            return (this.Database.ListLeftPush(key, this._serializer.Serialize(value)));
+            return (this.Database.ListLeftPush(key, this._serializer.SerializeToBytes(value)));
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace WCloud.Framework.Redis.implement
         public T ListLeftPop<T>(string key)
         {
             var value = this.Database.ListLeftPop(key);
-            return this._serializer.Deserialize<T>(value);
+            return this._serializer.DeserializeFromString<T>(value);
         }
 
         public Task<T> BListLeftPop<T>(string key, TimeSpan sleep, TimeSpan? timeout = null)

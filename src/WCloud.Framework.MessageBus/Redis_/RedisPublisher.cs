@@ -22,7 +22,7 @@ namespace WCloud.Framework.MessageBus.Redis_
 
         public async Task PublishAsync<T>(string key, T model, CancellationToken cancellationToken) where T : class, IMessageBody
         {
-            var bs = this.serializeProvider.Serialize(model);
+            var bs = this.serializeProvider.SerializeToBytes(model);
             await this.redisDatabaseSelector.Database.ListLeftPushAsync(key: key, value: bs);
         }
 

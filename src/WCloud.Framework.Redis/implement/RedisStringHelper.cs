@@ -16,7 +16,7 @@ namespace WCloud.Framework.Redis.implement
         /// </summary>
         public bool StringSet(string key, object obj, TimeSpan? expiry = default(TimeSpan?))
         {
-            return (this.Database.StringSet(key, this._serializer.Serialize(obj), expiry));
+            return (this.Database.StringSet(key, this._serializer.SerializeToBytes(obj), expiry));
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace WCloud.Framework.Redis.implement
             if (data.HasValue)
             {
                 var bs = (byte[])data;
-                var res = this._serializer.Deserialize<T>(bs);
+                var res = this._serializer.DeserializeFromBytes<T>(bs);
                 return res;
             }
             return default;

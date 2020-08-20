@@ -36,7 +36,7 @@ namespace WCloud.Framework.Redis.implement
         public long Publish(string channel, object msg)
         {
             var sub = _conn.GetSubscriber();
-            return sub.Publish(channel, this._serializer.Serialize(msg));
+            return sub.Publish(channel, this._serializer.SerializeToBytes(msg));
         }
 
         /// <summary>

@@ -90,7 +90,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
         {
             try
             {
-                var res = Policy.Handle<Exception>().Retry(3).Execute(() => this._serializer.Deserialize<T>(bs));
+                var res = Policy.Handle<Exception>().Retry(3).Execute(() => this._serializer.DeserializeFromBytes<T>(bs));
                 return res;
             }
             catch (Exception e)

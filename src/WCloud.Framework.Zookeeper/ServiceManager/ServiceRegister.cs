@@ -62,7 +62,7 @@ namespace WCloud.Framework.Zookeeper.ServiceManager
                 await this.Client.EnsurePersistentPath(service_path);
 
                 var path = service_path + "/" + m.EndpointNodeName;
-                var data = this._serializer.Serialize(m);
+                var data = this._serializer.SerializeToBytes(m);
                 if (await this.Client.ExistAsync_(path))
                     //如果节点存在，就刷新节点数据
                     await this.Client.setDataAsync(path, data);

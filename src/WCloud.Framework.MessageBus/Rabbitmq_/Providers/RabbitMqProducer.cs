@@ -73,7 +73,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
         {
             option ??= new SendMessageOption() { };
             using var _channel = this._connection.CreateModel();
-            var bs = this._serializer.Serialize(message);
+            var bs = this._serializer.SerializeToBytes(message);
             var props = this.CreateBasicProperties(_channel, option);
 
             using var confirm = new ConfirmOrNot(_channel, option.Confirm, option.ConfirmTimeout);
@@ -97,7 +97,7 @@ namespace WCloud.Framework.MessageBus.Rabbitmq_.Providers
         {
             option ??= new SendMessageOption() { };
             using var _channel = this._connection.CreateModel();
-            var bs = this._serializer.Serialize(message);
+            var bs = this._serializer.SerializeToBytes(message);
             var props = this.CreateBasicProperties(_channel, option);
 
             using var confirm = new ConfirmOrNot(_channel, option.Confirm, option.ConfirmTimeout);

@@ -11,10 +11,10 @@ namespace WCloud.Framework.Redis.implement
     {
         #region SortedSet
         public bool SortedSetAdd(string key, object value, double score) => 
-            (this.Database.SortedSetAdd(key, this._serializer.Serialize(value), score));
+            (this.Database.SortedSetAdd(key, this._serializer.SerializeToBytes(value), score));
 
         public bool SortedSetRemove<T>(string key, object value) => 
-            (this.Database.SortedSetRemove(key, this._serializer.Serialize(value)));
+            (this.Database.SortedSetRemove(key, this._serializer.SerializeToBytes(value)));
         #endregion
     }
 }

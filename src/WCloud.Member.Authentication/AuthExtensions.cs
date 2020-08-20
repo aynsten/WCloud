@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WCloud.Core.Authentication.Model;
+using WCloud.Core.DataSerializer;
 using WCloud.Member.Authentication.Filters;
 using WCloud.Member.Shared;
 
@@ -115,10 +116,10 @@ namespace WCloud.Member.Authentication
             return identity;
         }
 
-        public static DateTime? GetCreateTimeUtc(this IEnumerable<Claim> claims)
+        public static DateTime? GetCreateTimeUtc(this IEnumerable<Claim> claims, IDataSerializer dataSerializer)
         {
             var json = claims.FirstOrDefault(x => x.Type == claims_create_time_utc_key)?.Value ?? "{}";
-            var time = json.JsonToEntityOrDefault<_<DateTime?>>();
+            var time = dataSerializer.DeserializeFromStringOrDefault<_<DateTime?>>(json);
             return time?.Data;
         }
 

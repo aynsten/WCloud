@@ -17,12 +17,5 @@ namespace Lib.extension
         public static T JsonToEntity<T>(this string json, bool throwIfException = true, T deft = default)
             where T : class
             => JsonHelper.JsonToEntity(json, throwIfException: throwIfException, deft: deft);
-
-        /// <summary>
-        /// json转为实体，出现异常就返回默认值
-        /// </summary>
-        public static T JsonToEntityOrDefault<T>(this string json)
-            where T : class
-            => json.JsonToEntity<T>(throwIfException: false);
     }
 }

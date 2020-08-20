@@ -146,7 +146,7 @@ namespace WCloud.Framework.Zookeeper.ServiceManager
                     await this.Client.DeleteNodeRecursively_(path);
                     return;
                 }
-                var data = this._serializer.Deserialize<AddressModel>(bs) ??
+                var data = this._serializer.DeserializeFromBytes<AddressModel>(bs) ??
                     throw new ArgumentNullException("序列化address model错误");
                 if (!ValidateHelper.IsAllNotEmpty(data.ServiceNodeName, data.EndpointNodeName, data.Url))
                     throw new ArgumentException($"address model数据错误:{data.ToJson()}");

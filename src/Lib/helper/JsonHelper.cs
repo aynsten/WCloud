@@ -14,30 +14,18 @@ namespace Lib.helper
             Converters = new List<JsonConverter>()
             {
                 new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd HH:mm:ss" },
-            }
+            },
+            NullValueHandling = NullValueHandling.Ignore,
+            ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver()
         };
 
         /// <summary>
         /// model转json
         /// </summary>
-        public static string ObjectToJson(object obj, bool indented = false)
+        public static string ObjectToJson(object obj)
         {
-            var formatting = indented ?
-                Formatting.Indented :
-                Formatting.None;
-
-            return JsonConvert.SerializeObject(obj, formatting: formatting, settings: _setting);
-        }
-
-        /// <summary>
-        /// model转xml
-        /// </summary>
-        public static string ObjectToXml(object obj, string root_name = "root")
-        {
-            var json = ObjectToJson(obj);
-            var xml_json = "{\"" + root_name + "\":" + json + "}";
-            var xml = JsonConvert.DeserializeXmlNode(xml_json).OuterXml;
-            return xml;
+            var res = JsonConvert.SerializeObject(obj, settings: _setting);
+            return res;
         }
 
         /// <summary>
@@ -76,12 +64,14 @@ namespace Lib.helper
             return path_list.Count == path_list.Distinct().Count() * 2;
         }
 
+#if DEBUG
         static void JsonParseTest(string json)
         {
             var dom = JObject.Parse(json);
             var mk = dom["io"];
             var props = dom.Properties();
         }
+#endif
 
         /// <summary>
         /// json转model
@@ -93,8 +83,14 @@ namespace Lib.helper
 #if not_disabled_xx
                 return JsonConvert.DeserializeObject<T>(json);
 #endif
-
-                return (T)JsonToEntity(json, typeof(T));
+                if (JsonToEntity(json, typeof(T)) is T res)
+                {
+                    return res;
+                }
+                else
+                {
+                    throw new Exception("解析json失败");
+                }
             }
             catch when (!throwIfException)
             {
@@ -108,12 +104,16 @@ namespace Lib.helper
         public static object JsonToEntity(string json, Type type)
         {
             if (ValidateHelper.IsEmpty(json))
+            {
                 throw new ArgumentNullException("json为空");
+            }
             if (type == null)
+            {
                 throw new ArgumentNullException("请指定json对应的实体类型");
+            }
             try
             {
-                return JsonConvert.DeserializeObject(json, type);
+                return JsonConvert.DeserializeObject(json, type, settings: _setting);
             }
             catch (Exception e)
             {

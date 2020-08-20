@@ -151,9 +151,9 @@ namespace WCloud.Framework.MVC
             builder.AddNewtonsoftJson(option =>
             {
                 option.SerializerSettings.Converters = JsonHelper._setting.Converters;
-                option.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                option.SerializerSettings.NullValueHandling = JsonHelper._setting.NullValueHandling;
                 //key大小写
-                option.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                option.SerializerSettings.ContractResolver = JsonHelper._setting.ContractResolver;
                 //option.UseCamelCasing(true);
             });
             return builder;

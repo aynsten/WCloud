@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
+﻿using Lib.extension;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Volo.Abp;
@@ -8,8 +10,12 @@ using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
 using WCloud.Core;
 using WCloud.Core.MessageBus;
+using WCloud.Framework.Common.Validator;
+using WCloud.Framework.HttpClient;
+using WCloud.Framework.Logging;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
+using WCloud.Framework.Redis;
 using WCloud.Member.Initialization;
 using WCloud.Member.Shared.Helper;
 using WCloud.Member.Startup;
@@ -32,12 +38,22 @@ namespace WCloud.Admin.Consumer
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             var services = context.Services;
-            var _config = services.GetConfiguration();
+            var _env = services.GetHostingEnvironment();
 
-            //基础配置
-            services.AddBasicServices();
+            var ass_to_scan = __this_ass__.FindWCloudAssemblies();
+            var nlog_config_file = _env.NLogConfigFilePath();
 
-            this.__add_message_bus__(services, _config);
+            services.AddWCloudBuilder()
+                .AutoRegister(ass_to_scan)
+                .AddHttpClient()
+                .AddFluentValidatorHelper().RegEntityValidators(ass_to_scan)
+                .AddRedisClient()
+                .AddRedisHelper()
+                .AddRedisDistributedCacheProvider_()
+                .AddRedisDataProtectionKeyStore()
+                .AddLoggingAll(nlog_config_file)
+                .AddMessageBus_(new[] { this.__this_ass__ })
+                .AddWCloudMvc();
 
             services.ThrowWhenRepeatRegister();
         }
@@ -56,29 +72,6 @@ namespace WCloud.Admin.Consumer
 
             //开启消息消费
             app.ApplicationServices.StartMessageBusConsumer_();
-        }
-
-        void __add_message_bus__(IServiceCollection services, IConfiguration _config)
-        {
-            var ass = new System.Reflection.Assembly[] { __this_ass__ };
-
-            services.AddMessageBus_(_config, ass);
-
-            ////消息总线 
-            //services.AddMasstransitMessageBus_(_config, option =>
-            //{
-            //    //optional
-            //    option.ReceiveEndpoint("user_role_changed_subscriber", endpoint =>
-            //    {
-            //        //新建一个队列绑定exchange，实现一个消息多次订阅
-            //        endpoint.Bind<UserRoleChangedMessage>();
-            //        endpoint.Consumer<AdminRoleChangedConsumer>();
-            //    });
-
-            //    //optional：注册消费程序
-            //    option.RegMasstransitBasicConsumer(all_consumer_types);
-            //    //option.RegMasstransitConsumer(ass);
-            //});
         }
 
         void __config_database__(IApplicationBuilder app)

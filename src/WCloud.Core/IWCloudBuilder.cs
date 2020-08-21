@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace WCloud.Core
 {
@@ -18,6 +19,9 @@ namespace WCloud.Core
 
     public static class WCloudBuilderExtension
     {
+        /// <summary>
+        /// 创建builder
+        /// </summary>
         public static WCloudBuilder AddWCloudBuilder(this IServiceCollection services)
         {
             var builder = new WCloudBuilder(services);
@@ -25,6 +29,15 @@ namespace WCloud.Core
             services.AddSingleton(builder);
             services.AddWCloudCore();
 
+            return builder;
+        }
+
+        /// <summary>
+        /// 自动查找程序集注册依赖
+        /// </summary>
+        public static WCloudBuilder AutoRegister(this WCloudBuilder builder, Assembly[] ass)
+        {
+            builder.Services.AutoRegister(ass);
             return builder;
         }
     }

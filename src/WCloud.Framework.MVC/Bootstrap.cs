@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
@@ -14,9 +15,7 @@ using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Volo.Abp.VirtualFileSystem;
 using WCloud.Core;
-using WCloud.Framework.Common.Validator;
 using WCloud.Framework.Filters;
-using WCloud.Framework.Logging;
 
 namespace WCloud.Framework.MVC
 {
@@ -36,6 +35,7 @@ namespace WCloud.Framework.MVC
             collection.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
             //use httpcontext
             collection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            collection.RemoveAll<IHttpContextAccessor>().AddHttpContextAccessor();
             //异常捕捉
             collection.AddSingleton<ICommonExceptionHandler, CommonExceptionHandler>();
             //加密相关
@@ -51,31 +51,13 @@ namespace WCloud.Framework.MVC
             return builder;
         }
 
-        /// <summary>
-        /// 添加没有平台依赖的注册项
-        /// </summary>
-        public static IServiceCollection AddBasicServices(this IServiceCollection collection)
+        public static string NLogConfigFilePath(this IWebHostEnvironment env)
         {
-            var config = collection.GetConfiguration();
-            var env = collection.GetHostingEnvironment();
-
-            collection.AddHttpClient();
-
-            //dto验证
-            collection.AddFluentValidatorHelper();
-
-            //日志
-            collection.AddLoggingAll(config, Path.Combine(env.ContentRootPath, "nlog.config"));
-
-            //加密相关
-            collection.AddFileBasedDataProtection_(config, env);
-
-            return collection;
+            var res = Path.Combine(env.ContentRootPath, "nlog.config");
+            return res;
         }
 
-        static IDataProtectionBuilder AddFileBasedDataProtection_(this IServiceCollection collection,
-            IConfiguration config,
-            IWebHostEnvironment env)
+        static IDataProtectionBuilder AddFileBasedDataProtection_(this IServiceCollection collection, IConfiguration config, IWebHostEnvironment env)
         {
             var app_name = config.GetAppName() ?? "shared_app";
 
@@ -108,7 +90,7 @@ namespace WCloud.Framework.MVC
         {
             //abp在AbpAspNetCoreMvcModule就添加了异常处理的过滤器
             //TODO 这里的优先级要考虑下
-            option.Filters.Add<WCloud.Framework.Filters.CommonExceptionFilter>();
+            option.Filters.Add<CommonExceptionFilter>();
             return option;
         }
 

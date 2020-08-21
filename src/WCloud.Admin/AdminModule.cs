@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Lib.extension;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Linq;
 using System.Reflection;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
@@ -11,8 +13,12 @@ using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
 using WCloud.Core;
 using WCloud.Framework.Apm;
+using WCloud.Framework.Common.Validator;
+using WCloud.Framework.HttpClient;
+using WCloud.Framework.Logging;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
+using WCloud.Framework.Redis;
 using WCloud.Framework.Startup;
 using WCloud.Member.Authentication;
 using WCloud.Member.Domain;
@@ -38,18 +44,43 @@ namespace WCloud.Admin
             var _config = services.GetConfiguration();
             var _env = services.GetHostingEnvironment();
 
+            var ass_to_scan = __this_ass__.FindWCloudAssemblies();
+            var nlog_config_file = _env.NLogConfigFilePath();
+
+            services.AddWCloudBuilder()
+                .AutoRegister(ass_to_scan)
+                .AddHttpClient()
+                .AddFluentValidatorHelper().RegEntityValidators(ass_to_scan)
+                .AddRedisClient()
+                .AddRedisHelper()
+                .AddRedisDistributedCacheProvider_()
+                .AddRedisDataProtectionKeyStore()
+                .AddLoggingAll(nlog_config_file)
+                .AddMessageBus_()
+                .AddWCloudMvc();
             //基础配置
-            this.__add_basic__(services, _config, _env);
+            services.AddSession(option => { });
 
-            this.__add_auth__(services);
+            //认证配置
+            services.AddMemberAuthentication().AddAdminAuth();
+            services.AddSwaggerDoc_(__this_ass__, AdminServiceRouteAttribute.ServiceName, new OpenApiInfo()
+            {
+                Title = "后台管理",
+                Description = "后台管理接口，这里的接口使用cookie认证",
+            });
+            //使用swagger文档
+            //services.AddSwagger_(this.GetType().Assembly, option => option.UseOauth_(_config));
+            this.Configure<AbpAspNetCoreMvcOptions>(options =>
+            {
+                var service_name = AdminServiceRouteAttribute.ServiceName;
 
-            this.__add_message_bus__(services, _config);
-
-            this.__add_swagger__(services);
-
-            this.__add_mvc__(services);
-
-            this.__config_auto_api__();
+                options
+                    .ConventionalControllers
+                    .Create(typeof(AdminModule).Assembly, option =>
+                    {
+                        option.RootPath = service_name;
+                    });
+            });
 
             services.ThrowWhenRepeatRegister();
         }
@@ -94,57 +125,6 @@ namespace WCloud.Admin
             {
                 endpoints.MapDefaultControllerRoute();
             });
-        }
-
-        void __add_basic__(IServiceCollection services, IConfiguration config, IWebHostEnvironment env)
-        {
-            services.AddBasicServices();
-            services.AddSession(option => { });
-        }
-
-        void __config_auto_api__()
-        {
-            this.Configure<AbpAspNetCoreMvcOptions>(options =>
-            {
-                var service_name = AdminServiceRouteAttribute.ServiceName;
-
-                options
-                    .ConventionalControllers
-                    .Create(typeof(AdminModule).Assembly, option =>
-                    {
-                        option.RootPath = service_name;
-                    });
-            });
-        }
-
-        void __add_auth__(IServiceCollection services)
-        {
-            //认证配置
-            services.AddAdminAuth();
-            //上下文
-            services.AddMemberAuthentication();
-        }
-
-        void __add_message_bus__(IServiceCollection services, IConfiguration _config)
-        {
-            //消息总线 
-            services.AddMessageBus_(_config);
-        }
-
-        void __add_mvc__(IServiceCollection services)
-        {
-            services.AddRouting().AddMvc(option => option.AddExceptionHandler()).AddJsonProvider_();
-        }
-
-        void __add_swagger__(IServiceCollection services)
-        {
-            services.AddSwaggerDoc_(__this_ass__, AdminServiceRouteAttribute.ServiceName, new OpenApiInfo()
-            {
-                Title = "后台管理",
-                Description = "后台管理接口，这里的接口使用cookie认证",
-            });
-            //使用swagger文档
-            //services.AddSwagger_(this.GetType().Assembly, option => option.UseOauth_(_config));
         }
     }
 }

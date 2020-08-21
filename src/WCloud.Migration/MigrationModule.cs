@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Volo.Abp;
@@ -10,7 +11,11 @@ using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
 using WCloud.Core;
 using WCloud.Core.Helper;
+using WCloud.Framework.Common.Validator;
+using WCloud.Framework.HttpClient;
+using WCloud.Framework.Logging;
 using WCloud.Framework.MVC;
+using WCloud.Framework.Redis;
 using WCloud.Member.Startup;
 
 namespace WCloud.Migration
@@ -33,8 +38,19 @@ namespace WCloud.Migration
             var _config = services.GetConfiguration();
             var _env = services.GetHostingEnvironment();
 
-            //基础配置
-            services.AddBasicServices();
+            var ass_to_scan = __this_ass__.FindWCloudAssemblies();
+            var nlog_config_file = _env.NLogConfigFilePath();
+
+            services.AddWCloudBuilder()
+                .AutoRegister(ass_to_scan)
+                .AddHttpClient()
+                .AddFluentValidatorHelper().RegEntityValidators(ass_to_scan)
+                .AddRedisClient()
+                .AddRedisHelper()
+                .AddRedisDistributedCacheProvider_()
+                .AddRedisDataProtectionKeyStore()
+                .AddLoggingAll(nlog_config_file)
+                .AddWCloudMvc();
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

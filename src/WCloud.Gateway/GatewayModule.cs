@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -14,6 +15,9 @@ using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.Core;
 using WCloud.Framework.Apm;
+using WCloud.Framework.Common.Validator;
+using WCloud.Framework.HttpClient;
+using WCloud.Framework.Logging;
 using WCloud.Framework.MVC;
 using WCloud.Framework.Startup;
 using WCloud.Gateway.Middlewares;
@@ -39,7 +43,15 @@ namespace WCloud.Gateway
             var _config = services.GetConfiguration();
             var _env = services.GetHostingEnvironment();
 
-            services.AddBasicServices();
+            var ass_to_scan = __this_ass__.FindWCloudAssemblies();
+            var nlog_config_file = _env.NLogConfigFilePath();
+
+            services.AddWCloudBuilder()
+                .AutoRegister(ass_to_scan)
+                .AddHttpClient()
+                .AddFluentValidatorHelper().RegEntityValidators(ass_to_scan)
+                .AddLoggingAll(nlog_config_file)
+                .AddWCloudMvc();
 
             services.AddOcelot(_config);
 
@@ -51,8 +63,6 @@ namespace WCloud.Gateway
 
             //services.AddAlwaysAllowAuthorization();
             services.AddIdentityServerTokenValidation(_config);
-
-            services.AddRouting().AddMvc(option => option.AddExceptionHandler()).AddJsonProvider_();
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

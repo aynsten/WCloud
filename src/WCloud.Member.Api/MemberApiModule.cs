@@ -12,6 +12,9 @@ using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
 using WCloud.Core;
 using WCloud.Framework.Apm;
+using WCloud.Framework.Common.Validator;
+using WCloud.Framework.HttpClient;
+using WCloud.Framework.Logging;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
 using WCloud.Framework.Redis;
@@ -41,21 +44,22 @@ namespace WCloud.Member.Api
             var _config = services.GetConfiguration();
             var _env = services.GetHostingEnvironment();
 
-            services.AddBasicServices();
-            services.AddRedisClient(_config)
+            var ass_to_scan = __this_ass__.FindWCloudAssemblies();
+            var nlog_config_file = _env.NLogConfigFilePath();
+
+            services.AddWCloudBuilder()
+                .AutoRegister(ass_to_scan)
+                .AddHttpClient()
+                .AddFluentValidatorHelper().RegEntityValidators(ass_to_scan)
+                .AddRedisClient()
                 .AddRedisHelper()
                 .AddRedisDistributedCacheProvider_()
-                .AddRedisDataProtectionKeyStore(_config);
+                .AddRedisDataProtectionKeyStore()
+                .AddLoggingAll(nlog_config_file)
+                .AddMessageBus_()
+                .AddWCloudMvc();
 
-            services.Configure<WxConfig>(_config.GetSection("wx"));
-            services.AddSingleton(provider => provider.Resolve_<IOptions<WxConfig>>().Value);
-            services.AddTransient<IUserWxLoginService, UserWxLoginService>();
-
-            services.AddIdentityServerTokenValidation(_config);
-
-            services.AddMemberAuthentication();
-
-            services.AddMessageBus_(_config);
+            services.AddMemberAuthentication().AddIdentityServerTokenValidation(_config);
 
             services.AddSwaggerDoc_(this.__this_ass__, MemberServiceRouteAttribute.ServiceName, new OpenApiInfo()
             {
@@ -63,8 +67,9 @@ namespace WCloud.Member.Api
                 Description = "用户账号"
             }, option => option.UseOauth_(_config));
 
-            services.AddRouting().AddMvc(option => option.AddExceptionHandler()).AddJsonProvider_();
-            services.AutoRegister(__this_ass__.FindAllReferencedAssemblies(x => x.FullName.StartsWith("wcloud", StringComparison.OrdinalIgnoreCase)).ToArray());
+            services.Configure<WxConfig>(_config.GetSection("wx"));
+            services.AddSingleton(provider => provider.Resolve_<IOptions<WxConfig>>().Value);
+            services.AddTransient<IUserWxLoginService, UserWxLoginService>();
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

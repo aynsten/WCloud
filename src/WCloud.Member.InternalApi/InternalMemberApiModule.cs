@@ -1,15 +1,22 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Lib.extension;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Linq;
 using System.Reflection;
 using Volo.Abp;
 using Volo.Abp.Modularity;
 using WCloud.CommonService.Application;
 using WCloud.Core;
 using WCloud.Framework.Apm;
+using WCloud.Framework.Common.Validator;
+using WCloud.Framework.HttpClient;
+using WCloud.Framework.Logging;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
+using WCloud.Framework.Redis;
 using WCloud.Framework.Startup;
 using WCloud.Member.Startup;
 
@@ -33,17 +40,26 @@ namespace WCloud.Member.InternalApi
             var _config = services.GetConfiguration();
             var _env = services.GetHostingEnvironment();
 
-            services.AddBasicServices();
+            var ass_to_scan = __this_ass__.FindWCloudAssemblies();
+            var nlog_config_file = _env.NLogConfigFilePath();
 
-            services.AddMessageBus_(_config);
+            services.AddWCloudBuilder()
+                .AutoRegister(ass_to_scan)
+                .AddHttpClient()
+                .AddFluentValidatorHelper().RegEntityValidators(ass_to_scan)
+                .AddRedisClient()
+                .AddRedisHelper()
+                .AddRedisDistributedCacheProvider_()
+                .AddRedisDataProtectionKeyStore()
+                .AddLoggingAll(nlog_config_file)
+                .AddMessageBus_()
+                .AddWCloudMvc();
 
             services.AddSwaggerDoc_(this.__this_ass__, InternalMemberServiceRouteAttribute.ServiceName, new OpenApiInfo()
             {
                 Title = "internal-member",
                 Description = "内部用户账号"
             }, option => option.UseOauth_(_config));
-
-            services.AddRouting().AddMvc(option => option.AddExceptionHandler()).AddJsonProvider_();
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

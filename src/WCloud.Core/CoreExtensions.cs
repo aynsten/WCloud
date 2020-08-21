@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using WCloud.Core.Cache;
 using WCloud.Core.DataSerializer;
 using WCloud.Core.PollyExtension;
@@ -32,6 +34,12 @@ namespace WCloud.Core
         public static IWCloudContext<T> ResolveWCloudContext<T>(this IServiceProvider provider)
         {
             var res = provider.Resolve_<IWCloudContext<T>>();
+            return res;
+        }
+
+        public static Assembly[] FindWCloudAssemblies(this Assembly entry, Func<Assembly, bool> filter = null)
+        {
+            var res = entry.FindAllReferencedAssemblies(x => x.FullName.StartsWith("wcloud", StringComparison.OrdinalIgnoreCase)).ToArray();
             return res;
         }
 

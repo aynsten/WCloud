@@ -36,6 +36,12 @@ namespace WCloud.Framework.Redis
             return res;
         }
 
+        public static WCloudBuilder AddRedisClient(this WCloudBuilder builder)
+        {
+            builder.Services.AddRedisClient(builder.Configuration);
+            return builder;
+        }
+
         public static IServiceCollection AddRedisClient(this IServiceCollection collection, IConfiguration config)
         {
             var redis_wrapper = collection.GetRedisClientWrapper(true);
@@ -47,6 +53,12 @@ namespace WCloud.Framework.Redis
             collection.AddDisposableSingleInstanceService(connection);
 
             return collection;
+        }
+
+        public static WCloudBuilder AddRedisHelper(this WCloudBuilder builder)
+        {
+            builder.Services.AddRedisHelper();
+            return builder;
         }
 
         public static IServiceCollection AddRedisHelper(this IServiceCollection collection)
@@ -61,6 +73,12 @@ namespace WCloud.Framework.Redis
                 return helper;
             });
             return collection;
+        }
+
+        public static WCloudBuilder AddRedisDistributedCacheProvider_(this WCloudBuilder builder)
+        {
+            AddRedisDistributedCacheProvider_(builder.Services);
+            return builder;
         }
 
         public static IServiceCollection AddRedisDistributedCacheProvider_(this IServiceCollection collection)
@@ -86,6 +104,12 @@ namespace WCloud.Framework.Redis
             });
 
             return collection;
+        }
+
+        public static WCloudBuilder AddRedisDataProtectionKeyStore(this WCloudBuilder builder)
+        {
+            AddRedisDataProtectionKeyStore(builder.Services, builder.Configuration);
+            return builder;
         }
 
         public static IServiceCollection AddRedisDataProtectionKeyStore(this IServiceCollection collection, IConfiguration config)

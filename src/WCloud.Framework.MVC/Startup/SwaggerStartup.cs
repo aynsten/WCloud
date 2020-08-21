@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using WCloud.Core;
 
 namespace WCloud.Framework.Startup
 {

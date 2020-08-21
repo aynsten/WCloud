@@ -1,7 +1,6 @@
 ﻿using Hangfire;
 using Hangfire.AspNetCore;
 using Hangfire.MemoryStorage;
-using Lib.extension;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Volo.Abp;
@@ -20,7 +18,7 @@ using WCloud.CommonService.Application;
 using WCloud.Core;
 using WCloud.Framework.Apm;
 using WCloud.Framework.Common.Validator;
-using WCloud.Framework.HttpClient;
+using WCloud.Framework.HttpClient_;
 using WCloud.Framework.Jobs;
 using WCloud.Framework.Logging;
 using WCloud.Framework.MessageBus;
@@ -51,17 +49,16 @@ namespace WCloud.IM.Server
             var _env = services.GetHostingEnvironment();
 
             var ass_to_scan = __this_ass__.FindWCloudAssemblies();
-            var nlog_config_file = _env.NLogConfigFilePath();
 
             services.AddWCloudBuilder()
                 .AutoRegister(ass_to_scan)
-                .AddHttpClient()
                 .AddFluentValidatorHelper().RegEntityValidators(ass_to_scan)
+                .AddHttpClient()
                 .AddRedisClient()
                 .AddRedisHelper()
                 .AddRedisDistributedCacheProvider_()
                 .AddRedisDataProtectionKeyStore()
-                .AddLoggingAll(nlog_config_file)
+                .AddLoggingAll()
                 .AddMessageBus_()
                 .AddWCloudMvc();
 

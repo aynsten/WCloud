@@ -22,7 +22,7 @@ namespace WCloud.Framework.MessageBus
 
     public static class Bootstrap
     {
-        public static WCloudBuilder AddMessageBus_(this WCloudBuilder builder, Assembly[] consumer_ass = null)
+        public static IWCloudBuilder AddMessageBus_(this IWCloudBuilder builder, Assembly[] consumer_ass = null)
         {
             builder.Services.AddMessageBus_(builder.Configuration, consumer_ass);
             return builder;

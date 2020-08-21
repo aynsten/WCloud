@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Volo.Abp;
@@ -12,7 +11,7 @@ using WCloud.CommonService.Application;
 using WCloud.Core;
 using WCloud.Core.Helper;
 using WCloud.Framework.Common.Validator;
-using WCloud.Framework.HttpClient;
+using WCloud.Framework.HttpClient_;
 using WCloud.Framework.Logging;
 using WCloud.Framework.MVC;
 using WCloud.Framework.Redis;
@@ -39,17 +38,16 @@ namespace WCloud.Migration
             var _env = services.GetHostingEnvironment();
 
             var ass_to_scan = __this_ass__.FindWCloudAssemblies();
-            var nlog_config_file = _env.NLogConfigFilePath();
 
             services.AddWCloudBuilder()
                 .AutoRegister(ass_to_scan)
-                .AddHttpClient()
                 .AddFluentValidatorHelper().RegEntityValidators(ass_to_scan)
+                .AddHttpClient()
                 .AddRedisClient()
                 .AddRedisHelper()
                 .AddRedisDistributedCacheProvider_()
                 .AddRedisDataProtectionKeyStore()
-                .AddLoggingAll(nlog_config_file)
+                .AddLoggingAll()
                 .AddWCloudMvc();
         }
 

@@ -14,7 +14,7 @@ namespace WCloud.Framework.Logging
 {
     public static class LoggingStartup
     {
-        public static WCloudBuilder AddLoggingAll(this WCloudBuilder builder, string nlog_config_file_path)
+        public static IWCloudBuilder AddLoggingAll(this IWCloudBuilder builder, string nlog_config_file_path)
         {
             builder.Services.AddLoggingAll(builder.Configuration, nlog_config_file_path);
             return builder;

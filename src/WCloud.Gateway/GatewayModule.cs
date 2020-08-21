@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -16,7 +15,7 @@ using Volo.Abp.Modularity;
 using WCloud.Core;
 using WCloud.Framework.Apm;
 using WCloud.Framework.Common.Validator;
-using WCloud.Framework.HttpClient;
+using WCloud.Framework.HttpClient_;
 using WCloud.Framework.Logging;
 using WCloud.Framework.MVC;
 using WCloud.Framework.Startup;
@@ -44,13 +43,12 @@ namespace WCloud.Gateway
             var _env = services.GetHostingEnvironment();
 
             var ass_to_scan = __this_ass__.FindWCloudAssemblies();
-            var nlog_config_file = _env.NLogConfigFilePath();
 
             services.AddWCloudBuilder()
                 .AutoRegister(ass_to_scan)
-                .AddHttpClient()
                 .AddFluentValidatorHelper().RegEntityValidators(ass_to_scan)
-                .AddLoggingAll(nlog_config_file)
+                .AddHttpClient()
+                .AddLoggingAll()
                 .AddWCloudMvc();
 
             services.AddOcelot(_config);

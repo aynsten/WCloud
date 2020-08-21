@@ -10,7 +10,7 @@ namespace WCloud.Framework.Common.Validator
 {
     public static class Bootstrap
     {
-        public static WCloudBuilder AddFluentValidatorHelper(this WCloudBuilder builder)
+        public static IWCloudBuilder AddFluentValidatorHelper(this IWCloudBuilder builder)
         {
             AddFluentValidatorHelper(builder.Services);
             return builder;
@@ -22,7 +22,7 @@ namespace WCloud.Framework.Common.Validator
             return collection;
         }
 
-        public static WCloudBuilder RegEntityValidators(this WCloudBuilder builder, Assembly[] search_in_assembly)
+        public static IWCloudBuilder RegEntityValidators(this IWCloudBuilder builder, Assembly[] search_in_assembly)
         {
             RegEntityValidators(builder.Services, search_in_assembly);
             return builder;

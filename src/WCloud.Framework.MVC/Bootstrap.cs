@@ -16,6 +16,7 @@ using System.Text.Unicode;
 using Volo.Abp.VirtualFileSystem;
 using WCloud.Core;
 using WCloud.Framework.Filters;
+using WCloud.Framework.Logging;
 
 namespace WCloud.Framework.MVC
 {
@@ -45,7 +46,7 @@ namespace WCloud.Framework.MVC
             return collection;
         }
 
-        public static WCloudBuilder AddWCloudMvc(this WCloudBuilder builder)
+        public static IWCloudBuilder AddWCloudMvc(this IWCloudBuilder builder)
         {
             builder.Services.AddWCloudMvc();
             return builder;
@@ -55,6 +56,13 @@ namespace WCloud.Framework.MVC
         {
             var res = Path.Combine(env.ContentRootPath, "nlog.config");
             return res;
+        }
+
+        public static IWCloudBuilder AddLoggingAll(this IWCloudBuilder builder)
+        {
+            var nlog_config_file_path = builder.Services.GetHostingEnvironment().NLogConfigFilePath();
+            LoggingStartup.AddLoggingAll(builder, nlog_config_file_path);
+            return builder;
         }
 
         static IDataProtectionBuilder AddFileBasedDataProtection_(this IServiceCollection collection, IConfiguration config, IWebHostEnvironment env)

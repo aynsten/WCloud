@@ -1,10 +1,7 @@
-﻿using Lib.extension;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Linq;
 using System.Reflection;
 using Volo.Abp;
 using Volo.Abp.Modularity;
@@ -12,7 +9,7 @@ using WCloud.CommonService.Application;
 using WCloud.Core;
 using WCloud.Framework.Apm;
 using WCloud.Framework.Common.Validator;
-using WCloud.Framework.HttpClient;
+using WCloud.Framework.HttpClient_;
 using WCloud.Framework.Logging;
 using WCloud.Framework.MessageBus;
 using WCloud.Framework.MVC;
@@ -41,17 +38,16 @@ namespace WCloud.Member.InternalApi
             var _env = services.GetHostingEnvironment();
 
             var ass_to_scan = __this_ass__.FindWCloudAssemblies();
-            var nlog_config_file = _env.NLogConfigFilePath();
 
             services.AddWCloudBuilder()
                 .AutoRegister(ass_to_scan)
-                .AddHttpClient()
                 .AddFluentValidatorHelper().RegEntityValidators(ass_to_scan)
+                .AddHttpClient()
                 .AddRedisClient()
                 .AddRedisHelper()
                 .AddRedisDistributedCacheProvider_()
                 .AddRedisDataProtectionKeyStore()
-                .AddLoggingAll(nlog_config_file)
+                .AddLoggingAll()
                 .AddMessageBus_()
                 .AddWCloudMvc();
 

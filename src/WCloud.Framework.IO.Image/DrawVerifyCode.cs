@@ -7,7 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 
-namespace WCloud.Framework.IO
+namespace WCloud.Framework.IO.Image_
 {
     /// <summary>
     ///用于生成多种样式的验证码

@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using System;
 using System.Net.Http;
+using WCloud.Core;
 
 namespace WCloud.Member.InternalApi.Client
 {

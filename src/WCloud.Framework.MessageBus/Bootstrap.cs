@@ -1,10 +1,11 @@
-﻿using System;
+﻿using FluentAssertions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using FluentAssertions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using WCloud.Core;
 using WCloud.Core.MessageBus;
 using WCloud.Framework.MessageBus.Memory;
 using WCloud.Framework.MessageBus.Rabbitmq_;
@@ -21,6 +22,12 @@ namespace WCloud.Framework.MessageBus
 
     public static class Bootstrap
     {
+        public static WCloudBuilder AddMessageBus_(this WCloudBuilder builder, Assembly[] consumer_ass = null)
+        {
+            builder.Services.AddMessageBus_(builder.Configuration, consumer_ass);
+            return builder;
+        }
+
         public static IServiceCollection AddMessageBus_(this IServiceCollection services, IConfiguration config, Assembly[] consumer_ass = null)
         {
             config.Should().NotBeNull();

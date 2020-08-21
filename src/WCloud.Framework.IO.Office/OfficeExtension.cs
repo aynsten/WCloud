@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WCloud.Framework.IO
+namespace WCloud.Framework.IO.Office
 {
     public static class OfficeExtension
     {

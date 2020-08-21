@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using FluentAssertions;
 
-namespace WCloud.Framework.IO
+namespace WCloud.Framework.IO.Image_
 {
     #region 知识补充
     //g.DrawArc 绘制一段弧线，它表示由一对坐标、宽度和高度指定的椭圆部分。 

@@ -1,17 +1,41 @@
 ﻿using Lib.extension;
 using Lib.helper;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
+using WCloud.Core;
 using WCloud.Framework.IO;
 
 namespace WCloud.Framework.Logging
 {
     public static class LoggingStartup
     {
+        public static WCloudBuilder AddLoggingAll(this WCloudBuilder builder, string nlog_config_file_path)
+        {
+            builder.Services.AddLoggingAll(builder.Configuration, nlog_config_file_path);
+            return builder;
+        }
+
+        public static IServiceCollection AddLoggingAll(this IServiceCollection collection, IConfiguration config, string nlog_config_file_path)
+        {
+            collection.AddLogging(builder =>
+            {
+                builder.ClearProviders();
+#if DEBUG
+                //console debug
+                builder.AddConsole().AddDebug();
+#endif
+                builder.__add_nlog__(config, nlog_config_file_path);
+                builder.__try_add_sentry__(config);
+                builder.__add_logger_filter__(config);
+            });
+            return collection;
+        }
+
         /// <summary>
         /// nlog
         /// </summary>
@@ -47,6 +71,13 @@ namespace WCloud.Framework.Logging
                 }
             }
             return builder;
+        }
+
+        public static string GetSentryDsn(this IConfiguration config)
+        {
+            var dsn = config["sentry_dsn"];
+
+            return dsn;
         }
 
         /// <summary>

@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 
 namespace WCloud.Core.DataSerializer
 {
-    public interface IDataSerializer : IAutoRegistered
+    public interface IDataSerializer
     {
         /// <summary>
         /// 反序列化为数组

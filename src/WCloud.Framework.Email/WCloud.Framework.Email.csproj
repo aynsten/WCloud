@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<Import Project="..\..\common.props" />
-	<PropertyGroup>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
-	</PropertyGroup>
+
 	<ItemGroup>
 	  <PackageReference Include="MailKit" Version="2.8.0" />
 	</ItemGroup>

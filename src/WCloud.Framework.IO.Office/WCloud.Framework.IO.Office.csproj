@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\common.props" />
+
+	<ItemGroup>
+		<PackageReference Include="NPOI" Version="2.4.1" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\WCloud.Framework.IO\WCloud.Framework.IO.csproj" />
+	</ItemGroup>
+</Project>

@@ -5,10 +5,7 @@ using System.IO;
 
 namespace WCloud.Framework.IO
 {
-    /// <summary>
-    /// INI????????????
-    /// </summary>
-	public class INIFile
+    public class INIFile
     {
         private readonly string path;
 

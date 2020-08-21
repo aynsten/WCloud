@@ -1,6 +1,4 @@
 ﻿using FluentAssertions;
-using WCloud.Core.Cache;
-using Lib.extension;
 using Lib.helper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -9,20 +7,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Volo.Abp.VirtualFileSystem;
-using WCloud.Core.Cache;
-using WCloud.Core.DataSerializer;
-using WCloud.Core.PollyExtension;
+using WCloud.Core;
 using WCloud.Framework.Common.Validator;
 using WCloud.Framework.Filters;
 using WCloud.Framework.Logging;
@@ -37,72 +28,47 @@ namespace WCloud.Framework.MVC
             return res;
         }
 
-        public static IServiceCollection AddHttpContextAccessor_(this IServiceCollection collection)
+        public static IServiceCollection AddWCloudMvc(this IServiceCollection collection)
         {
+            var config = collection.GetConfiguration();
+            var env = collection.GetHostingEnvironment();
+            //解决中文被编码
+            collection.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
+            //use httpcontext
             collection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //异常捕捉
+            collection.AddSingleton<ICommonExceptionHandler, CommonExceptionHandler>();
+            //加密相关
+            collection.AddFileBasedDataProtection_(config, env);
+            //添加mvc组件
+            collection.AddRouting().AddMvc(option => option.AddExceptionHandler()).AddJsonProvider_();
             return collection;
+        }
+
+        public static WCloudBuilder AddWCloudMvc(this WCloudBuilder builder)
+        {
+            builder.Services.AddWCloudMvc();
+            return builder;
         }
 
         /// <summary>
         /// 添加没有平台依赖的注册项
         /// </summary>
-        public static IServiceCollection AddBasicNoDependencyServices(this IServiceCollection collection)
-        {
-            var config = collection.GetConfiguration();
-            var env = collection.GetHostingEnvironment();
-
-            //解决中文被编码
-            collection.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
-            //use httpcontext
-            collection.AddHttpContextAccessor_();
-            collection.AddHttpClient();
-
-            //基础注册项
-            collection.AddSingleton<IDataSerializer, DefaultDataSerializer>();
-            collection.AddSingleton<IStrategyFactory, StrategyFactory>();
-            collection.AddSingleton<ICommonExceptionHandler, CommonExceptionHandler>();
-            //dto验证
-            collection.AddFluentValidatorHelper();
-
-            //缓存
-            collection.AddScoped<ICacheKeyManager, CacheKeyManager>();
-            collection.AddCacheProvider_().AddMemoryCache().AddDistributedMemoryCache();
-
-            //日志
-            collection.AddLogging(builder =>
-            {
-                builder.ClearProviders();
-#if DEBUG
-                //console debug
-                builder.AddConsole().AddDebug();
-#endif
-                builder.__add_nlog__(config, Path.Combine(env.ContentRootPath, "nlog.config"));
-                builder.__try_add_sentry__(config);
-                builder.__add_logger_filter__(config);
-            });
-
-            return collection;
-        }
-
         public static IServiceCollection AddBasicServices(this IServiceCollection collection)
         {
             var config = collection.GetConfiguration();
             var env = collection.GetHostingEnvironment();
 
-            if (collection.Where(x => x.ServiceType == typeof(IDataSerializer)).IsEmpty_())
-            {
-                AddBasicNoDependencyServices(collection);
-            }
+            collection.AddHttpClient();
+
+            //dto验证
+            collection.AddFluentValidatorHelper();
+
+            //日志
+            collection.AddLoggingAll(config, Path.Combine(env.ContentRootPath, "nlog.config"));
+
             //加密相关
             collection.AddFileBasedDataProtection_(config, env);
-
-            return collection;
-        }
-
-        static IServiceCollection AddCacheProvider_(this IServiceCollection collection)
-        {
-            collection.RemoveAll<ICacheProvider>();
-            collection.AddTransient<ICacheProvider, DistributeCacheProvider>();
 
             return collection;
         }

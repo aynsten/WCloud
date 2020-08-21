@@ -8,7 +8,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 
-namespace WCloud.Framework.IO
+namespace WCloud.Framework.IO.Office
 {
     /// <summary>
     ///Excel 的摘要说明

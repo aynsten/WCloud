@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace WCloud.Framework.IO
+namespace WCloud.Framework.IO.Office
 {
     public class WordHelper
     {

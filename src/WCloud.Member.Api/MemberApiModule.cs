@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Lib.extension;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Linq;
 using System.Reflection;
 using Volo.Abp;
 using Volo.Abp.Modularity;
@@ -61,6 +64,7 @@ namespace WCloud.Member.Api
             }, option => option.UseOauth_(_config));
 
             services.AddRouting().AddMvc(option => option.AddExceptionHandler()).AddJsonProvider_();
+            services.AutoRegister(__this_ass__.FindAllReferencedAssemblies(x => x.FullName.StartsWith("wcloud", StringComparison.OrdinalIgnoreCase)).ToArray());
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

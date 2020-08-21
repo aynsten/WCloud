@@ -9,7 +9,7 @@ using ZXing.Common;
 using ZXing.QrCode;
 using ZXing.QrCode.Internal;
 
-namespace WCloud.Framework.IO
+namespace WCloud.Framework.IO.Image_
 {
     /// <summary>
     /// 生成二维码和条码
@@ -144,12 +144,12 @@ namespace WCloud.Framework.IO
                     {
                         icon.Mutate(x => x.Resize(width: img.Width / 5, height: img.Height / 5));
 
-                        var location = new SixLabors.Primitives.Point()
+                        var location = new SixLabors.ImageSharp.Point()
                         {
                             X = (img.Width - icon.Width) / 2,
                             Y = (img.Height - icon.Height) / 2
                         };
-                        img.Mutate(x => x.DrawImage(icon, 1, location));
+                        img.Mutate(x => x.DrawImage(icon, location, 1f));
                         img.Save(ms, new SixLabors.ImageSharp.Formats.Png.PngEncoder());
                     }
                 }
@@ -192,12 +192,12 @@ namespace WCloud.Framework.IO
                         var Height = (int)(qr.Height * scale.Value.height_scale);
                         img.Mutate(x => x.Resize(Width, Height));
 
-                        var location = new SixLabors.Primitives.Point()
+                        var location = new SixLabors.ImageSharp.Point()
                         {
                             X = (img.Width - qr.Width) / 2,
                             Y = (img.Height - qr.Height) / 2
                         };
-                        img.Mutate(x => x.DrawImage(qr, 1f, location));
+                        img.Mutate(x => x.DrawImage(qr, location, 1f));
 
                         img.Save(ms, new SixLabors.ImageSharp.Formats.Png.PngEncoder());
                     }

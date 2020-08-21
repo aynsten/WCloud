@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Lib.core;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +20,13 @@ namespace WCloud.Framework.Redis
                 res.Should().NotBeNull("请先注册redis链接");
             }
             return res;
+        }
+
+        public static string GetRedisConnectionString(this IConfiguration config)
+        {
+            var con_str = config["redis_server"];
+
+            return con_str;
         }
 
         public static RedisConnectionWrapper GetRedisClientWrapper(this IServiceProvider provider)

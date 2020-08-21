@@ -24,6 +24,19 @@ namespace WCloud.Test
     public class common_test
     {
         [TestMethod]
+        public void fdsafdsaffadsfsagsdf()
+        {
+            var data = this.GetType().Assembly.FindAllReferencedAssemblies().Select(x => x.FullName).ToArray();
+        }
+
+        [TestMethod]
+        public void fdsafdfafagsdf()
+        {
+            typeof(common_test).Should().Be(typeof(common_test));
+            (typeof(common_test).Assembly == Assembly.Load(typeof(common_test).Assembly.GetName())).Should().BeTrue();
+        }
+
+        [TestMethod]
         public void fdsafdsfadsfsagsdf()
         {
             int __discount__(int a, double rate)

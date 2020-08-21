@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace WCloud.Framework.IO
+namespace WCloud.Framework.IO.Image_
 {
     public class VerificationCodeHelper
     {

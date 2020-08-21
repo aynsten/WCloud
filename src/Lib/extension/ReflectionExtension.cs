@@ -1,4 +1,5 @@
-﻿using Lib.core;
+﻿using FluentAssertions;
+using Lib.core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,38 @@ namespace Lib.extension
                 }
             }
              */
+
+        /// <summary>
+        /// 找到依赖的所有程序集
+        /// </summary>
+        public static IEnumerable<Assembly> FindAllReferencedAssemblies(this Assembly entry, Func<Assembly, bool> filter = null)
+        {
+            filter ??= x => true;
+            var finded = new List<Assembly>();
+
+            IEnumerable<Assembly> __find__(Assembly ass)
+            {
+                ass.Should().NotBeNull();
+
+                if (!finded.Contains(ass))
+                {
+                    yield return ass;
+                    finded.Add(ass);
+                    //找到依赖
+                    var referenced_ass = ass.GetReferencedAssemblies().Select(x => Assembly.Load(x)).ToArray();
+                    foreach (var m in referenced_ass)
+                    {
+                        foreach (var finded in __find__(m))
+                        {
+                            yield return finded;
+                        }
+                    }
+                }
+            }
+
+            var res = __find__(entry);
+            return res;
+        }
 
         public static bool IsNullable(this Type t)
         {

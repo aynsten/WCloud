@@ -1,13 +1,34 @@
 ﻿using FluentAssertions;
 using Lib.extension;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
-using WCloud.Core;
+using System.Collections.Generic;
+using WCloud.Core.Cache;
+using WCloud.Core.DataSerializer;
+using WCloud.Core.PollyExtension;
 
-namespace Microsoft.Extensions.Configuration
+namespace WCloud.Core
 {
     public static class CoreExtensions
     {
+        public static IServiceCollection AddWCloudCore(this IServiceCollection collection)
+        {
+            //上下文
+            var deft = typeof(DefaultWCloudContext<>).MakeGenericType(typeof(CoreModule));
+            collection.AddScoped(typeof(IWCloudContext), deft);
+            collection.AddScoped(typeof(IWCloudContext<>), typeof(DefaultWCloudContext<>));
+            //序列化
+            collection.AddSingleton<IDataSerializer, DefaultDataSerializer>();
+            collection.AddSingleton<IStrategyFactory, StrategyFactory>();
+            //缓存
+            collection.AddScoped<ICacheKeyManager, CacheKeyManager>();
+            collection.RemoveAll<ICacheProvider>().AddTransient<ICacheProvider, DistributeCacheProvider>();
+            collection.AddMemoryCache().AddDistributedMemoryCache();
+            return collection;
+        }
+
         public static IWCloudContext<T> ResolveWCloudContext<T>(this IServiceProvider provider)
         {
             var res = provider.Resolve_<IWCloudContext<T>>();
@@ -38,20 +59,6 @@ namespace Microsoft.Extensions.Configuration
             res.Should().NotBeNullOrEmpty();
             res.StartsWith("http", StringComparison.OrdinalIgnoreCase).Should().BeTrue();
             return res;
-        }
-
-        public static string GetRedisConnectionString(this IConfiguration config)
-        {
-            var con_str = config["redis_server"];
-
-            return con_str;
-        }
-
-        public static string GetSentryDsn(this IConfiguration config)
-        {
-            var dsn = config["sentry_dsn"];
-
-            return dsn;
         }
     }
 }
